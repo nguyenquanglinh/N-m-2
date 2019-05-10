@@ -15,7 +15,6 @@ namespace ToolFacebook
         public ToolFb()
         {
             InitializeComponent();
-            MaximizeBox = false;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
