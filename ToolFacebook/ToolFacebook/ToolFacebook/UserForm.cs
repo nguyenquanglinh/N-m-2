@@ -31,12 +31,10 @@ namespace ToolFacebook
                 UserNameOrPassWordIsNull = true;
                 return new User("", "");
             }
+            UserNameOrPassWordIsNull = false;
             return new User(txtUserName.Text, txtPassWord.Text);
         }
 
-        private void txtPassWord_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+       
     }
 }

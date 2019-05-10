@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenQA.Selenium.Chrome;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,12 +31,30 @@ namespace ToolFacebook
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            this.Enabled = false;
+            var user = this.AdduserForm.GetUser();
+            if (this.AdduserForm.UserNameOrPassWordIsNull == false)
+            {
+                if (new GoogleChrome(true).CheckUser(user) == true)
+                {
+                    ///cần ghi file -sd sql severs
 
+                    if (MessageBox.Show("Thêm tài khoản thành công,bạn có muốn thêm  nữa không.", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+                        this.Close();
+                }
+                else
+                {
+                    if (MessageBox.Show("Thông tin tài khoản hoặc mật khẩu không chính xác.Bạn có muốn thử lại không.", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+                        this.Close();
+                }
+                this.Enabled = true;
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-
+            if (MessageBox.Show("Bạn muốn thoát", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                this.Close();
         }
     }
 }

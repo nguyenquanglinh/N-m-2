@@ -32,7 +32,6 @@
             this.txtPassWord = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.checkUserIsDone = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // txtUserName
@@ -50,7 +49,6 @@
             this.txtPassWord.Size = new System.Drawing.Size(100, 20);
             this.txtPassWord.TabIndex = 1;
             this.txtPassWord.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtPassWord.TextChanged += new System.EventHandler(this.txtPassWord_TextChanged);
             // 
             // label1
             // 
@@ -70,23 +68,10 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Password :";
             // 
-            // checkUserIsDone
-            // 
-            this.checkUserIsDone.AutoSize = true;
-            this.checkUserIsDone.Enabled = false;
-            this.checkUserIsDone.Location = new System.Drawing.Point(145, 75);
-            this.checkUserIsDone.Name = "checkUserIsDone";
-            this.checkUserIsDone.Size = new System.Drawing.Size(82, 17);
-            this.checkUserIsDone.TabIndex = 5;
-            this.checkUserIsDone.Text = "Check User";
-            this.checkUserIsDone.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkUserIsDone.UseVisualStyleBackColor = true;
-            // 
             // UserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.checkUserIsDone);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtPassWord);
@@ -104,6 +89,5 @@
         private System.Windows.Forms.TextBox txtPassWord;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox checkUserIsDone;
     }
 }
