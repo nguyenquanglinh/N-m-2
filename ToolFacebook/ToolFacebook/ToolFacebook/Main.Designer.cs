@@ -30,15 +30,15 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ToolFb));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.btnStart = new System.Windows.Forms.Button();
-            this.btnStop = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.userManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.postManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addUserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkUserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.postManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createPostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkPostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnStart = new System.Windows.Forms.Button();
+            this.btnStop = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,6 +51,61 @@
             this.menuStrip1.Size = new System.Drawing.Size(284, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.userManagerToolStripMenuItem,
+            this.postManagerToolStripMenuItem});
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(68, 20);
+            this.menuStrip.Text = "Lựa chọn";
+            // 
+            // userManagerToolStripMenuItem
+            // 
+            this.userManagerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addUserToolStripMenuItem,
+            this.checkUserToolStripMenuItem});
+            this.userManagerToolStripMenuItem.Name = "userManagerToolStripMenuItem";
+            this.userManagerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.userManagerToolStripMenuItem.Text = "Quản lý tài khoản";
+            // 
+            // addUserToolStripMenuItem
+            // 
+            this.addUserToolStripMenuItem.Name = "addUserToolStripMenuItem";
+            this.addUserToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.addUserToolStripMenuItem.Text = "Thêm tài khoản";
+            this.addUserToolStripMenuItem.Click += new System.EventHandler(this.addUserToolStripMenuItem_Click);
+            // 
+            // checkUserToolStripMenuItem
+            // 
+            this.checkUserToolStripMenuItem.Name = "checkUserToolStripMenuItem";
+            this.checkUserToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.checkUserToolStripMenuItem.Text = "Kiểm tra tài khoản";
+            this.checkUserToolStripMenuItem.Click += new System.EventHandler(this.checkUserToolStripMenuItem_Click);
+            // 
+            // postManagerToolStripMenuItem
+            // 
+            this.postManagerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createPostToolStripMenuItem,
+            this.checkPostToolStripMenuItem});
+            this.postManagerToolStripMenuItem.Name = "postManagerToolStripMenuItem";
+            this.postManagerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.postManagerToolStripMenuItem.Text = "Quản lý bài viết";
+            this.postManagerToolStripMenuItem.Click += new System.EventHandler(this.postManagerToolStripMenuItem_Click);
+            // 
+            // createPostToolStripMenuItem
+            // 
+            this.createPostToolStripMenuItem.Name = "createPostToolStripMenuItem";
+            this.createPostToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.createPostToolStripMenuItem.Text = "Thêm  bài viết";
+            this.createPostToolStripMenuItem.Click += new System.EventHandler(this.createPostToolStripMenuItem_Click);
+            // 
+            // checkPostToolStripMenuItem
+            // 
+            this.checkPostToolStripMenuItem.Name = "checkPostToolStripMenuItem";
+            this.checkPostToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.checkPostToolStripMenuItem.Text = "Kiểm tra bài viết";
             // 
             // btnStart
             // 
@@ -78,58 +133,6 @@
             this.btnStop.UseVisualStyleBackColor = false;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
-            // menuStrip
-            // 
-            this.menuStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.userManagerToolStripMenuItem,
-            this.postManagerToolStripMenuItem});
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(50, 20);
-            this.menuStrip.Text = "Menu";
-            // 
-            // userManagerToolStripMenuItem
-            // 
-            this.userManagerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addUserToolStripMenuItem,
-            this.checkUserToolStripMenuItem});
-            this.userManagerToolStripMenuItem.Name = "userManagerToolStripMenuItem";
-            this.userManagerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.userManagerToolStripMenuItem.Text = "User manager";
-            // 
-            // postManagerToolStripMenuItem
-            // 
-            this.postManagerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createPostToolStripMenuItem,
-            this.checkPostToolStripMenuItem});
-            this.postManagerToolStripMenuItem.Name = "postManagerToolStripMenuItem";
-            this.postManagerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.postManagerToolStripMenuItem.Text = "Post manager";
-            // 
-            // addUserToolStripMenuItem
-            // 
-            this.addUserToolStripMenuItem.Name = "addUserToolStripMenuItem";
-            this.addUserToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.addUserToolStripMenuItem.Text = "Add user";
-            this.addUserToolStripMenuItem.Click += new System.EventHandler(this.addUserToolStripMenuItem_Click);
-            // 
-            // checkUserToolStripMenuItem
-            // 
-            this.checkUserToolStripMenuItem.Name = "checkUserToolStripMenuItem";
-            this.checkUserToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.checkUserToolStripMenuItem.Text = "Check user";
-            // 
-            // createPostToolStripMenuItem
-            // 
-            this.createPostToolStripMenuItem.Name = "createPostToolStripMenuItem";
-            this.createPostToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.createPostToolStripMenuItem.Text = "Create post";
-            // 
-            // checkPostToolStripMenuItem
-            // 
-            this.checkPostToolStripMenuItem.Name = "checkPostToolStripMenuItem";
-            this.checkPostToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.checkPostToolStripMenuItem.Text = "Check post";
-            // 
             // ToolFb
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -141,7 +144,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ToolFb";
-            this.Text = "Menu";
+            this.Text = "Facebook tool";
             this.Load += new System.EventHandler(this.ToolFb_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

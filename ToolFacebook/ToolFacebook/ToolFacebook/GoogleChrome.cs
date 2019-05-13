@@ -46,5 +46,13 @@ namespace ToolFacebook
             }
             return true;
         }
+
+        public void checkListUser(List<User> listUser)
+        {
+            foreach(var user in listUser)
+            {
+                user.CheckUserIsTrue=CheckUser(user).ToString();
+            }
+        }
     }
 }

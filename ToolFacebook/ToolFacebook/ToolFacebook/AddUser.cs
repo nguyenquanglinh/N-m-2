@@ -37,8 +37,7 @@ namespace ToolFacebook
             {
                 if (new GoogleChrome(true).CheckUser(user) == true)
                 {
-                    ///cần ghi file -sd sql severs
-
+                    new FileManager().Save(user);
                     if (MessageBox.Show("Thêm tài khoản thành công,bạn có muốn thêm  nữa không.", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
                         this.Close();
                 }

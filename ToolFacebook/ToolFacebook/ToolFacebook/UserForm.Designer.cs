@@ -55,18 +55,19 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(25, 10);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 13);
+            this.label1.Size = new System.Drawing.Size(79, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "User name  :";
+            this.label1.Text = "Tên tài khoản :";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(33, 49);
+            this.label2.Location = new System.Drawing.Point(25, 42);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 13);
+            this.label2.Size = new System.Drawing.Size(61, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Password :";
+            this.label2.Text = "Mật khẩu  :";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // UserForm
             // 

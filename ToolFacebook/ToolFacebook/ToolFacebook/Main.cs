@@ -37,5 +37,20 @@ namespace ToolFacebook
         {
 
         }
+
+        private void checkUserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new UserManager().ShowDialog();
+        }
+
+        private void postManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void createPostToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
