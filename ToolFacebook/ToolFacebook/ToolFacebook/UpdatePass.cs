@@ -10,48 +10,46 @@ using System.Windows.Forms;
 
 namespace ToolFacebook
 {
-    public partial class ChangePassWord : Form
+    public partial class UpdatePass : Form
     {
         private User User;
 
-        public ChangePassWord()
+        public UpdatePass()
         {
             InitializeComponent();
             userForm1.Enabled = false;
         }
 
-        public ChangePassWord(User user):this()
+        public UpdatePass(User user):this()
         {
             this.User = user;
             userForm1.SetUser(user);
+            this.NewPass = user.PassWord;
         }
 
         public string NewPass { get; private set; }
 
         private void btnChangePass_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtNewPass.Text) == true)
+            this.Enabled = false;
+            if (string.IsNullOrWhiteSpace(txtNewPass.Text) == false)
             {
                 if (new GoogleChrome(true).CheckUser(new User(User.UserName, txtNewPass.Text)) == true)
-                {
                     this.NewPass = txtNewPass.Text;
-                }
                 else
                 {
                     if (MessageBox.Show("Mật khẩu mới không chính xác.Bạn có muốn nhập lại mật khẩu mới không ?", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
                     {
                         this.NewPass = User.PassWord;
                         this.Close();
-
                     }
-
                 }
             }
             else
             {
-                MessageBox.Show("chưa nhập mật khẩu mới");
+                MessageBox.Show("Chưa nhập mật khẩu mới","Thông báo");
             }
-
+            this.Enabled = true;
         }
 
         private void btnClose_Click(object sender, EventArgs e)

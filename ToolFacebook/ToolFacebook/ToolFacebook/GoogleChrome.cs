@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ToolFacebook
@@ -14,6 +15,10 @@ namespace ToolFacebook
         /// </summary>
         /// <param name="isHeadless">==true chrome sẽ không hiển thị</param>
         public GoogleChrome(bool isHeadless)
+        {
+            this.IsHeadLess = isHeadless;
+        }
+        void CreateDriver(bool isHeadless)
         {
             var driverService = ChromeDriverService.CreateDefaultService();
             driverService.HideCommandPromptWindow = true;
@@ -27,6 +32,8 @@ namespace ToolFacebook
         /// chromedriver
         /// </summary>
         public ChromeDriver Driver { get; set; }
+        private bool IsHeadLess { get;  set; }
+
         /// <summary>
         /// kiểm tra thông tin của 1 user
         /// </summary>
@@ -34,11 +41,15 @@ namespace ToolFacebook
         /// <returns>đúng khi có thể đăng nhập</returns>
         public bool CheckUser(User user)
         {
+            CreateDriver(IsHeadLess);
             Driver.Navigate().GoToUrl("https://www.facebook.com/");
+            Thread.Sleep(5000);
             Driver.FindElementByXPath("//input[@id='email']").SendKeys(user.UserName);
             Driver.FindElementByXPath("//input[@id='pass']").SendKeys(user.PassWord);
             Driver.FindElementByXPath("//input[@data-testid='royal_login_button']").Click();
+            Thread.Sleep(10000);
             var CheckeUser = Driver.FindElementsByXPath("//a[text()='Khôi phục tài khoản của bạn']");
+            Thread.Sleep(5000);
             Driver.Close();
             if (CheckeUser.Count != 0)
             {
@@ -46,7 +57,6 @@ namespace ToolFacebook
             }
             return true;
         }
-
         public void checkListUser(List<User> listUser)
         {
             foreach(var user in listUser)

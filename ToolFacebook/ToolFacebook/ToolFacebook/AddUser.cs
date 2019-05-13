@@ -31,22 +31,31 @@ namespace ToolFacebook
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            this.Enabled = false;
             var user = this.AdduserForm.GetUser();
             if (this.AdduserForm.UserNameOrPassWordIsNull == false)
             {
                 if (new GoogleChrome(true).CheckUser(user) == true)
                 {
-                    new FileManager().Save(user);
-                    if (MessageBox.Show("Thêm tài khoản thành công,bạn có muốn thêm  nữa không.", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
-                        this.Close();
+                    var fileManager = new FileManager();
+                   
+                    if (fileManager.checkUserInList(user) == false)
+                    {
+                        fileManager.Save(user);
+                        if (MessageBox.Show("Thêm tài khoản thành công,bạn có muốn thêm  nữa không?", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+                            this.Close();
+                    }
+                    else
+                    {
+                        if (MessageBox.Show("Tài khoản đã được thêm vào trước đó.Bạn có muốn thêm tài khoản khác không ?", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+                            this.Close();
+                    }
                 }
                 else
                 {
                     if (MessageBox.Show("Thông tin tài khoản hoặc mật khẩu không chính xác.Bạn có muốn thử lại không.", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
                         this.Close();
                 }
-                this.Enabled = true;
+
             }
         }
 

@@ -17,29 +17,52 @@ namespace ToolFacebook
             InitializeComponent();
             this.MaximizeBox = false;
         }
+        public bool RemoveUser = false;
         private User User { get; set; }
         public ChangeUser(User user) : this()
         {
-            userForm1.SetUser(user);
+            userFormChangeUser.SetUser(user);
             User = user;
             if (user.CheckUserIsTrue == "False")
             {
                 this.BackColor = Color.Red;
                 if(MessageBox.Show("Thông tin tài khoản không chính xác!Bạn có cần đổi mật khẩu không ?","Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                 {
-
+                    UpdatePass(User);
                 }
             }
            
+        }
+        private void UpdatePass(User user)
+        {
+            var xx = new UpdatePass(User);
+            xx.ShowDialog();
+            this.User.PassWord = xx.NewPass;
         }
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void btnChangePass_Click(object sender, EventArgs e)
+        
+
+        private void btnChangePass_Click_1(object sender, EventArgs e)
         {
-            new ChangePassWord(User).ShowDialog();
+            MessageBox.Show("chưa làm được");
+        }
+
+        private void btnUpdatePass_Click(object sender, EventArgs e)
+        {
+            UpdatePass(User);
+        }
+
+        private void Remove_Click(object sender, EventArgs e)
+        {
+            if(MessageBox.Show("Bạn có chắc chắn muốn xóa tài khoản không ?","Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+            {
+                RemoveUser = true;
+                this.Close();
+            }
         }
     }
 }

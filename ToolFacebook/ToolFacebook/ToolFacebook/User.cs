@@ -9,6 +9,7 @@ namespace ToolFacebook
 {
   public  class User
     {
+        private User user;
 
         public User(string userName,string passWord)
         {
@@ -22,8 +23,13 @@ namespace ToolFacebook
             this.CheckUserIsTrue = v;
         }
 
-        public string PassWord { get; private set; }
-        public string UserName { get; private set; }
+        public User(User user)
+        {
+            this.user = user;
+        }
+
+        public string PassWord { get;  set; }
+        public string UserName { get;  set; }
 
         public string CheckUserIsTrue { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿namespace ToolFacebook
 {
-    partial class ChangePassWord
+    partial class UpdatePass
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChangePassWord));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdatePass));
             this.userForm1 = new ToolFacebook.UserForm();
             this.label1 = new System.Windows.Forms.Label();
             this.txtNewPass = new System.Windows.Forms.TextBox();
@@ -66,7 +66,7 @@
             this.btnChangePass.Name = "btnChangePass";
             this.btnChangePass.Size = new System.Drawing.Size(91, 23);
             this.btnChangePass.TabIndex = 3;
-            this.btnChangePass.Text = "Đổi";
+            this.btnChangePass.Text = "Cập nhật";
             this.btnChangePass.UseVisualStyleBackColor = true;
             this.btnChangePass.Click += new System.EventHandler(this.btnChangePass_Click);
             // 
@@ -80,7 +80,7 @@
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // ChangePassWord
+            // UpdatePass
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -91,8 +91,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.userForm1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "ChangePassWord";
-            this.Text = "Thay đổi mật khẩu";
+            this.Name = "UpdatePass";
+            this.Text = "Cập nhật mật khẩu";
             this.ResumeLayout(false);
             this.PerformLayout();
 

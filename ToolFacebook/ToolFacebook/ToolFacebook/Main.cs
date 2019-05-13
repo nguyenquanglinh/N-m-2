@@ -50,7 +50,7 @@ namespace ToolFacebook
 
         private void createPostToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            new CreatePost().ShowDialog();
         }
     }
 }

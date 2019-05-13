@@ -80,7 +80,7 @@
             this.Controls.Add(this.btnMo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "UserManager";
-            this.Text = "UserManager";
+            this.Text = "Quản lý tài khoản";
             ((System.ComponentModel.ISupportInitialize)(this.GrbListUser)).EndInit();
             this.ResumeLayout(false);
 
