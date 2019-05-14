@@ -52,5 +52,10 @@ namespace ToolFacebook
         {
             new CreatePost().ShowDialog();
         }
+
+        private void checkPostToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new PostManager().ShowDialog();
+        }
     }
 }

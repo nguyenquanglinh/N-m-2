@@ -9,30 +9,43 @@ namespace ToolFacebook
 {
     public class FileManager
     {
-        private string path = "ListUser.txt";
+        private string pathList = "ListUser.txt";
+
+        private string pathPost = "Post.txt";
 
         public bool FileIsError = false;
 
-        public List<User> ListUser { get; private set; }
+        private List<User> ListUser { get; set; }
+
+        private List<Post> ListPost { get; set; }
 
         public FileManager()
         {
-            this.ListUser = Open();
-        }
-        public void Save(User user)
-        {
-            if (File.Exists(path) == false)
-            {
-                // Create a file to write to.
-                var xx = File.Create(path);
-                xx.Close();
-            }
-            string appendText = user.UserName + "\t" + user.PassWord + Environment.NewLine;
-            File.AppendAllText(path, appendText, Encoding.UTF8);
         }
 
-        public bool checkUserInList(User user)
+        public void Save(string line, string pathX)
         {
+            if (File.Exists(pathX) == false)
+            {
+                // Create a file to write to.
+                var xx = File.Create(pathX);
+                xx.Close();
+            }
+            string appendText = line + Environment.NewLine;
+            File.AppendAllText(pathX, appendText, Encoding.UTF8);
+        }
+        public List<User> GetListUser()
+        {
+            return this.ListUser = OpenFileListUser();
+        }
+        public void SaveUser(User user)
+        {
+            Save(user.UserName + "\t" + user.PassWord, pathList);
+        }
+
+        public bool CheckUserInList(User user)
+        {
+            GetListUser();
             foreach (var item in ListUser)
             {
                 if (item.UserName == user.UserName)
@@ -42,23 +55,23 @@ namespace ToolFacebook
             return false;
         }
 
-        private List<User> Open()
+        private List<User> OpenFileListUser()
         {
             var listUser = new List<User>();
-            if (File.Exists(path) == false)
+            if (File.Exists(pathList) == false)
             {
                 return listUser;
             }
-            var lines = File.ReadAllLines(path);
+            var lines = File.ReadAllLines(pathList);
             foreach (string line in lines)
             {
                 var checkError = line.Split('\t');
                 if (checkError.Count() != 2)
                 {
-                    if (File.Exists(path) == true)
+                    if (File.Exists(pathList) == true)
                     {
                         // Create a file to write to.
-                        File.Delete(path);
+                        File.Delete(pathList);
                         FileIsError = true;
                         return listUser;
                     }
@@ -75,7 +88,7 @@ namespace ToolFacebook
         {
             for (int i = 0; i < this.ListUser.Count; i++)
             {
-                if (checkUserInList(user))
+                if (CheckUserInList(user))
                 {
                     ListUser.RemoveAt(i);
                     break;
@@ -86,11 +99,83 @@ namespace ToolFacebook
 
         public void SaveListUser(List<User> listUser)
         {
-            File.Delete(path);
+            File.Delete(pathList);
             foreach (var item in listUser)
             {
-                Save(item);
+                SaveUser(item);
             }
+        }
+
+        public void SavePost(Post post)
+        {
+            Save("@postStart", pathPost);
+            Save(post.TextPost, pathPost);
+            foreach (var item in post.ImgPost)
+            {
+                Save(item, pathPost);
+            }
+            Save("@postClose", pathPost);
+        }
+
+        private List<Post> OpenListPosts()
+        {
+            var listPost = new List<Post>();
+            if (File.Exists(pathList) == false)
+            {
+                return listPost;
+            }
+            var lines = File.ReadAllLines(pathPost);
+
+            for (int i = 0; i < lines.Count(); i++)
+            {
+                if (lines[i] == "@postStart")
+                {
+                    var post = new Post();
+                    post.TextPost = lines[i + 1];
+                    for (int j = i + 2; j < lines.Count(); j++)
+                    {
+                        if (lines[j] == "@postClose")
+                            break;
+                        post.ImgPost.Add(lines[j]);
+                    }
+                    listPost.Add(post);
+                }
+
+            }
+            return listPost;
+        }
+
+
+        public bool CheckPostInList(Post post)
+        {
+            GetListPost();
+            foreach (var item in ListPost)
+            {
+                if (item.TextPost == post.TextPost)
+                {
+                    int lenght = item.ImgPost.Count;
+                    if (item.ImgPost.Count == post.ImgPost.Count)
+                    {
+                        int dem = 0;
+                        for (int i = 0; i < lenght; i++)
+                        {
+                            if (item.ImgPost[i] == post.ImgPost[i])
+                            {
+                                dem++;
+                                if (dem == lenght)
+                                    return true;
+                            }
+                            return false;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        private List<Post> GetListPost()
+        {
+            return this.ListPost = OpenListPosts();
         }
     }
 }

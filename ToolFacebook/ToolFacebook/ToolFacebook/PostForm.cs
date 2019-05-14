@@ -16,47 +16,60 @@ namespace ToolFacebook
         public PostForm()
         {
             InitializeComponent();
+            Post = new Post();
         }
-
+        private Post Post { get; set; }
         private void btnOpenImg_Click(object sender, EventArgs e)
         {
-            var fileContent = string.Empty;
-            var filePath = string.Empty;
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            if (string.IsNullOrWhiteSpace(txtTextPost.Text)==false)
             {
-                openFileDialog.InitialDirectory = "c:\\";
-                openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
-                openFileDialog.FilterIndex = 9;
-                openFileDialog.Multiselect = true;
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                Post.TextPost = txtTextPost.Text;
+                //var fileContent = string.Empty;
+                //var filePath = string.Empty;
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
                 {
-                    var maxWith = this.Width;
-                    var maxHeight = this.Height - this.GrbText.Height;
-                    var listFile = openFileDialog.FileNames;
-                    int ox = 0;
-                    int oy = 150;
-                    foreach (var file in listFile)
+                    openFileDialog.InitialDirectory = "c:\\";
+                    openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+                    openFileDialog.FilterIndex = 10;
+                    openFileDialog.Multiselect = true;
+                    openFileDialog.RestoreDirectory = true;
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        var btn = new Button()
+                        grbImg.Controls.Clear();
+                        Post.ImgPost = openFileDialog.FileNames.ToList();
+                        int ox = 0;
+                        int oy = 0;
+                        foreach (var file in Post.ImgPost)
                         {
-                            Width = 100,
-                            Height = 100,
-                            Location = new Point(ox, oy),
-                            BackgroundImageLayout = ImageLayout.Stretch,
-                            BackgroundImage = Image.FromFile(file),
-                        };
-                        this.Controls.Add(btn);
-                        ox += 100;
-                        if (ox > maxWith)
-                        {
-                            oy += 100;
-                            ox = 0;
+                            var btn = new Button()
+                            {
+                                Width = 100,
+                                Height = 100,
+                                Location = new Point(ox, oy),
+                                BackgroundImageLayout = ImageLayout.Stretch,
+                                BackgroundImage = Image.FromFile(file),
+                            };
+                            grbImg.Controls.Add(btn);
+                            ox += 100;
+                            if (ox > this.Width)
+                            {
+                                oy += 100;
+                                ox = 0;
+                            }
+                            else if (oy > this.Height)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
+               
             }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            new FileManager().SavePost(Post);
         }
     }
 }

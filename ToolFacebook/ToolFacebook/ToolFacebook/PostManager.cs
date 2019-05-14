@@ -10,13 +10,17 @@ using System.Windows.Forms;
 
 namespace ToolFacebook
 {
-    public partial class CreatePost : Form
+    public partial class PostManager : Form
     {
-        public CreatePost()
+        public PostManager()
         {
             InitializeComponent();
         }
 
-        
+
+
+
+
+
     }
 }

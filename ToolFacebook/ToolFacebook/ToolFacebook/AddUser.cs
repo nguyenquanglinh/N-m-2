@@ -38,9 +38,9 @@ namespace ToolFacebook
                 {
                     var fileManager = new FileManager();
                    
-                    if (fileManager.checkUserInList(user) == false)
+                    if (fileManager.CheckUserInList(user) == false)
                     {
-                        fileManager.Save(user);
+                        fileManager.SaveUser(user);
                         if (MessageBox.Show("Thêm tài khoản thành công,bạn có muốn thêm  nữa không?", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
                             this.Close();
                     }

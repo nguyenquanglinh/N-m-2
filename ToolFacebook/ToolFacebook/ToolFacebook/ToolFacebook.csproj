@@ -79,11 +79,18 @@
     <Compile Include="CreatePost.Designer.cs">
       <DependentUpon>CreatePost.cs</DependentUpon>
     </Compile>
+    <Compile Include="Post.cs" />
     <Compile Include="PostForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PostForm.Designer.cs">
       <DependentUpon>PostForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PostManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PostManager.Designer.cs">
+      <DependentUpon>PostManager.cs</DependentUpon>
     </Compile>
     <Compile Include="UpdatePass.cs">
       <SubType>Form</SubType>

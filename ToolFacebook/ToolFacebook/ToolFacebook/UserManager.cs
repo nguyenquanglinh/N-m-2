@@ -20,7 +20,7 @@ namespace ToolFacebook
         }
         private void CheckUser()
         {
-            var ListUser = new FileManager().ListUser;
+            var ListUser = new FileManager().GetListUser();
             if (ListUser.Count == 0)
             {
                 if (MessageBox.Show("chưa có User nào được thêm vào.Bạn có muốn thêm ngay bây giờ không", "thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
