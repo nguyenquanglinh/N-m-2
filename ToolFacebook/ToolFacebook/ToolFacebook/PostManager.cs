@@ -16,11 +16,5 @@ namespace ToolFacebook
         {
             InitializeComponent();
         }
-
-
-
-
-
-
     }
 }
