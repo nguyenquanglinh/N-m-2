@@ -73,6 +73,12 @@
     <Compile Include="AddUser.Designer.cs">
       <DependentUpon>AddUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChangePost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangePost.Designer.cs">
+      <DependentUpon>ChangePost.cs</DependentUpon>
+    </Compile>
     <Compile Include="CreatePost.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PostForm.resx">
       <DependentUpon>PostForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PostManager.resx">
+      <DependentUpon>PostManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UpdatePass.resx">
       <DependentUpon>UpdatePass.cs</DependentUpon>

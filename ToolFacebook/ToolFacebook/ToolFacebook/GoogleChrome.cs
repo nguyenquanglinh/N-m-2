@@ -43,13 +43,11 @@ namespace ToolFacebook
         {
             CreateDriver(IsHeadLess);
             Driver.Navigate().GoToUrl("https://www.facebook.com/");
-            Thread.Sleep(5000);
             Driver.FindElementByXPath("//input[@id='email']").SendKeys(user.UserName);
             Driver.FindElementByXPath("//input[@id='pass']").SendKeys(user.PassWord);
             Driver.FindElementByXPath("//input[@data-testid='royal_login_button']").Click();
-            Thread.Sleep(10000);
             var CheckeUser = Driver.FindElementsByXPath("//a[text()='Khôi phục tài khoản của bạn']");
-            Thread.Sleep(5000);
+            Thread.Sleep(15000);
             Driver.Close();
             if (CheckeUser.Count != 0)
             {

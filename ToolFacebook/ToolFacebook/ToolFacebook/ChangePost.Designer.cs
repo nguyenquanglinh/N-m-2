@@ -1,6 +1,6 @@
 ﻿namespace ToolFacebook
 {
-    partial class CreatePost
+    partial class ChangePost
     {
         /// <summary>
         /// Required designer variable.
@@ -28,31 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.postForm1 = new ToolFacebook.PostForm();
-            this.SuspendLayout();
-            // 
-            // postForm1
-            // 
-            this.postForm1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.postForm1.Location = new System.Drawing.Point(0, 0);
-            this.postForm1.Name = "postForm1";
-            this.postForm1.Size = new System.Drawing.Size(354, 323);
-            this.postForm1.TabIndex = 0;
-            // 
-            // CreatePost
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(354, 323);
-            this.Controls.Add(this.postForm1);
-            this.Name = "CreatePost";
-            this.Text = "Thêm bài viết";
-            this.ResumeLayout(false);
-
+            this.Text = "ChangePost";
         }
 
         #endregion
-
-        private PostForm postForm1;
     }
 }

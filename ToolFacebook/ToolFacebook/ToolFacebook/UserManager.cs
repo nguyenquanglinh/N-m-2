@@ -34,6 +34,7 @@ namespace ToolFacebook
             }
             else
             {
+                MessageBox.Show("Cần " + (ListUser.Count * 15).ToString() + " s để kiểm tra tất cả user, vui lòng chờ ","Thông báo");
                 new GoogleChrome(false).checkListUser(ListUser);
                 CreateGrb(ListUser);
             }

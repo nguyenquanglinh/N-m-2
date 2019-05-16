@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace ToolFacebook
+{
+    public partial class ChangePost : Form
+    {
+        private Post userChange;
+
+        public ChangePost()
+        {
+            InitializeComponent();
+        }
+
+        public ChangePost(Post userChange)
+        {
+            this.userChange = userChange;
+        }
+    }
+}

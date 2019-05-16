@@ -135,7 +135,10 @@ namespace ToolFacebook
                     for (int j = i + 2; j < lines.Count(); j++)
                     {
                         if (lines[j] == "@postClose")
+                        {
+                            i = j;
                             break;
+                        }
                         post.ImgPost.Add(lines[j]);
                     }
                     listPost.Add(post);
@@ -173,7 +176,7 @@ namespace ToolFacebook
             return false;
         }
 
-        private List<Post> GetListPost()
+        public List<Post> GetListPost()
         {
             return this.ListPost = OpenListPosts();
         }

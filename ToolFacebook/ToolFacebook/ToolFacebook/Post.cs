@@ -10,6 +10,12 @@ namespace ToolFacebook
     {
         public Post()
         {
+            TextPost = "";
+            ImgPost = new List<string>();
+        }
+        public Post(string text)
+        {
+            TextPost = text;
         }
         public Post(string textPost, List<string> imgPost) : this()
         {

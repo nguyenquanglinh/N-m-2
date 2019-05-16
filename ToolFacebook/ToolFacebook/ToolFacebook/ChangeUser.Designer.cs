@@ -42,7 +42,7 @@
             this.btnUpdatePass.Name = "btnUpdatePass";
             this.btnUpdatePass.Size = new System.Drawing.Size(100, 37);
             this.btnUpdatePass.TabIndex = 1;
-            this.btnUpdatePass.Text = "Cập nhật mật khẩu";
+            this.btnUpdatePass.Text = "Cập nhật mật khẩu mới";
             this.btnUpdatePass.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnUpdatePass.UseVisualStyleBackColor = true;
             this.btnUpdatePass.Click += new System.EventHandler(this.btnUpdatePass_Click);
@@ -59,7 +59,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(112, 148);
+            this.btnClose.Location = new System.Drawing.Point(97, 148);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 3;
