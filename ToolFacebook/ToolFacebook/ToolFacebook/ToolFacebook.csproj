@@ -136,6 +136,9 @@
     <EmbeddedResource Include="AddUser.resx">
       <DependentUpon>AddUser.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ChangePost.resx">
+      <DependentUpon>ChangePost.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CreatePost.resx">
       <DependentUpon>CreatePost.cs</DependentUpon>
     </EmbeddedResource>

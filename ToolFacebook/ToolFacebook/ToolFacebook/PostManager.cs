@@ -13,6 +13,7 @@ namespace ToolFacebook
     public partial class PostManager : Form
     {
         private FileManager FileManager { get;  set; }
+        private List<Post> ListPost { get; private set; }
 
         public PostManager()
         {
@@ -25,18 +26,21 @@ namespace ToolFacebook
             dataGrbPost.ColumnCount = 2;
             dataGrbPost.Columns[0].Name = "bài viết";
             dataGrbPost.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGrbPost.Columns[1].Name = "Ảnh\video";
+            dataGrbPost.Columns[1].Name = "Stt";
             dataGrbPost.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            var Stt = 0;
             foreach(var post in listPost)
             {
-                dataGrbPost.Rows.Add(new string[] { post.TextPost,"bấm vào để xem ảnh/video"});
+                post.Stt = Stt;
+                dataGrbPost.Rows.Add(new string[] { post.TextPost,Stt.ToString()});
+                Stt++;
             }
             MessageBox.Show("Để chình sửa bài viết vui lòng bấm click chuột vào bài viết ", "Hướng dẫn");
         }
 
         private void checkPost()
         {
-            li = new FileManager();
+            this.ListPost = new FileManager().GetListPost();
             if (ListPost.Count == 0)
             {
                 if (MessageBox.Show("Chưa có bài viết nào được thêm vào.Bạn có muốn thêm ngay bây giờ không", "thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
@@ -54,19 +58,37 @@ namespace ToolFacebook
             };
         }
 
+        private Post GetPostSelect(int stt)
+        {
+            var post = new Post();
+            foreach(var posts in this.ListPost)
+            {
+                if (posts.Stt == stt)
+                {
+                    return post= posts;
+                }
+            }
+            return post;
+        }
+
+
         private void dataGrbPost_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             int Index = dataGrbPost.CurrentCell.RowIndex;
             var row = dataGrbPost.Rows[Index];
-            var post = new Post(row.Cells[0].Value.ToString());
-            post.ImgPost=
-            var changeUser = new ChangePost(post);
-            changeUser.ShowDialog();
-            if (changeUser.RemoveUser == true)
+            var post = GetPostSelect(Index);
+           
+            var changePost = new ChangePost(post);
+            changePost.ShowDialog();
+            if (changePost.Sua == true)
             {
-                new FileManager().ChangeListUser(post);
+                post = changePost.NewPost;
+            }
+            if (changePost.Remove == true)
+            {
                 dataGrbPost.Rows.RemoveAt(Index);
             }
+            new FileManager().SaveListPost(ListPost);
         }
     }
 }

@@ -84,6 +84,8 @@ namespace ToolFacebook
             return listUser;
         }
 
+     
+
         public void ChangeListUser(User user)
         {
             for (int i = 0; i < this.ListUser.Count; i++)
@@ -103,6 +105,15 @@ namespace ToolFacebook
             foreach (var item in listUser)
             {
                 SaveUser(item);
+            }
+        }
+
+        internal void SaveListPost(List<Post> listPost)
+        {
+            File.Delete(pathPost);
+            foreach (var item in listPost)
+            {
+                SavePost(item);
             }
         }
 
@@ -176,6 +187,8 @@ namespace ToolFacebook
             return false;
         }
 
+
+         
         public List<Post> GetListPost()
         {
             return this.ListPost = OpenListPosts();

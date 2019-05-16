@@ -18,7 +18,7 @@ namespace ToolFacebook
             InitializeComponent();
             Post = new Post();
         }
-        private Post Post { get; set; }
+        public Post Post { get; set; }
         private void btnOpenImg_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtTextPost.Text) == false)
@@ -68,11 +68,12 @@ namespace ToolFacebook
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
+
             new FileManager().SavePost(Post);
-            if(MessageBox.Show("Thêm bài viết thành công, bạn có muốn thêm tiếp không?","Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show("Thêm bài viết thành công, bạn có muốn thêm tiếp không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
             {
                 this.Enabled = false;
-                MessageBox.Show("Bấm x ở góc bên phải màn hình để đóng ","Hướng dẫn");
+                MessageBox.Show("Bấm x ở góc bên phải màn hình để đóng ", "Hướng dẫn");
             }
         }
     }

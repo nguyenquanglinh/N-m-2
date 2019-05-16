@@ -17,6 +17,7 @@ namespace ToolFacebook
         {
             TextPost = text;
         }
+        public int Stt { get; set; }
         public Post(string textPost, List<string> imgPost) : this()
         {
             this.TextPost = textPost;
