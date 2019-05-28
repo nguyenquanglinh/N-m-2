@@ -1,6 +1,6 @@
 ﻿namespace ToolFacebook
 {
-    partial class CreatePost
+    partial class AddPost
     {
         /// <summary>
         /// Required designer variable.

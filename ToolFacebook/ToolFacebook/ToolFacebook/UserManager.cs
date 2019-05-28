@@ -20,30 +20,16 @@ namespace ToolFacebook
         }
         private void CheckUser()
         {
-            var ListUser = new FileManager().GetListUser();
-            if (ListUser.Count == 0)
-            {
-                if (MessageBox.Show("chưa có User nào được thêm vào.Bạn có muốn thêm ngay bây giờ không", "thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-                {
-                    new AddUser().Show();
-                }
-                else
-                {
-                    MessageBox.Show("Cần đóng mục này lại vì không có gì để xử lý cả.","Thông báo");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Cần " + (ListUser.Count * 15).ToString() + " s để kiểm tra tất cả user, vui lòng chờ ","Thông báo");
-                new GoogleChrome(false).checkListUser(ListUser);
-                CreateGrb(ListUser);
-            }
+            var ListUser = new FileManagerUser().GetListUser();
+            MessageBox.Show("Cần " + (ListUser.Count * 15).ToString() + " s để kiểm tra tất cả user, vui lòng chờ ", "Thông báo");
+            new GoogleChrome(true).checkListUser(ListUser);
+            CreateGrb(ListUser);
         }
         private void CreateGrb(List<User> listUser)
         {
             if (listUser.Count == 0)
             {
-                if(MessageBox.Show("Chưa có tài khoản nào được thêm vào.Bạn có muốn thêm vào ngay bây giờ không ?","Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                if (MessageBox.Show("Chưa có tài khoản nào được thêm vào.Bạn có muốn thêm vào ngay bây giờ không ?", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                 {
                     new AddUser().ShowDialog();
                 }
@@ -66,7 +52,7 @@ namespace ToolFacebook
                     GrbListUser.Rows.Add(new string[] { user.UserName, user.PassWord, user.CheckUserIsTrue });
                 }
             }
-            
+
         }
 
         private void btnMo_Click(object sender, EventArgs e)
@@ -88,7 +74,7 @@ namespace ToolFacebook
             changeUser.ShowDialog();
             if (changeUser.RemoveUser == true)
             {
-                new FileManager().ChangeListUser(userChange);
+                new FileManagerUser().RomoveUserInListAffterSaveNewListUser(userChange);
                 GrbListUser.Rows.RemoveAt(Index);
             }
         }

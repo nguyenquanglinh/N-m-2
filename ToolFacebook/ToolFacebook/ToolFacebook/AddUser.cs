@@ -36,11 +36,11 @@ namespace ToolFacebook
             {
                 if (new GoogleChrome(true).CheckUser(user) == true)
                 {
-                    var fileManager = new FileManager();
+                    var fileManager = new FileManagerUser();
                    
-                    if (fileManager.CheckUserInList(user) == false)
+                    if (fileManager.CheckUserExitsInList(user) == false)
                     {
-                        fileManager.SaveUser(user);
+                        fileManager.SaveOnceUser(user);
                         if (MessageBox.Show("Thêm tài khoản thành công,bạn có muốn thêm  nữa không?", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
                             this.Close();
                     }

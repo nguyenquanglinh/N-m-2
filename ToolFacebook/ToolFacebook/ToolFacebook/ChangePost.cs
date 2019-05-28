@@ -12,7 +12,6 @@ namespace ToolFacebook
 {
     public partial class ChangePost : Form
     {
-        private Post Post;
 
         public Post NewPost;
         public ChangePost()
@@ -21,24 +20,26 @@ namespace ToolFacebook
             this.MaximizeBox = false;
         }
 
-        public ChangePost(Post post)
+        public ChangePost(Post post):this()
         {
-            this.Post = post;
-            this.Enabled = false;
+            this.postForm1.SetEnabled(false);
+            this.postForm1.SetPost(post);
+            MessageBox.Show("Bấm vào sửa để bắt đầu sửa bài viết ", "Hướng dẫn");
         }
 
         public bool Remove { get; private set; }
-        public bool Sua { get;private set; }
+        public bool Change { get;private set; }
         private void btnSua_Click(object sender, EventArgs e)
         {
-            this.Enabled = true;
-            this.Sua = true;
+            this.postForm1.SetEnabled(true);
+            this.Change = true;
             this.NewPost = this.postForm1.Post;
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
         {
             this.Remove = true;
+            this.Close();
         }
     }
 }

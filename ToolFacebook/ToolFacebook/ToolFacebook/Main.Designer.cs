@@ -112,7 +112,7 @@
             // 
             this.btnStart.AutoSize = true;
             this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnStart.BackgroundImage = global::ToolFacebook.Properties.Resources.start;
+            this.btnStart.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStart.BackgroundImage")));
             this.btnStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnStart.Location = new System.Drawing.Point(36, 158);
             this.btnStart.Name = "btnStart";
@@ -125,7 +125,7 @@
             // 
             this.btnStop.AutoSize = true;
             this.btnStop.BackColor = System.Drawing.Color.Red;
-            this.btnStop.BackgroundImage = global::ToolFacebook.Properties.Resources.stop__2_;
+            this.btnStop.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStop.BackgroundImage")));
             this.btnStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnStop.Location = new System.Drawing.Point(157, 158);
             this.btnStop.Name = "btnStop";

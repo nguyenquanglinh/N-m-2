@@ -40,7 +40,7 @@
             this.dataGrbPost.Name = "dataGrbPost";
             this.dataGrbPost.Size = new System.Drawing.Size(375, 275);
             this.dataGrbPost.TabIndex = 0;
-            this.dataGrbPost.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrbPost_CellContentClick);
+            this.dataGrbPost.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrbPost_CellClick);
             // 
             // PostManager
             // 
