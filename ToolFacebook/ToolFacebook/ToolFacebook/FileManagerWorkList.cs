@@ -10,6 +10,7 @@ namespace ToolFacebook
     public class FileManagerWorkList : FileManager
     {
         public WorkList Work;
+        private List<WorkList> listWork;
 
         public FileManagerWorkList(WorkList work) : base()
         {
@@ -21,9 +22,15 @@ namespace ToolFacebook
             }
                 this.Work = work;
         }
+
+        public FileManagerWorkList(List<WorkList> listWork)
+        {
+            this.listWork = listWork;
+        }
+
         public void SaveWorkList()
         {
-            var xx = "@WorkList \n" + Work.User.UserName + "\n" + Work.Post.ToString() + Work.Groups.ToString();
+            var xx = "@WorkList \n" + Work.User.UserName + "\n" + Work.ListPost.ToString() + Work.Groups.ToString();
             SaveAppendLine(xx,@"\WorkList\"+ "WorkList" + Work.Stt.ToString()+".txt");
         }
         public void OpenWorkList()

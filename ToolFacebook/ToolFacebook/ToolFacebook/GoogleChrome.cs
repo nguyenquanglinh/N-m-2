@@ -29,6 +29,7 @@ namespace ToolFacebook
             driverService.HideCommandPromptWindow = true;
             var options = new ChromeOptions();
             options.AddArgument("--incognito");
+            options.AddArgument("notifications");
             options.AcceptInsecureCertificates = true;
             if (isHeadless == true)
                 options.AddArgument("headless");
@@ -86,7 +87,7 @@ namespace ToolFacebook
                     {
                         break;
                     }
-                   
+
                 }
                 xx[0].Click();
                 Thread.Sleep(2000);
@@ -95,7 +96,7 @@ namespace ToolFacebook
             var listgroup = new List<Groups>();
             foreach (var item in groups)
             {
-                
+
                 listgroup.Add(new Groups(item.Text, item.GetAttribute("href")));
             }
             return listgroup;
@@ -106,7 +107,7 @@ namespace ToolFacebook
         /// </summary>
         /// <param name="user">tài khoản fb</param>
         /// <param name="post">bài viết </param>
-        public void PostInGroups(User user, Post post,List<Groups>groups)
+        public void PostInGroups(User user, Post post, List<Groups> groups)
         {
             SignInFacebook(user);
             int dem = 0;
@@ -114,14 +115,22 @@ namespace ToolFacebook
             {
                 if (dem == 4)
                 {
+                    checkNotification();
                     Driver.Close();
+                    Thread.Sleep(15000);
                     SignInFacebook(user);
+
                     dem = 0;
                 }
                 PostGroup(item.Href, post);
                 dem++;
                 Thread.Sleep(18000);
             }
+        }
+
+        private void checkNotification()
+        {
+            
         }
 
         public void PostInGroup(User user, Post post, string item)
@@ -132,30 +141,37 @@ namespace ToolFacebook
 
         private void PostGroup(string item, Post post)
         {
-            Driver.Navigate().GoToUrl(item);
-            var write = Driver.FindElementsByXPath("//textarea[@placeholder='Write something...']");
-            if (write.Count == 0)
+            try
             {
-                write = Driver.FindElementsByXPath("//input[@placeholder='What are you selling?'] ");
+                Driver.Navigate().GoToUrl(item);
+                var write = Driver.FindElementsByXPath("//textarea[@placeholder='Write something...']");
                 if (write.Count == 0)
                 {
-                    write = Driver.FindElementsByXPath("//textarea[@placeholder='Bạn viết gì đi...']");
+                    write = Driver.FindElementsByXPath("//input[@placeholder='What are you selling?'] ");
                     if (write.Count == 0)
                     {
-                        write = Driver.FindElementsByXPath("//input[@placeholder='Bạn đang bán gì?'] ");
+                        write = Driver.FindElementsByXPath("//textarea[@placeholder='Bạn viết gì đi...']");
                         if (write.Count == 0)
                         {
-                            throw new Exception("phát sinh lỗi khi có thêm 1 group khác");
+                            write = Driver.FindElementsByXPath("//input[@placeholder='Bạn đang bán gì?'] ");
+                            if (write.Count == 0)
+                            {
+                                throw new Exception("phát sinh lỗi khi có thêm 1 group khác");
+                            }
+                            else Groups_2(write, post);
                         }
-                        else Groups_2(write, post);
+                        else Groups_1(write, post);
                     }
-                    else Groups_1(write, post);
+                    else
+                        Groups_2(write, post);
                 }
                 else
-                    Groups_2(write, post);
+                    Groups_1(write, post);
             }
-            else
-                Groups_1(write, post);
+            catch
+            {
+
+            }
         }
 
 
@@ -218,21 +234,28 @@ namespace ToolFacebook
                 var img = Driver.FindElementsByXPath("//a[@class='__9u _47kt']");
                 if (img.Count == 0)
                 {
+                    Thread.Sleep(2000);
                     img = Driver.FindElementsByXPath("//div[@class='_3jk']");
                     if (img.Count == 0)
                     {
                         throw new Exception("phát sinh lỗi trong quá trình gửi ảnh -SendImg");
                     }
                 }
+                try
+                {
+                    MoveToElement(img[0]);
+                    img[0].Click();
+                    Thread.Sleep(3000);
+                    SendKeys.SendWait(item);
+                    Thread.Sleep(1000);
+                    SendKeys.SendWait(@"{Enter}");
 
-                MoveToElement(img[0]);
-                img[0].Click();
-                Thread.Sleep(3000);
-                SendKeys.SendWait(item);
-                Thread.Sleep(1000);
-                SendKeys.SendWait(@"{Enter}");
+                    Thread.Sleep(1000);
+                }
+                catch
+                {
 
-                Thread.Sleep(1000);
+                }
             }
             Thread.Sleep(3000);
         }

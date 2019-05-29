@@ -60,6 +60,7 @@
             // 
             // checkAll
             // 
+            this.checkAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.checkAll.AutoSize = true;
             this.checkAll.Location = new System.Drawing.Point(179, 121);
             this.checkAll.Name = "checkAll";

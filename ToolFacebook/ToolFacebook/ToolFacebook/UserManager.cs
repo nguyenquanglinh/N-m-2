@@ -21,9 +21,12 @@ namespace ToolFacebook
         private void CheckUser()
         {
             var ListUser = new FileManagerUser().GetListUser();
-            MessageBox.Show("Cần " + (ListUser.Count * 15).ToString() + " s để kiểm tra tất cả user, vui lòng chờ ", "Thông báo");
-            new GoogleChrome(true).checkListUser(ListUser);
-            CreateGrb(ListUser);
+            if (MessageBox.Show("Cần " + (ListUser.Count * 15).ToString() + " s để kiểm tra tất cả user, vui lòng chờ ", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                new GoogleChrome(true).checkListUser(ListUser);
+                CreateGrb(ListUser);
+            }
+            this.Close();
         }
         private void CreateGrb(List<User> listUser)
         {

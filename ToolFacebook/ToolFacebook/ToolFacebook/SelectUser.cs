@@ -12,11 +12,31 @@ namespace ToolFacebook
 {
     public partial class SelectUser : Form
     {
+        private List<User> listUser;
 
         public SelectUser()
         {
             InitializeComponent();
+            selectObjUser.GetName(" tài khoản đăng nhập");
             ListUserIsSelected = new List<User>();
+
+        }
+        public User User { get; set; }
+        public SelectUser(int mode) : this()
+        {
+            if (mode == 1)
+                Mode1();
+        }
+        public SelectUser(List<User> ListUser) : this()
+        {
+            this.listUser = ListUser;
+            if (ListUser.Count == 1)
+                selectObjUser.GetItemUser(ListUser);
+            else
+                throw new Exception("chưa làm tiếp");
+        }
+        private void Mode1()
+        {
             selectObjUser.GetName(" tài khoản đăng nhập");
             if (new FileManagerUser().GetListUser().Count == 0)
             {
@@ -28,13 +48,14 @@ namespace ToolFacebook
             }
             else selectObjUser.GetItemUser(new FileManagerUser().GetListUser());
         }
+
         public List<User> ListUserIsSelected { get; set; }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             if (selectObjUser.CheckAll() == false)
                 ListUserIsSelected = selectObjUser.SetItemCheckedUser();
-            else ListUserIsSelected = new FileManagerUser().GetListUser();
+            else if (selectObjUser.CheckAll()) { ListUserIsSelected = listUser; }
             this.Close();
         }
 

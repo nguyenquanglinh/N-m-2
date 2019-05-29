@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectPost));
             this.selectObjPost = new ToolFacebook.SelectObj();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnAccep = new System.Windows.Forms.Button();
@@ -44,7 +45,9 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(162, 164);
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(188, 180);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 5;
@@ -54,7 +57,8 @@
             // 
             // btnAccep
             // 
-            this.btnAccep.Location = new System.Drawing.Point(46, 164);
+            this.btnAccep.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnAccep.Location = new System.Drawing.Point(0, 180);
             this.btnAccep.Name = "btnAccep";
             this.btnAccep.Size = new System.Drawing.Size(75, 23);
             this.btnAccep.TabIndex = 4;
@@ -64,12 +68,15 @@
             // 
             // SelectPost
             // 
+            this.AcceptButton = this.btnAccep;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(263, 202);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnAccep);
             this.Controls.Add(this.selectObjPost);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SelectPost";
             this.Text = "Chọn bài viết để đăng";
             this.ResumeLayout(false);

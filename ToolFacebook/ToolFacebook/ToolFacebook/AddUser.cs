@@ -58,5 +58,9 @@ namespace ToolFacebook
                 this.Close();
         }
 
+        private void AddUser_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

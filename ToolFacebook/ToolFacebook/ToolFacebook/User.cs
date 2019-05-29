@@ -7,33 +7,60 @@ using System.Threading.Tasks;
 
 namespace ToolFacebook
 {
-  public  class User
+    public class User
     {
         private User user;
 
-        public User(string userName,string passWord)
+        /// <summary>
+        /// khởi tạo user với tk+mk
+        /// </summary>
+        /// <param name="userName">tk</param>
+        /// <param name="passWord">mk</param>
+        public User(string userName, string passWord)
         {
             this.UserName = userName;
             this.PassWord = passWord;
         }
+
+        /// <summary>
+        /// overide tostring
+        /// </summary>
+        /// <returns>username</returns>
         public override string ToString()
         {
             return UserName;
         }
+
+        /// <summary>
+        /// khởi tạo user với tk+mk+ds
+        /// </summary>
+        /// <param name="userName">tk</param>
+        /// <param name="passWord">mk</param>
+        /// <param name="v">check user</param>
         public User(string userName, string passWord, string v) : this(userName, passWord)
         {
-           
+
             this.CheckUserIsTrue = v;
         }
 
+        /// <summary>
+        /// khởi tạo user sử dụng user đã có
+        /// </summary>
+        /// <param name="user"></param>
         public User(User user)
         {
             this.user = user;
         }
 
-        public string PassWord { get;  set; }
-        public string UserName { get;  set; }
+        /// <summary>
+        /// khởi tạo user rỗng
+        /// </summary>
+        public User()
+        {
+        }
 
+        public string PassWord { get; set; }
+        public string UserName { get; set; }
         public string CheckUserIsTrue { get; set; }
     }
 }

@@ -12,18 +12,29 @@ namespace ToolFacebook
         {
             this.Stt = stt;
             this.User = user;
-            this.Post = post;
+            this.ListPost = post;
             this.Groups = groups;
         }
 
+        public WorkList()
+        {
+
+        }
+
+        public WorkList(User user, List<Post> listPost, List<Groups> groups)
+        {
+            User = user;
+            this.ListPost = listPost;
+            Groups = groups;
+        }
+
         public List<Groups> Groups { get; private set; }
-        public List<Post> Post { get; private set; }
+        public List<Post> ListPost { get; private set; }
         public int Stt { get; private set; }
         public User User { get; private set; }
-        //public override string ToString()
-        //{
-        //    var xx = "@WorkList \n" + Stt.ToString() + "\n" + User.UserName + "\n" + Post.TextPost + Groups.ToString();
-        //    return xx.ToString();
-        //}
+        public override string ToString()
+        {
+            return "WorkList"+ Stt.ToString()+".txt";
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ToolFacebook
 {
-    partial class AddPost
+    partial class WorkListManager
     {
         /// <summary>
         /// Required designer variable.
@@ -28,38 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ToolFacebook.Post post1 = new ToolFacebook.Post();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddPost));
-            this.postForm1 = new ToolFacebook.PostForm();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkListManager));
             this.SuspendLayout();
             // 
-            // postForm1
-            // 
-            this.postForm1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.postForm1.Location = new System.Drawing.Point(0, 0);
-            this.postForm1.Name = "postForm1";
-            post1.ImgPost = ((System.Collections.Generic.List<string>)(resources.GetObject("post1.ImgPost")));
-            post1.Stt = 0;
-            post1.TextPost = "";
-            this.postForm1.Post = post1;
-            this.postForm1.Size = new System.Drawing.Size(354, 323);
-            this.postForm1.TabIndex = 0;
-            // 
-            // AddPost
+            // WorkListManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(354, 323);
-            this.Controls.Add(this.postForm1);
+            this.ClientSize = new System.Drawing.Size(284, 261);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "AddPost";
-            this.Text = "Thêm bài viết";
+            this.Name = "WorkListManager";
+            this.Text = "WorkListManager";
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private PostForm postForm1;
     }
 }

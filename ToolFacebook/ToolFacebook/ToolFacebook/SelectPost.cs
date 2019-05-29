@@ -12,6 +12,8 @@ namespace ToolFacebook
 {
     public partial class SelectPost : Form
     {
+        private List<Post> listpost;
+
         public List<Post> ListPostIsSelected { get; private set; }
 
         public SelectPost()
@@ -21,13 +23,17 @@ namespace ToolFacebook
             selectObjPost.GetName(" bài viết để đăng");
             if (new FileManagerPost().GetListPost().Count == 0)
             {
-                if (MessageBox.Show("Chưa thêm tài khoản đăng bài.Cần thêm tài khoản ngay", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                if (MessageBox.Show("Chưa thêm đăng bài.Cần thêm  ngay", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                 {
                     new AddPost().ShowDialog();
                 }
                 else this.Close();
             }
-            else selectObjPost.GetItemPost(new FileManagerPost().GetListPost());
+            else
+            {
+                this.listpost = new FileManagerPost().GetListPost();
+                selectObjPost.GetItemPost(listpost);
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)

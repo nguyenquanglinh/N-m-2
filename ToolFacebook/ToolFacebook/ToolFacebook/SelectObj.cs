@@ -43,6 +43,7 @@ namespace ToolFacebook
                 checkedListObj.Items.Add(obj);
             }
         }
+
         public bool CheckAll()
         {
             return checkAll.Checked;

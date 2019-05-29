@@ -28,18 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.postForm1 = new ToolFacebook.PostForm();
+            ToolFacebook.Post post1 = new ToolFacebook.Post();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChangePost));
             this.btnXoa = new System.Windows.Forms.Button();
             this.btnSua = new System.Windows.Forms.Button();
+            this.postForm1 = new ToolFacebook.PostForm();
             this.SuspendLayout();
-            // 
-            // postForm1
-            // 
-            this.postForm1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.postForm1.Location = new System.Drawing.Point(0, 0);
-            this.postForm1.Name = "postForm1";
-            this.postForm1.Size = new System.Drawing.Size(415, 326);
-            this.postForm1.TabIndex = 2;
             // 
             // btnXoa
             // 
@@ -63,6 +57,18 @@
             this.btnSua.UseVisualStyleBackColor = true;
             this.btnSua.Click += new System.EventHandler(this.btnSua_Click);
             // 
+            // postForm1
+            // 
+            this.postForm1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.postForm1.Location = new System.Drawing.Point(0, 0);
+            this.postForm1.Name = "postForm1";
+            post1.ImgPost = ((System.Collections.Generic.List<string>)(resources.GetObject("post1.ImgPost")));
+            post1.Stt = 0;
+            post1.TextPost = "";
+            this.postForm1.Post = post1;
+            this.postForm1.Size = new System.Drawing.Size(415, 326);
+            this.postForm1.TabIndex = 2;
+            // 
             // ChangePost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -71,6 +77,7 @@
             this.Controls.Add(this.btnSua);
             this.Controls.Add(this.btnXoa);
             this.Controls.Add(this.postForm1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ChangePost";
             this.Text = "ChangePost";
             this.ResumeLayout(false);

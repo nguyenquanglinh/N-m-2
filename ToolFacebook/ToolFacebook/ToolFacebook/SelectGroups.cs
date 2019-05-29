@@ -13,16 +13,19 @@ namespace ToolFacebook
     public partial class SelectGroups : Form
     {
         public List<Groups> ListGroupsIsSelected;
+        private List<Groups> listGroupsIsSelected;
 
         public SelectGroups()
         {
             InitializeComponent();
+            ListGroupsIsSelected = new List<Groups>();
 
         }
         public SelectGroups(User user) : this()
         {
             var chrome = new GoogleChrome(false);
-            selectObjGroups.GetItemGroup(chrome.GetAllGroup(user));
+            this.listGroupsIsSelected = chrome.GetAllGroup(user);
+            selectObjGroups.GetItemGroup(listGroupsIsSelected);
             chrome.Driver.Close();
             selectObjGroups.GetName(" nhóm đăng cho tài khoản " + user.UserName);
         }
@@ -31,6 +34,9 @@ namespace ToolFacebook
         {
             if (selectObjGroups.CheckAll() == false)
                 ListGroupsIsSelected = selectObjGroups.SetItemCheckedGroup();
+            else if (selectObjGroups.CheckAll())
+                ListGroupsIsSelected = listGroupsIsSelected;
+            else ListGroupsIsSelected = new List<Groups>();
             this.Close();
         }
 

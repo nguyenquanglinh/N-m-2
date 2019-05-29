@@ -37,10 +37,10 @@
             this.postManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createPostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkPostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnStart = new System.Windows.Forms.Button();
-            this.btnStop = new System.Windows.Forms.Button();
             this.checkboxStart = new System.Windows.Forms.CheckBox();
             this.checkBoxRieng = new System.Windows.Forms.CheckBox();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,32 +109,6 @@
             this.checkPostToolStripMenuItem.Text = "Kiểm tra bài viết";
             this.checkPostToolStripMenuItem.Click += new System.EventHandler(this.checkPostToolStripMenuItem_Click);
             // 
-            // btnStart
-            // 
-            this.btnStart.AutoSize = true;
-            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnStart.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStart.BackgroundImage")));
-            this.btnStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnStart.Location = new System.Drawing.Point(25, 146);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(74, 59);
-            this.btnStart.TabIndex = 1;
-            this.btnStart.UseVisualStyleBackColor = false;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
-            // 
-            // btnStop
-            // 
-            this.btnStop.AutoSize = true;
-            this.btnStop.BackColor = System.Drawing.Color.Red;
-            this.btnStop.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStop.BackgroundImage")));
-            this.btnStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnStop.Location = new System.Drawing.Point(187, 146);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 59);
-            this.btnStop.TabIndex = 2;
-            this.btnStop.UseVisualStyleBackColor = false;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
             // checkboxStart
             // 
             this.checkboxStart.AutoSize = true;
@@ -156,6 +130,32 @@
             this.checkBoxRieng.TabIndex = 4;
             this.checkBoxRieng.Text = "Chế độ riêng";
             this.checkBoxRieng.UseVisualStyleBackColor = true;
+            // 
+            // btnStop
+            // 
+            this.btnStop.AutoSize = true;
+            this.btnStop.BackColor = System.Drawing.Color.Red;
+            this.btnStop.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStop.BackgroundImage")));
+            this.btnStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnStop.Location = new System.Drawing.Point(187, 146);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(75, 59);
+            this.btnStop.TabIndex = 2;
+            this.btnStop.UseVisualStyleBackColor = false;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // btnStart
+            // 
+            this.btnStart.AutoSize = true;
+            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnStart.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStart.BackgroundImage")));
+            this.btnStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnStart.Location = new System.Drawing.Point(25, 146);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(74, 59);
+            this.btnStart.TabIndex = 1;
+            this.btnStart.UseVisualStyleBackColor = false;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // ToolFb
             // 

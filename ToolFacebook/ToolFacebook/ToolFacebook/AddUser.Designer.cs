@@ -81,6 +81,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AddUser";
             this.Text = "Thêm tài khoản ";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AddUser_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
