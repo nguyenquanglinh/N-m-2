@@ -16,7 +16,10 @@ namespace ToolFacebook
             this.UserName = userName;
             this.PassWord = passWord;
         }
-
+        public override string ToString()
+        {
+            return UserName;
+        }
         public User(string userName, string passWord, string v) : this(userName, passWord)
         {
            

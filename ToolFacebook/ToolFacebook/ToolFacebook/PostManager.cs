@@ -23,16 +23,18 @@ namespace ToolFacebook
 
         private void CreateGrbPost(List<Post> listPost)
         {
-            dataGrbPost.ColumnCount = 2;
-            dataGrbPost.Columns[0].Name = "bài viết";
-            dataGrbPost.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGrbPost.Columns[1].Name = "Stt";
+            dataGrbPost.ColumnCount = 3;
+            dataGrbPost.Columns[0].Name = "stt";
+            dataGrbPost.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dataGrbPost.Columns[1].Name = "Bài viết";
             dataGrbPost.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGrbPost.Columns[2].Name = "Số lượng ảnh";
+            dataGrbPost.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             var Stt = 0;
             foreach (var post in listPost)
             {
                 post.Stt = Stt;
-                dataGrbPost.Rows.Add(new string[] { post.TextPost, Stt.ToString() });
+                dataGrbPost.Rows.Add(new string[] { Stt.ToString(),post.TextPost, post.ImgPost.Count.ToString() });
                 Stt++;
             }
             MessageBox.Show("Để chình sửa bài viết vui lòng bấm click chuột vào bài viết ", "Hướng dẫn");
@@ -72,6 +74,7 @@ namespace ToolFacebook
             else if (changePost.Remove == true)
             {
                 dataGrbPost.Rows.RemoveAt(Index);
+                ListPost.RemoveAt(Index);
             }
             new FileManagerPost().RomovePostInListAffterSaveNewListPost(ListPost);
         }

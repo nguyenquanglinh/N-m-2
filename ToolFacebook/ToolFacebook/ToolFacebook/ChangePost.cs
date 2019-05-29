@@ -22,7 +22,6 @@ namespace ToolFacebook
 
         public ChangePost(Post post):this()
         {
-            this.postForm1.SetEnabled(false);
             this.postForm1.SetPost(post);
             MessageBox.Show("Bấm vào sửa để bắt đầu sửa bài viết ", "Hướng dẫn");
         }
@@ -31,7 +30,7 @@ namespace ToolFacebook
         public bool Change { get;private set; }
         private void btnSua_Click(object sender, EventArgs e)
         {
-            this.postForm1.SetEnabled(true);
+
             this.Change = true;
             this.NewPost = this.postForm1.Post;
         }

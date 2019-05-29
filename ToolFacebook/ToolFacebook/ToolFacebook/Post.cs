@@ -25,5 +25,11 @@ namespace ToolFacebook
         }
         public string TextPost { get; set; }
         public List<string> ImgPost { get; set; }
+
+
+        public override string ToString()
+        {
+            return TextPost;
+        }
     }
 }

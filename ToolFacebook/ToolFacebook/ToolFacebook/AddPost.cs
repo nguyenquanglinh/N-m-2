@@ -15,8 +15,16 @@ namespace ToolFacebook
         public AddPost()
         {
             InitializeComponent();
+            Application.Idle += new EventHandler(FrameGrabber);
         }
 
-        
+        private void FrameGrabber(object sender, EventArgs e)
+        {
+            if (postForm1.Close)
+            {
+                this.Close();
+                Application.Idle-= new EventHandler(FrameGrabber);
+            }
+        }
     }
 }

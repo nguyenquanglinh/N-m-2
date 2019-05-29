@@ -9,12 +9,16 @@ namespace ToolFacebook
 {
     public class FileManager
     {
+        public FileManager()
+        {
+        }
+        
         /// <summary>
         /// file cơ sở 
         /// </summary>
-       public FileManager()
+        public FileManager(string path)
         {
-
+            
         }
 
 
@@ -30,6 +34,7 @@ namespace ToolFacebook
                 //nếu file không tồn tại sẽ tạo ra file mới
                 File.Create(pathX).Close();
             }
+            //File.SetAttributes(pathX, File.GetAttributes(pathX) | FileAttributes.Hidden);
             string appendText = line + Environment.NewLine;
             File.AppendAllText(pathX, appendText, Encoding.UTF8);
         }

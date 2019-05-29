@@ -71,27 +71,32 @@ namespace ToolFacebook
 
 
 
-        public List<string> GetAllGroup(User user)
+        public List<Groups> GetAllGroup(User user)
         {
             SignInFacebook(user);
             Driver.Navigate().GoToUrl("https://www.facebook.com/groups/");
-            Thread.Sleep(10000);
+            Thread.Sleep(3000);
             while (true)
             {
                 var xx = Driver.FindElementsByXPath("//span[text()='See more...']");
                 if (xx.Count == 0)
                 {
-                    break;
+                    xx = Driver.FindElementsByXPath("//span[text()='Xem thêm...']");
+                    if (xx.Count == 0)
+                    {
+                        break;
+                    }
+                   
                 }
-
                 xx[0].Click();
                 Thread.Sleep(2000);
             }
             var groups = Driver.FindElementsByXPath("//a[@aria-current='false']");
-            var listgroup = new List<string>();
+            var listgroup = new List<Groups>();
             foreach (var item in groups)
             {
-                listgroup.Add(item.GetAttribute("href"));
+                
+                listgroup.Add(new Groups(item.Text, item.GetAttribute("href")));
             }
             return listgroup;
         }
@@ -101,11 +106,11 @@ namespace ToolFacebook
         /// </summary>
         /// <param name="user">tài khoản fb</param>
         /// <param name="post">bài viết </param>
-        public void PostInGroups(User user, Post post)
+        public void PostInGroups(User user, Post post,List<Groups>groups)
         {
+            SignInFacebook(user);
             int dem = 0;
-            var xx = GetAllGroup(user);
-            foreach (var item in xx)
+            foreach (var item in groups)
             {
                 if (dem == 4)
                 {
@@ -113,7 +118,7 @@ namespace ToolFacebook
                     SignInFacebook(user);
                     dem = 0;
                 }
-                PostGroup(item, post);
+                PostGroup(item.Href, post);
                 dem++;
                 Thread.Sleep(18000);
             }

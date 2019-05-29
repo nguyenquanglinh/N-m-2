@@ -39,6 +39,8 @@
             this.checkPostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
+            this.checkboxStart = new System.Windows.Forms.CheckBox();
+            this.checkBoxRieng = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -92,7 +94,6 @@
             this.postManagerToolStripMenuItem.Name = "postManagerToolStripMenuItem";
             this.postManagerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.postManagerToolStripMenuItem.Text = "Quản lý bài viết";
-            this.postManagerToolStripMenuItem.Click += new System.EventHandler(this.postManagerToolStripMenuItem_Click);
             // 
             // createPostToolStripMenuItem
             // 
@@ -114,9 +115,9 @@
             this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnStart.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStart.BackgroundImage")));
             this.btnStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnStart.Location = new System.Drawing.Point(36, 158);
+            this.btnStart.Location = new System.Drawing.Point(25, 146);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(75, 59);
+            this.btnStart.Size = new System.Drawing.Size(74, 59);
             this.btnStart.TabIndex = 1;
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -127,18 +128,42 @@
             this.btnStop.BackColor = System.Drawing.Color.Red;
             this.btnStop.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStop.BackgroundImage")));
             this.btnStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnStop.Location = new System.Drawing.Point(157, 158);
+            this.btnStop.Location = new System.Drawing.Point(187, 146);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 59);
             this.btnStop.TabIndex = 2;
             this.btnStop.UseVisualStyleBackColor = false;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
+            // checkboxStart
+            // 
+            this.checkboxStart.AutoSize = true;
+            this.checkboxStart.Checked = true;
+            this.checkboxStart.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkboxStart.Location = new System.Drawing.Point(55, 50);
+            this.checkboxStart.Name = "checkboxStart";
+            this.checkboxStart.Size = new System.Drawing.Size(108, 17);
+            this.checkboxStart.TabIndex = 3;
+            this.checkboxStart.Text = "Chế độ mặc định";
+            this.checkboxStart.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxRieng
+            // 
+            this.checkBoxRieng.AutoSize = true;
+            this.checkBoxRieng.Location = new System.Drawing.Point(55, 74);
+            this.checkBoxRieng.Name = "checkBoxRieng";
+            this.checkBoxRieng.Size = new System.Drawing.Size(87, 17);
+            this.checkBoxRieng.TabIndex = 4;
+            this.checkBoxRieng.Text = "Chế độ riêng";
+            this.checkBoxRieng.UseVisualStyleBackColor = true;
+            // 
             // ToolFb
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.checkBoxRieng);
+            this.Controls.Add(this.checkboxStart);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.menuStrip1);
@@ -146,7 +171,6 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ToolFb";
             this.Text = "Facebook tool";
-            this.Load += new System.EventHandler(this.ToolFb_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -166,6 +190,8 @@
         private System.Windows.Forms.ToolStripMenuItem postManagerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createPostToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkPostToolStripMenuItem;
+        private System.Windows.Forms.CheckBox checkboxStart;
+        private System.Windows.Forms.CheckBox checkBoxRieng;
     }
 }
 

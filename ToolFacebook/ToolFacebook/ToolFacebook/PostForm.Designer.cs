@@ -29,15 +29,17 @@
         private void InitializeComponent()
         {
             this.GrbText = new System.Windows.Forms.GroupBox();
-            this.grbImg = new System.Windows.Forms.GroupBox();
             this.btnSave = new System.Windows.Forms.Button();
+            this.grbImg = new System.Windows.Forms.GroupBox();
             this.btnOpenImg = new System.Windows.Forms.Button();
             this.txtTextPost = new System.Windows.Forms.TextBox();
+            this.btnClose = new System.Windows.Forms.Button();
             this.GrbText.SuspendLayout();
             this.SuspendLayout();
             // 
             // GrbText
             // 
+            this.GrbText.Controls.Add(this.btnClose);
             this.GrbText.Controls.Add(this.btnSave);
             this.GrbText.Controls.Add(this.grbImg);
             this.GrbText.Controls.Add(this.btnOpenImg);
@@ -50,6 +52,19 @@
             this.GrbText.TabStop = false;
             this.GrbText.Text = "Bài viết  :";
             // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Location = new System.Drawing.Point(118, 296);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 5;
+            this.btnSave.Text = "Lưu bài viết";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // grbImg
+            // 
             this.grbImg.Dock = System.Windows.Forms.DockStyle.Top;
             this.grbImg.Location = new System.Drawing.Point(3, 158);
             this.grbImg.Name = "grbImg";
@@ -58,25 +73,14 @@
             this.grbImg.TabStop = false;
             this.grbImg.Text = "Ảnh/video :";
             // 
-            // btnSave
-            // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(220, 293);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(102, 23);
-            this.btnSave.TabIndex = 5;
-            this.btnSave.Text = "Lưu bài viết";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
             // btnOpenImg
             // 
             this.btnOpenImg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOpenImg.Location = new System.Drawing.Point(6, 293);
+            this.btnOpenImg.Location = new System.Drawing.Point(16, 296);
             this.btnOpenImg.Name = "btnOpenImg";
-            this.btnOpenImg.Size = new System.Drawing.Size(102, 23);
+            this.btnOpenImg.Size = new System.Drawing.Size(63, 23);
             this.btnOpenImg.TabIndex = 3;
-            this.btnOpenImg.Text = "Chọn ảnh/video";
+            this.btnOpenImg.Text = "Chọn ảnh";
             this.btnOpenImg.UseVisualStyleBackColor = true;
             this.btnOpenImg.Click += new System.EventHandler(this.btnOpenImg_Click);
             // 
@@ -88,6 +92,17 @@
             this.txtTextPost.Name = "txtTextPost";
             this.txtTextPost.Size = new System.Drawing.Size(316, 142);
             this.txtTextPost.TabIndex = 0;
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.Location = new System.Drawing.Point(228, 296);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(88, 23);
+            this.btnClose.TabIndex = 6;
+            this.btnClose.Text = "Thoát";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // PostForm
             // 
@@ -108,5 +123,6 @@
         private System.Windows.Forms.Button btnOpenImg;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.GroupBox grbImg;
+        private System.Windows.Forms.Button btnClose;
     }
 }

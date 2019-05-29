@@ -87,6 +87,9 @@
     </Compile>
     <Compile Include="FileManagerPost.cs" />
     <Compile Include="FileManagerUser.cs" />
+    <Compile Include="FileManagerWorkList.cs" />
+    <Compile Include="Groups.cs" />
+    <Compile Include="WorkList.cs" />
     <Compile Include="Post.cs" />
     <Compile Include="PostForm.cs">
       <SubType>UserControl</SubType>
@@ -99,6 +102,30 @@
     </Compile>
     <Compile Include="PostManager.Designer.cs">
       <DependentUpon>PostManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectGroups.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectGroups.Designer.cs">
+      <DependentUpon>SelectGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectObj.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SelectObj.Designer.cs">
+      <DependentUpon>SelectObj.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectPost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectPost.Designer.cs">
+      <DependentUpon>SelectPost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectUser.Designer.cs">
+      <DependentUpon>SelectUser.cs</DependentUpon>
     </Compile>
     <Compile Include="UpdatePass.cs">
       <SubType>Form</SubType>
@@ -149,6 +176,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PostManager.resx">
       <DependentUpon>PostManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectGroups.resx">
+      <DependentUpon>SelectGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectObj.resx">
+      <DependentUpon>SelectObj.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectPost.resx">
+      <DependentUpon>SelectPost.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectUser.resx">
+      <DependentUpon>SelectUser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UpdatePass.resx">
       <DependentUpon>UpdatePass.cs</DependentUpon>
