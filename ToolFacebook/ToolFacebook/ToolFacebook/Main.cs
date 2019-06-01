@@ -185,10 +185,10 @@ namespace ToolFacebook
                         var groups = selectGroups.ListGroupsIsSelected;
                         listWork.Add(new WorkList(user, listPost, groups, dem));
                     }
-                    if (MessageBox.Show("Lưu danh quá trình làm việc cho lần sau", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        //new FileManagerWorkList(listWork);
-                    }
+                    //if (MessageBox.Show("Lưu danh quá trình làm việc cho lần sau", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    //{
+                    //    //new FileManagerWorkList(listWork);
+                    //}
                     AlwayRunWorkList(listWork);
                 }
             }
