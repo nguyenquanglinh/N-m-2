@@ -21,7 +21,6 @@ namespace ToolFacebook
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-
             var user = this.AdduserForm.GetUser();
             if (this.AdduserForm.UserNameOrPassWordIsNull == false)
             {
@@ -29,7 +28,7 @@ namespace ToolFacebook
                 if (fileManager.CheckUserExitsInList(user) == false)
                 {
                     MessageBox.Show("Sẽ mất 15s để kiểm tra thông tin tài khoản vui lòng chờ");
-                    if (new GoogleChrome(true).CheckUser(user) == true)
+                    if (new GoogleChrome(false).CheckUser(user) == true)
                     {
                         fileManager.SaveOnceUser(user);
                         if (MessageBox.Show("Thêm tài khoản thành công,bạn có muốn thêm  nữa không?", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)

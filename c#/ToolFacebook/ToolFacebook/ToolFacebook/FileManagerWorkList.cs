@@ -33,6 +33,12 @@ namespace ToolFacebook
             var xx = "@WorkList \n" + Work.User.UserName + "\n" + Work.ListPost.ToString() + Work.Groups.ToString();
             SaveAppendLine(xx,@"\WorkList\"+ "WorkList" + Work.Stt.ToString()+".txt");
         }
+
+        private void SaveAppendLine(object xx, object p)
+        {
+            throw new NotImplementedException();
+        }
+
         public void OpenWorkList()
         {
             DirectoryInfo d = new DirectoryInfo("");//Assuming Test is your Folder

@@ -108,9 +108,9 @@ namespace ToolFacebook
             {
                 if (item.TextPost == post.TextPost)
                 {
-                    int lenght = item.ImgPost.Count;
                     if (item.ImgPost.Count == post.ImgPost.Count)
                     {
+                        int lenght = item.ImgPost.Count;
                         int dem = 0;
                         for (int i = 0; i < lenght; i++)
                         {
@@ -120,8 +120,8 @@ namespace ToolFacebook
                                 if (dem == lenght)
                                     return true;
                             }
-                            return false;
                         }
+                        return false;
                     }
                 }
             }

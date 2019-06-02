@@ -37,8 +37,8 @@
             this.postManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createPostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkPostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkboxStart = new System.Windows.Forms.CheckBox();
-            this.checkBoxRieng = new System.Windows.Forms.CheckBox();
+            this.checkboxStart1 = new System.Windows.Forms.CheckBox();
+            this.checkBoxStart2 = new System.Windows.Forms.CheckBox();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
@@ -109,27 +109,29 @@
             this.checkPostToolStripMenuItem.Text = "Kiểm tra bài viết";
             this.checkPostToolStripMenuItem.Click += new System.EventHandler(this.checkPostToolStripMenuItem_Click);
             // 
-            // checkboxStart
+            // checkboxStart1
             // 
-            this.checkboxStart.AutoSize = true;
-            this.checkboxStart.Checked = true;
-            this.checkboxStart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkboxStart.Location = new System.Drawing.Point(55, 50);
-            this.checkboxStart.Name = "checkboxStart";
-            this.checkboxStart.Size = new System.Drawing.Size(108, 17);
-            this.checkboxStart.TabIndex = 3;
-            this.checkboxStart.Text = "Chế độ mặc định";
-            this.checkboxStart.UseVisualStyleBackColor = true;
+            this.checkboxStart1.AutoSize = true;
+            this.checkboxStart1.Checked = true;
+            this.checkboxStart1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkboxStart1.Location = new System.Drawing.Point(55, 50);
+            this.checkboxStart1.Name = "checkboxStart1";
+            this.checkboxStart1.Size = new System.Drawing.Size(108, 17);
+            this.checkboxStart1.TabIndex = 3;
+            this.checkboxStart1.Text = "Chế độ mặc định";
+            this.checkboxStart1.UseVisualStyleBackColor = true;
+            this.checkboxStart1.Click += new System.EventHandler(this.checkboxStart1_Click);
             // 
-            // checkBoxRieng
+            // checkBoxStart2
             // 
-            this.checkBoxRieng.AutoSize = true;
-            this.checkBoxRieng.Location = new System.Drawing.Point(55, 74);
-            this.checkBoxRieng.Name = "checkBoxRieng";
-            this.checkBoxRieng.Size = new System.Drawing.Size(87, 17);
-            this.checkBoxRieng.TabIndex = 4;
-            this.checkBoxRieng.Text = "Chế độ riêng";
-            this.checkBoxRieng.UseVisualStyleBackColor = true;
+            this.checkBoxStart2.AutoSize = true;
+            this.checkBoxStart2.Location = new System.Drawing.Point(55, 74);
+            this.checkBoxStart2.Name = "checkBoxStart2";
+            this.checkBoxStart2.Size = new System.Drawing.Size(87, 17);
+            this.checkBoxStart2.TabIndex = 4;
+            this.checkBoxStart2.Text = "Chế độ riêng";
+            this.checkBoxStart2.UseVisualStyleBackColor = true;
+            this.checkBoxStart2.Click += new System.EventHandler(this.checkBoxStart2_Click);
             // 
             // btnStop
             // 
@@ -162,8 +164,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.checkBoxRieng);
-            this.Controls.Add(this.checkboxStart);
+            this.Controls.Add(this.checkBoxStart2);
+            this.Controls.Add(this.checkboxStart1);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.menuStrip1);
@@ -190,8 +192,8 @@
         private System.Windows.Forms.ToolStripMenuItem postManagerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createPostToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkPostToolStripMenuItem;
-        private System.Windows.Forms.CheckBox checkboxStart;
-        private System.Windows.Forms.CheckBox checkBoxRieng;
+        private System.Windows.Forms.CheckBox checkboxStart1;
+        private System.Windows.Forms.CheckBox checkBoxStart2;
     }
 }
 

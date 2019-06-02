@@ -21,7 +21,6 @@ namespace ToolFacebook
             
         }
 
-
         /// <summary>
         /// hàm lưu file-lưu tiếp 1 dòng 
         /// </summary>
@@ -34,7 +33,7 @@ namespace ToolFacebook
                 //nếu file không tồn tại sẽ tạo ra file mới
                 File.Create(pathX).Close();
             }
-            //File.SetAttributes(pathX, File.GetAttributes(pathX) | FileAttributes.Hidden);
+            File.SetAttributes(pathX, File.GetAttributes(pathX) | FileAttributes.Hidden);
             string appendText = line + Environment.NewLine;
             File.AppendAllText(pathX, appendText, Encoding.UTF8);
         }

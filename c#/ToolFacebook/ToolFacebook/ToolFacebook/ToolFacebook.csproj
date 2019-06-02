@@ -92,7 +92,6 @@
     <Compile Include="FileManagerUser.cs" />
     <Compile Include="FileManagerWorkList.cs" />
     <Compile Include="Groups.cs" />
-    <Compile Include="WorkList.cs" />
     <Compile Include="Post.cs" />
     <Compile Include="PostForm.cs">
       <SubType>UserControl</SubType>

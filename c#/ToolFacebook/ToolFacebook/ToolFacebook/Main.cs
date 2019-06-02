@@ -23,24 +23,14 @@ namespace ToolFacebook
         private void btnStart_Click(object sender, EventArgs e)
         {
 
-            var start1 = checkboxStart.Checked;
-            var start2 = checkBoxRieng.Checked;
-            if (start1 == true && start2 == true)
-            {
-                MessageBox.Show("Chỉ được chọn 1 chế độ");
-                checkBoxRieng.Checked = false;
-            }
-            else if (start2 == false && start1 == false)
-            {
-                MessageBox.Show("Cần chọn 1 chế độ để làm việc");
-                checkBoxRieng.Checked = false;
-            }
-            else if (start1 && start2 == false)
+            var start1 = checkboxStart1.Checked;
+            var start2 = checkBoxStart2.Checked;
+            if (start1)
             {
                 MessageBox.Show("Bắt đầu với chế độ mặc định-Tất cả các tài khoản được chọn sẽ đăng chung 1 bài viết");
                 Start1();
             }
-            else if (start2 == true && start1 == false)
+            else if (start2)
             {
                 MessageBox.Show("Bắt đầu với chế độ riêng.Chọn quá trình làm việc cho từng tài khoản");
                 Start2();
@@ -224,7 +214,7 @@ namespace ToolFacebook
             {
                 var ListUser = new FileManagerUser().GetListUser();
                 if (ListUser.Count != 0)
-                    new UserManager().ShowDialog();
+                    new UserManager(ListUser).ShowDialog();
                 else
                 {
                     if (MessageBox.Show("chưa có User nào được thêm vào.Bạn có muốn thêm ngay bây giờ không", "thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
@@ -235,8 +225,6 @@ namespace ToolFacebook
             {
                 Console.WriteLine(ex);
             }
-
-
         }
 
         private void createPostToolStripMenuItem_Click(object sender, EventArgs e)
@@ -255,14 +243,32 @@ namespace ToolFacebook
             else new PostManager().ShowDialog();
         }
 
-        private void userManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void checkBoxStart2_Click(object sender, EventArgs e)
         {
-
+            if (checkBoxStart2.Checked)
+                checkboxStart1.Checked = false;
+            else checkboxStart1.Checked = true;
         }
 
-        private void ToolFb_Load(object sender, EventArgs e)
+        private void checkboxStart1_Click(object sender, EventArgs e)
         {
-
+            if (checkboxStart1.Checked) checkBoxStart2.Checked = false;
+            else checkBoxStart2.Checked = true;
         }
+    }
+
+    public class WorkList
+    {
+        public WorkList(User user, List<Post> listPost, List<Groups> groups)
+        {
+            User = user;
+            ListPost = listPost;
+            Groups = groups;
+        }
+
+        public List<Groups> Groups { get; internal set; }
+        public List<Post> ListPost { get; internal set; }
+        public int Stt { get; internal set; }
+        public User User { get; internal set; }
     }
 }
