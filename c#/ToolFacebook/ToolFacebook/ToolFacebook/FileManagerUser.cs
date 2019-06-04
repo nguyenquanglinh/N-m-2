@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace ToolFacebook
 {
-    public class FileManagerUser:FileManager
+    public class FileManagerUser : FileManager
     {
         public FileManagerUser() : base()
         {
-
         }
-      
+
         /// <summary>
         /// đường dẫn của file ListUser
         /// </summary>
@@ -23,15 +22,14 @@ namespace ToolFacebook
         /// <summary>
         /// kiểm tra file lỗi có bị lưu lỗi không
         /// </summary>
-        public bool FileUserIsError = false;
 
         /// <summary>
         /// mở file user
         /// </summary>
         /// <returns>listUser</returns>
-        private List<User> OpenFileListUser()
+        private ListUser OpenFileListUser()
         {
-            var listUser = new List<User>();
+            var listUser = new ListUser();
             if (File.Exists(pathUser) == false)
             {
                 return listUser;
@@ -40,20 +38,8 @@ namespace ToolFacebook
             foreach (string line in lines)
             {
                 var checkError = line.Split('\t');
-                if (checkError.Count() != 2)
-                {
-                    if (File.Exists(pathUser) == true)
-                    {
-                        // Create a file to write to.
-                        File.Delete(pathUser);
-                        FileUserIsError = true;
-                        return listUser;
-                    }
-                }
-                else
-                {
-                    listUser.Add(new User(checkError[0], checkError[1]));
-                }
+                if (checkError.Count() == 2)
+                    listUser.ListU.Add(new User(checkError[0], checkError[1]));
             }
             return listUser;
         }
@@ -62,10 +48,10 @@ namespace ToolFacebook
         /// lưu listUser vào file
         /// </summary>
         /// <param name="listUser">ds các user</param>
-        private void SaveListUser(List<User> listUser)
+        public void SaveListUser(ListUser listUser)
         {
             File.Delete(pathUser);
-            foreach (var item in listUser)
+            foreach (var item in listUser.ListU)
             {
                 SaveOnceUser(item);
             }
@@ -75,7 +61,7 @@ namespace ToolFacebook
         /// hàm lấy danh sách user đã thêm
         /// </summary>
         /// <returns>listUser</returns>
-        public List<User> GetListUser()
+        public ListUser GetListUser()
         {
             return OpenFileListUser();
         }
@@ -86,48 +72,30 @@ namespace ToolFacebook
         /// <param name="user">gồm tk+mk</param>
         public void SaveOnceUser(User user)
         {
-          SaveAppendLine(user.UserName + "\t" + user.PassWord, pathUser);
+            SaveAppendLine(user.UserName + "\t" + user.PassWord, pathUser);
         }
-
-
-      
 
         /// <summary>
         /// kiểm tra user có tồn tại trong ds đã lưu không
         /// </summary>
         /// <param name="user">tk+mk</param>
         /// <returns>true nếu user đã tồn tại</returns>
-        public bool CheckUserExitsInList(User user)
+        public bool CheckUserInList(User user)
         {
-          var listUser=  GetListUser();
-            foreach (var item in listUser)
-            {
-                if (item.UserName == user.UserName)
-
-                    return true;
-            }
-            return false;
+            var listUser = GetListUser();
+            return listUser.ListU.Contains(user);
         }
+
+        public void ChangeItemInListUser(User user)
+        {
+        }
+
 
         /// <summary>
         /// Xóa user trong ds và lưu lại ds user mới
         /// </summary>
         /// <param name="user"></param>
-        public void RomoveUserInListAffterSaveNewListUser(User user)
-        {
-            var listUser = GetListUser();
-            for (int i = 0; i < listUser.Count; i++)
-            {
-                if (CheckUserExitsInList(user))
-                {
-                    listUser.RemoveAt(i);
-                    break;
-                }
-            }
-            SaveListUser(listUser);
-        }
-
-
+   
 
     }
 }

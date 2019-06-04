@@ -12,7 +12,7 @@ namespace ToolFacebook
 {
     public partial class UserManager : Form
     {
-        private List<User> listUser;
+        public ListUser ListUser { get; private set; }
 
         public UserManager()
         {
@@ -22,51 +22,37 @@ namespace ToolFacebook
 
         }
 
-        public UserManager(List<User> listUser) : this()
+        public UserManager(ListUser listUser) : this()
         {
-            this.listUser = listUser;
-            CreateGrb(listUser);
-        }
-
-        //private void CheckUser()
-        //{
-        //    var ListUser = new FileManagerUser().GetListUser();
-
-        //    if (MessageBox.Show("Cần " + (ListUser.Count * 15).ToString() + " s để kiểm tra tất cả user, vui lòng chờ ", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
-        //    {
-        //        //new GoogleChrome(true).checkListUser(ListUser);
-        //        CreateGrb(ListUser);
-        //    }
-        //    this.Close();
-        //}
-        private void CreateGrb(List<User> listUser)
-        {
-            //if (listUser.Count == 0)
-            //{
-            //    if (MessageBox.Show("Chưa có tài khoản nào được thêm vào.Bạn có muốn thêm vào ngay bây giờ không ?", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-            //    {
-            //        new AddUser().ShowDialog();
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Không có gì để xử lý,mục này cần được đóng lại", "Thông báo");
-            //    }
-            //}
-            //else
-            //{
-            GrbListUser.ColumnCount = 3;
-            GrbListUser.Columns[0].Name = "Tên tài khoản";
-            GrbListUser.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            GrbListUser.Columns[1].Name = "Mật khẩu";
-            GrbListUser.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            GrbListUser.Columns[2].Name = "Thông tin tài khoản";
-            GrbListUser.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            foreach (var user in listUser)
+            this.ListUser = listUser;
+            if (ListUser.ListU.Count != 0)
+                CreateGrb(ListUser);
+            else
             {
-                GrbListUser.Rows.Add(new string[] { user.UserName, user.PassWord, user.CheckUserIsTrue = "đúng" });
+                if (MessageBox.Show("chưa có User nào được thêm vào.Bạn có muốn thêm ngay bây giờ không", "thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                    new AddUser().Show();
             }
         }
-        //}
+
+        private void CreateGrb(ListUser listUser)
+        {
+            if (listUser.ListU.Count != 0)
+            {
+                GrbListUser.ColumnCount = 3;
+                GrbListUser.Columns[0].Name = "Tên tài khoản";
+                GrbListUser.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                GrbListUser.Columns[1].Name = "Mật khẩu";
+                GrbListUser.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                GrbListUser.Columns[2].Name = "Thông tin tài khoản";
+                GrbListUser.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                foreach (var user in listUser.ListU)
+                {
+                    GrbListUser.Rows.Add(new string[] { user.UserName, user.PassWord, user.CheckUserIsTrue = "đúng" });
+                }
+            }
+             
+            
+        }
 
         private void btnMo_Click(object sender, EventArgs e)
         {
@@ -84,18 +70,19 @@ namespace ToolFacebook
             var userChange = new User(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString(), row.Cells[2].Value.ToString());
             var changeUser = new ChangeUser(userChange);
             changeUser.ShowDialog();
+            ListUser.ListU[index] = changeUser.User;
             if (changeUser.RemoveUser == true)
             {
-                new FileManagerUser().RomoveUserInListAffterSaveNewListUser(userChange);
                 GrbListUser.Rows.RemoveAt(index);
+                ListUser.ListU.RemoveAt(index);
             }
+            new FileManagerUser().SaveListUser(ListUser);
         }
 
         private void GrbListUser_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             int index = GrbListUser.CurrentCell.RowIndex;
             CellClick(index);
-
         }
     }
 }

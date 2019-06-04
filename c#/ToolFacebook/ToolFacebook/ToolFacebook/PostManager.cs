@@ -13,7 +13,7 @@ namespace ToolFacebook
     public partial class PostManager : Form
     {
         private FileManager FileManager { get; set; }
-        private List<Post> ListPost { get; set; }
+        private ListPost ListPost { get; set; }
 
         public PostManager()
         {
@@ -21,8 +21,9 @@ namespace ToolFacebook
             checkPost();
         }
 
-        private void CreateGrbPost(List<Post> listPost)
+        private void CreateGrbPost()
         {
+            dataGrbPost.Rows.Clear();
             dataGrbPost.ColumnCount = 3;
             dataGrbPost.Columns[0].Name = "stt";
             dataGrbPost.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
@@ -31,10 +32,10 @@ namespace ToolFacebook
             dataGrbPost.Columns[2].Name = "Số lượng ảnh";
             dataGrbPost.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             var Stt = 0;
-            foreach (var post in listPost)
+            foreach (var post in ListPost.ListP)
             {
                 post.Stt = Stt;
-                dataGrbPost.Rows.Add(new string[] { Stt.ToString(),post.TextPost, post.ImgPost.Count.ToString() });
+                dataGrbPost.Rows.Add(new string[] { Stt.ToString(), post.TextPost, post.ImgPost.PathImgPost.Count.ToString() });
                 Stt++;
             }
             MessageBox.Show("Để chình sửa bài viết vui lòng bấm click chuột vào bài viết ", "Hướng dẫn");
@@ -43,40 +44,43 @@ namespace ToolFacebook
         private void checkPost()
         {
             this.ListPost = new FileManagerPost().GetListPost();
-            CreateGrbPost(ListPost);
+            if (ListPost.ListP.Count != 0)
+            {
+                CreateGrbPost();
+            }
+            else
+            {
+                if (MessageBox.Show("Chưa thêm bài viết .Cần thêm ngay", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    new AddPost().ShowDialog();
+                }
+                else this.Close();
+            }
         }
 
         private Post GetPostSelect(int stt)
         {
-            var post = new Post();
-            foreach (var posts in this.ListPost)
-            {
-                if (posts.Stt == stt)
-                {
-                    return post = posts;
-                }
-            }
-            return post;
+            return this.ListPost.ListP.FirstOrDefault(x => x.Stt == stt); ;
         }
-
-
-
 
         private void dataGrbPost_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            int Index = dataGrbPost.CurrentCell.RowIndex;
-            var row = dataGrbPost.Rows[Index];
-            var post = GetPostSelect(Index);
-            var changePost = new ChangePost(post);
+            int index = dataGrbPost.CurrentCell.RowIndex;
+            var row = dataGrbPost.Rows[index];
+            var changePost = new ChangePost(ListPost.GetPostInList(index));
             changePost.ShowDialog();
             if (changePost.Change == true)
-                post = changePost.NewPost;
+                ListPost.ListP[index] = changePost.NewPost;
+            //TODO: chưa lưu lại post đã thay đổi
             else if (changePost.Remove == true)
+                //dataGrbPost.Rows.RemoveAt(index);
+                ListPost.ListP.RemoveAt(index);
+            //TODO: Singleton pattern
+            if (changePost.SaveChage)
             {
-                dataGrbPost.Rows.RemoveAt(Index);
-                ListPost.RemoveAt(Index);
+                new FileManagerPost().SaveListPost(ListPost);
+                CreateGrbPost();
             }
-            new FileManagerPost().RomovePostInListAffterSaveNewListPost(ListPost);
         }
     }
 }

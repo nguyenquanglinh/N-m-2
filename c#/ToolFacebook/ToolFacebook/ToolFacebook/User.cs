@@ -7,19 +7,24 @@ using System.Threading.Tasks;
 
 namespace ToolFacebook
 {
-    public class User
+    public class User:Obj
     {
-        private User user;
-
         /// <summary>
         /// khởi tạo user với tk+mk
         /// </summary>
         /// <param name="userName">tk</param>
         /// <param name="passWord">mk</param>
-        public User(string userName, string passWord)
+        public User(string userName, string passWord):this()
         {
             this.UserName = userName;
             this.PassWord = passWord;
+        }
+
+        /// <summary>
+        /// khởi tạo user rỗng
+        /// </summary>
+        public User() : base("user")
+        {
         }
 
         /// <summary>
@@ -30,6 +35,19 @@ namespace ToolFacebook
         {
             return UserName;
         }
+
+        public override bool Equals(object obj)
+        {
+            //var xx= this.GetHashCode() == obj.GetHashCode();
+            return this.GetHashCode() == obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            //var code = UserName.GetHashCode() ^ PassWord.GetHashCode();
+            return UserName.GetHashCode() ^ PassWord.GetHashCode();
+        }
+
 
         /// <summary>
         /// khởi tạo user với tk+mk+ds
@@ -47,17 +65,10 @@ namespace ToolFacebook
         /// khởi tạo user sử dụng user đã có
         /// </summary>
         /// <param name="user"></param>
-        public User(User user)
-        {
-            this.user = user;
-        }
+        
 
-        /// <summary>
-        /// khởi tạo user rỗng
-        /// </summary>
-        public User()
-        {
-        }
+     
+       
 
         public string PassWord { get; set; }
         public string UserName { get; set; }

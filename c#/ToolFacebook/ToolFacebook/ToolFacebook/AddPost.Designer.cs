@@ -28,28 +28,51 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ToolFacebook.Post post1 = new ToolFacebook.Post();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddPost));
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.postForm1 = new ToolFacebook.PostForm();
             this.SuspendLayout();
             // 
+            // btnSave
+            // 
+            this.btnSave.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnSave.Location = new System.Drawing.Point(0, 311);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 41);
+            this.btnSave.TabIndex = 1;
+            this.btnSave.Text = "Lưu bài viết";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnClose.Location = new System.Drawing.Point(348, 311);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 41);
+            this.btnClose.TabIndex = 2;
+            this.btnClose.Text = "Thoát";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // postForm1
             // 
-            this.postForm1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.postForm1.Dock = System.Windows.Forms.DockStyle.Top;
             this.postForm1.Location = new System.Drawing.Point(0, 0);
             this.postForm1.Name = "postForm1";
-            post1.ImgPost = ((System.Collections.Generic.List<string>)(resources.GetObject("post1.ImgPost")));
-            post1.Stt = 0;
-            post1.TextPost = "";
-            this.postForm1.Post = post1;
-            this.postForm1.Size = new System.Drawing.Size(354, 323);
+            this.postForm1.Size = new System.Drawing.Size(423, 311);
             this.postForm1.TabIndex = 0;
             // 
             // AddPost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(354, 323);
+            this.CancelButton = this.btnClose;
+            this.ClientSize = new System.Drawing.Size(423, 352);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.postForm1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AddPost";
@@ -61,5 +84,7 @@
         #endregion
 
         private PostForm postForm1;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnClose;
     }
 }

@@ -41,6 +41,7 @@
             this.checkBoxStart2 = new System.Windows.Forms.CheckBox();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.checkRunAlway = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,15 +76,15 @@
             // addUserToolStripMenuItem
             // 
             this.addUserToolStripMenuItem.Name = "addUserToolStripMenuItem";
-            this.addUserToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.addUserToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.addUserToolStripMenuItem.Text = "Thêm tài khoản";
             this.addUserToolStripMenuItem.Click += new System.EventHandler(this.addUserToolStripMenuItem_Click);
             // 
             // checkUserToolStripMenuItem
             // 
             this.checkUserToolStripMenuItem.Name = "checkUserToolStripMenuItem";
-            this.checkUserToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.checkUserToolStripMenuItem.Text = "Kiểm tra tài khoản";
+            this.checkUserToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.checkUserToolStripMenuItem.Text = "Kiểm tra tất cả tài khoản";
             this.checkUserToolStripMenuItem.Click += new System.EventHandler(this.checkUserToolStripMenuItem_Click);
             // 
             // postManagerToolStripMenuItem
@@ -120,7 +121,6 @@
             this.checkboxStart1.TabIndex = 3;
             this.checkboxStart1.Text = "Chế độ mặc định";
             this.checkboxStart1.UseVisualStyleBackColor = true;
-            this.checkboxStart1.Click += new System.EventHandler(this.checkboxStart1_Click);
             // 
             // checkBoxStart2
             // 
@@ -159,11 +159,22 @@
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // checkRunAlway
+            // 
+            this.checkRunAlway.AutoSize = true;
+            this.checkRunAlway.Location = new System.Drawing.Point(187, 50);
+            this.checkRunAlway.Name = "checkRunAlway";
+            this.checkRunAlway.Size = new System.Drawing.Size(87, 17);
+            this.checkRunAlway.TabIndex = 5;
+            this.checkRunAlway.Text = "Chạy liên tục";
+            this.checkRunAlway.UseVisualStyleBackColor = true;
+            // 
             // ToolFb
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.checkRunAlway);
             this.Controls.Add(this.checkBoxStart2);
             this.Controls.Add(this.checkboxStart1);
             this.Controls.Add(this.btnStop);
@@ -194,6 +205,7 @@
         private System.Windows.Forms.ToolStripMenuItem checkPostToolStripMenuItem;
         private System.Windows.Forms.CheckBox checkboxStart1;
         private System.Windows.Forms.CheckBox checkBoxStart2;
+        private System.Windows.Forms.CheckBox checkRunAlway;
     }
 }
 

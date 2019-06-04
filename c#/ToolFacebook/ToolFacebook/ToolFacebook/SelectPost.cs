@@ -12,16 +12,16 @@ namespace ToolFacebook
 {
     public partial class SelectPost : Form
     {
-        private List<Post> listpost;
+        private ListPost listpost;
 
-        public List<Post> ListPostIsSelected { get; private set; }
+        public ListPost ListPostIsSelected { get; private set; }
 
         public SelectPost()
         {
             InitializeComponent();
-            ListPostIsSelected = new List<Post>();
+            ListPostIsSelected = new ListPost();
             selectObjPost.GetName(" bài viết để đăng");
-            if (new FileManagerPost().GetListPost().Count == 0)
+            if (new FileManagerPost().GetListPost().ListP.Count == 0)
             {
                 if (MessageBox.Show("Chưa thêm đăng bài.Cần thêm  ngay", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                 {
@@ -31,8 +31,8 @@ namespace ToolFacebook
             }
             else
             {
-                this.listpost = new FileManagerPost().GetListPost();
-                selectObjPost.GetItemPost(listpost);
+                this.listpost =new FileManagerPost().GetListPost();
+                selectObjPost.SetListPostInForm(listpost);
             }
         }
 
@@ -46,9 +46,11 @@ namespace ToolFacebook
 
         private void btnAccep_Click(object sender, EventArgs e)
         {
-            if (selectObjPost.CheckAll() == false)
-                this.ListPostIsSelected = selectObjPost.SetItemCheckedPost();
-            else ListPostIsSelected = new FileManagerPost().GetListPost();
+             ListPostIsSelected = selectObjPost.CheckAll() ?new FileManagerPost().GetListPost() : selectObjPost.SetListPostChecked();
+            //if (selectObjPost.CheckAll() == false)
+            //    this.ListPostIsSelected = selectObjPost.SetListPostChecked();
+            //else
+            //    ListPostIsSelected =new ListPost( new FileManagerPost().GetListPost());
             this.Close();
         }
     }

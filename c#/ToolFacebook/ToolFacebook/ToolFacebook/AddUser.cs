@@ -21,23 +21,25 @@ namespace ToolFacebook
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var user = this.AdduserForm.GetUser();
-            if (this.AdduserForm.UserNameOrPassWordIsNull == false)
+            var user = this.AdduserForm.PopUser();
+            if (user!=null)
             {
-                var fileManager = new FileManagerUser();
-                if (fileManager.CheckUserExitsInList(user) == false)
+                if (new FileManagerUser().CheckUserInList(user) == false)
                 {
                     MessageBox.Show("Sẽ mất 15s để kiểm tra thông tin tài khoản vui lòng chờ");
-                    if (new GoogleChrome(false).CheckUser(user) == true)
+                  
+                    if (new GoogleChrome(true).CheckUserIsTrue(user) == true)
                     {
-                        fileManager.SaveOnceUser(user);
+                        new FileManagerUser().SaveOnceUser(user);
                         if (MessageBox.Show("Thêm tài khoản thành công,bạn có muốn thêm  nữa không?", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
                             this.Close();
                     }
                     else
                     {
                         if (MessageBox.Show("Thông tin tài khoản hoặc mật khẩu không chính xác.Bạn có muốn thử lại không.", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
-                            this.Close();
+                        {
+                            this.AdduserForm.Clear();
+                        }
                     }
                 }
                 else
@@ -46,8 +48,6 @@ namespace ToolFacebook
                         this.Close();
                 }
             }
-
-
         }
 
 

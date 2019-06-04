@@ -16,28 +16,29 @@ namespace ToolFacebook
         {
             InitializeComponent();
         }
-        public void SetUser(User user)
+
+
+        public void PushUser(User user)
         {
+            //TODO: databinding winform
             txtUserName.Text = user.UserName;
             txtPassWord.Text = user.PassWord;
         }
 
-        public bool UserNameOrPassWordIsNull = false;
-        public User GetUser()
+        public User PopUser()
         {
             if (string.IsNullOrWhiteSpace(txtUserName.Text) || string.IsNullOrWhiteSpace(txtPassWord.Text))
             {
                 MessageBox.Show("Không được để trống trường user name hoặc pass word");
-                UserNameOrPassWordIsNull = true;
-                return new User("", "");
+                return null;
             }
-            UserNameOrPassWordIsNull = false;
             return new User(txtUserName.Text, txtPassWord.Text);
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        public void Clear()
         {
-
+            txtUserName.Text = "";
+            txtPassWord.Text = "";
         }
     }
 }

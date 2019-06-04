@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace ToolFacebook
 {
-    public class FileManagerPost:FileManager
+    public class FileManagerPost : FileManager
     {
+        /// <summary>
+        /// hàm khởi tạo của file manager-quản lý quá trình ghi-đọc file
+        /// </summary>
         public FileManagerPost() : base()
         {
-           
+
         }
 
         /// <summary>
@@ -19,26 +22,15 @@ namespace ToolFacebook
         /// </summary>
         private string pathPost = "Post.txt";
 
-        /// <summary>
-        /// hàm khởi tạo của file manager-quản lý quá trình ghi-đọc file
-        /// </summary>
-       
-
-        /// <summary>
-        /// hàm thực hiện việc lưu các dòng trong file-nếu file tồn tại rồi thì lưu tiếp-chưa thì tạo ra file và ghi 
-        /// </summary>
-        /// <param name="line">dòng cần ghi</param>
-        /// <param name="pathX">đường dẫn của file</param>
-       
 
         /// <summary>
         /// lưu ds các bài viết 
         /// </summary>
         /// <param name="listPost">danh sách các bài viết đã được tạo</param>
-        public void RomovePostInListAffterSaveNewListPost(List<Post> listPost)
+        public void SaveListPost(ListPost listPost)
         {
             File.Delete(pathPost);
-            foreach (var item in listPost)
+            foreach (var item in listPost.ListP)
             {
                 SaveOncePost(item);
             }
@@ -52,50 +44,66 @@ namespace ToolFacebook
         {
             SaveAppendLine("@postStart", pathPost);
             SaveAppendLine(post.TextPost, pathPost);
-            foreach (var item in post.ImgPost)
+            foreach (var item in post.ImgPost.PathImgPost)
             {
-                SaveAppendLine(item, pathPost);
+                if (string.IsNullOrWhiteSpace(item) == false)
+                    SaveAppendLine(item, pathPost);
             }
             SaveAppendLine("@postClose", pathPost);
         }
 
-        
         /// <summary>
         /// lấy danh sách các bài viết
         /// </summary>
         /// <returns>listPost</returns>
-        private List<Post> OpenListPosts()
+        private ListPost OpenListPosts()
         {
-            var listPost = new List<Post>();
+            var listPost = new ListPost();
             if (File.Exists(pathPost) == false)
             {
                 return listPost;
             }
             var lines = File.ReadAllLines(pathPost);
-
             for (int i = 0; i < lines.Count(); i++)
             {
+
                 if (lines[i] == "@postStart")
                 {
                     var post = new Post();
-                    post.TextPost = lines[i + 1];
-                    for (int j = i + 2; j < lines.Count(); j++)
+                    //post.TextPost = lines[i + 1];
+                    for (int j = i + 1; j < lines.Count(); j++)
                     {
                         if (lines[j] == "@postClose")
                         {
                             i = j;
                             break;
                         }
-                        post.ImgPost.Add(@lines[j]);
+                        if (string.IsNullOrWhiteSpace(lines[j]) == false)
+                            //post.ImgPost.PathImgPost.Add(@lines[j]);
+                            checkTextOrPathImg(post, lines[j]);
                     }
-                    listPost.Add(post);
+                    listPost.ListP.Add(post);
                 }
 
             }
             return listPost;
         }
 
-
+        void checkTextOrPathImg(Post post, string line)
+        {
+            int dem = 0;
+            var listStringCheck = new List<string>() { ".jpg", ".jpeg", ".jpe", ".jfif", " .png" };
+            foreach (var item in listStringCheck)
+            {
+                if (line.Contains(item))
+                {
+                    post.ImgPost.PathImgPost.Add(@line);
+                }
+                else dem++;
+            }
+            if (dem == 5)
+                post.TextPost += " " + line;
+        }
         /// <summary>
         /// kiểm tra xem post đã tồn tại trong list post chưa
         /// </summary>
@@ -104,31 +112,40 @@ namespace ToolFacebook
         public bool CheckPostInList(Post post)
         {
             var listPost = GetListPost();
-            foreach (var item in listPost)
-            {
-                if (item.TextPost == post.TextPost)
-                {
-                    if (item.ImgPost.Count == post.ImgPost.Count)
-                    {
-                        int lenght = item.ImgPost.Count;
-                        int dem = 0;
-                        for (int i = 0; i < lenght; i++)
-                        {
-                            if (item.ImgPost[i] == post.ImgPost[i])
-                            {
-                                dem++;
-                                if (dem == lenght)
-                                    return true;
-                            }
-                        }
-                        return false;
-                    }
-                }
-            }
-            return false;
+            //foreach (var posts in listPost)
+            //{
+            //    if (post.Equals(posts))
+            //        return true;
+            //}
+            //return false;
+            return listPost.ListP.Contains(post);
+            #region tường minh ss post
+            //foreach (var item in listPost)
+            //{
+            //    if (item.TextPost == post.TextPost)
+            //    {
+            //        if (item.ImgPost.Count == post.ImgPost.Count)
+            //        {
+            //            int lenght = item.ImgPost.Count;
+            //            int dem = 0;
+            //            for (int i = 0; i < lenght; i++)
+            //            {
+            //                if (item.ImgPost[i] == post.ImgPost[i])
+            //                {
+            //                    dem++;
+            //                    if (dem == lenght)
+            //                        return true;
+            //                }
+            //            }
+            //            return false;
+            //        }
+            //    }
+            //}
+            //return false;
+            #endregion
         }
 
-        public List<Post> GetListPost()
+        public ListPost GetListPost()
         {
             return OpenListPosts();
         }

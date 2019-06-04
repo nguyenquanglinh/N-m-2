@@ -17,258 +17,306 @@ namespace ToolFacebook
         public ToolFb()
         {
             InitializeComponent();
+            Console.WriteLine("strat application");
             MaximizeBox = false;
-
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
-
+            Console.WriteLine("start click");
             var start1 = checkboxStart1.Checked;
             var start2 = checkBoxStart2.Checked;
             if (start1)
             {
-                MessageBox.Show("Bắt đầu với chế độ mặc định-Tất cả các tài khoản được chọn sẽ đăng chung 1 bài viết");
+                Console.WriteLine("start1->");
+                MessageBox.Show("Bắt đầu với chế độ 1->Tất cả các tài khoản được chọn sẽ đăng chung các bài viết", "hướng dẫn");
                 Start1();
             }
             else if (start2)
             {
-                MessageBox.Show("Bắt đầu với chế độ riêng.Chọn quá trình làm việc cho từng tài khoản");
+                Console.WriteLine("start2-> ");
+                MessageBox.Show("Bắt đầu với chế độ 2->Quá trình làm việc cho từng tài khoản");
                 Start2();
+            }
+            else
+            {
+                throw new Exception("strart3 chưa viết");
+            }
+        }
+        /// <summary>
+        /// bắt đầu với chế độ chung bài viết khác nhóm đăng
+        /// </summary>
+        private void Start1()
+        {
+            Console.WriteLine("start1");
+            MessageBox.Show("b1: Chọn các tài khoản sẽ sử dụng ", "Hướng dẫn");
+            #region b1 chọn user
+            var listUser = SelectUserMode1();
+            if (listUser.ListU.Count == 0)
+                CanhbaoTat(1);
+            else
+            {
+                Console.WriteLine("b1:SelectUser :" + listUser.ListU.Count);
+                #endregion
+
+                #region b2 chọn bài viết <=> như user đã được chọn
+                MessageBox.Show("b2: Chọn các bài viết sẽ đăng ", "Hướng dẫn");
+                Console.WriteLine("b2: SelectPost: ");
+                var listPost = SelectPost();
+                if (listPost.ListP.Count == 0)
+                {
+                    CanhbaoTat(2);
+                }
+                else
+                {
+                    #endregion
+
+                    #region b3 chọn nhóm đăng <=> chọn xong bài viết và user
+
+                    var listWork = new List<WorkList>();
+                    foreach (var user in listUser.ListU)
+                    {
+                        MessageBox.Show("b3: Chọn các nhóm sẽ sử dụng cho tài khoản " + user);
+                        Console.WriteLine("b3: selectGroups cho " + user);
+                        var selectGroups = new SelectGroups(user);
+                        selectGroups.ShowDialog();
+                        var groups = selectGroups.ListGroupsIsSelected;
+                        if (groups.Count != 0)
+                        {
+                            listWork.Add(new WorkList(user, listPost, groups));
+                            Console.Write("groups.Count = " + groups.Count);
+                        }
+                        else CanhbaoTat(3);
+                    }
+                    #endregion
+
+                    #region b4 làm việc với danh sách đã tạo
+                    if (listWork.Count != 0)
+                        RunMode2(listWork);
+                    #endregion
+                }
             }
         }
 
         private void Start2()
         {
+            Console.WriteLine("start2");
+            #region b1 kiểm tra ds user có trong file
             //lấy ds user sau đó chọn cv cho từng user
             var listUser = new FileManagerUser().GetListUser();
-            if (listUser.Count == 0)
+            if (listUser.ListU.Count == 0)
             {
+                Console.WriteLine("listUser.ListU.Count == 0");
                 if (MessageBox.Show("Chưa thêm tài khoản đăng bài.Cần thêm tài khoản ngay", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                     new AddUser().ShowDialog();
+                else CanhbaoTat(1);
             }
             else
             {
-                var managerWork = new List<WorkList>();
-                foreach (var user in listUser)
+                #endregion
+
+                #region b2 Chọn từng tài khoản
+                var listWork = new List<WorkList>();
+                foreach (var user in listUser.ListU)
                 {
-                    var userSelect = SelectUser(2, user);
-                    if (userSelect.Count == 0)
+                    var userSelect = SelectUserMode2(user);
+                    if (userSelect.ListU.Count == 0)
                     {
-                        if (MessageBox.Show("Bạn không chọn tài khoản này.Bạn có chắc chắn không.? " + user.UserName, "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+                        if (MessageBox.Show("Bạn không chọn tài khoản " + user.UserName + ".Bạn có chắc chắn không.? ", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                         {
-                            userSelect = SelectUser(2, user);
+                            continue;
                         }
-                        if (userSelect.Count == 0) continue;
+                        else CanhbaoTat(1);
                     }
                     else
                     {
+                        #endregion
+
+                        #region b3 Chọn bài viết
                         var listPost = SelectPost();
-                        if (listPost.Count == 0)
+                        if (listPost.ListP.Count == 0)
                         {
-                            if (MessageBox.Show("Chưa có bài viết được chọn để đăng cho tài khoản " + user.UserName + ".Thêm bài viết luôn", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-                            {
-                                listPost = SelectPost();
-                            }
-                            if (listPost.Count == 0) continue;
+                            CanhbaoTat(1);
                         }
                         else
                         {
+                            #endregion
+
+                            #region b4 chọn nhóm
                             MessageBox.Show("kiểm tra nhóm");
                             var groups = SelectGroups(user);
                             if (groups.Count == 0)
                             {
-                                if (MessageBox.Show("Tài khoản chưa tham gia nhóm nào.", "Error", MessageBoxButtons.YesNo) == DialogResult.No)
-                                {
-                                    groups = SelectGroups(user);
-                                }
-                                if (groups.Count == 0) continue;
+                                CanhbaoTat(3);
                             }
                             else
-                                managerWork.Add(new WorkList(user, listPost, groups));
+                                listWork.Add(new WorkList(user, listPost, groups));
                         }
                     }
                 }
-                AlwayRunWorkList(managerWork);
+                #endregion
+
+                #region b5 chạy ds làm việc đã được tạo
+                CheckRun(listWork);
+                #endregion
             }
         }
 
-        void AlwayRunWorkList(List<WorkList> managerWork)
+        private void CheckRun(List<WorkList> listWork)
         {
+            if (listWork.Count != 0)
+                if (checkRunAlway.Checked == true)
+                    RunMode2(listWork);
+                else RunMode1(listWork);
+        }
 
+        /// <summary>
+        /// với cảnh báo ==3 <=>ds group ==0 khi đó sẽ không được lưu quá trình làm việc
+        /// </summary>
+        /// <param name="mode">1,2 khởi động lại ct</param>
+        private void CanhbaoTat(int mode)
+        {
+            Console.WriteLine("CanhbaoTat " + mode.ToString());
+            if (MessageBox.Show("Chưa chọn tài khoản đăng bài.Cần chọn ít nhất 1 tài khoản,1 bài viết,1 nhóm để đăng bài", "Cảnh báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                MessageBox.Show("Vui lòng chọn lại start");
+            else if (mode < 3)
+                CloseAll();
+        }
+
+        /// <summary>
+        /// chạy liên tục
+        /// </summary>
+        /// <param name="managerWork"></param>
+        private void RunMode2(List<WorkList> managerWork)
+        {
             while (true)
             {
                 try
                 {
                     var chromeInstances = Process.GetProcessesByName("chrome");
                     foreach (Process p in chromeInstances)
-                        p.Kill();
-                    RunWorkList(managerWork);
+                    { p.Kill(); Thread.Sleep(500); }
+                    RunMode1(managerWork);
                     Thread.Sleep(180000);
                 }
                 catch { }
 
             }
         }
-        private List<Groups> SelectGroups(User user)
+        private List<Group> SelectGroups(User user)
         {
             var selectGroups = new SelectGroups(user);
             selectGroups.ShowDialog();
             return selectGroups.ListGroupsIsSelected;
         }
 
-        private List<User> SelectUser(int mode, User user)
+        public ListUser SelectUserMode1()
         {
-            if (mode == 1)
-            {
-                var selectUser = new SelectUser(mode);
-                selectUser.ShowDialog();
-                return selectUser.ListUserIsSelected;
-            }
-            else
-            {
-                var selectUser = new SelectUser(new List<User>() { user });
-                selectUser.ShowDialog();
-                return selectUser.ListUserIsSelected;
-            }
+            Console.WriteLine("SelectUserMode1");
+            var selectUser = new SelectUser(1);
+            selectUser.ShowDialog();
+            return selectUser.ListUserIsSelected;
         }
-        private List<Post> SelectPost()
+        public ListUser SelectUserMode2(User user)
+        {
+            Console.WriteLine("SelectUserMode2");
+            var selectUser = new SelectUser(new ListUser(user));
+            selectUser.ShowDialog();
+            return selectUser.ListUserIsSelected;
+        }
+
+        private ListPost SelectPost()
         {
             var selectPost = new SelectPost();
             selectPost.ShowDialog();
             return selectPost.ListPostIsSelected;
         }
-        private void Start1()
+        /// <summary>
+        /// chạy xong các work list thì thôi
+        /// </summary>
+        /// <param name="listWork"></param>
+        private void RunMode1(List<WorkList> listWork)
         {
-            var listUser = SelectUser(1, new User());
-            if (listUser.Count == 0)
-            {
-                if (MessageBox.Show("Chưa chọn tài khoản đăng bài.Cần chọn tài khoản ngay", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-                {
-                    listUser = SelectUser(1, new User());
-                    if (listUser.Count == 0)
-                    {
-                        this.Close();
-                    }
-                }
-            }
-            else
-            {
-                var listPost = SelectPost();
-                if (listPost.Count == 0)
-                {
-
-                    if (MessageBox.Show("Chưa có bài viết nào được chọn để đăng .Chọn lại ???", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-                    {
-                        listPost = SelectPost();
-                        if (listPost.Count == 0)
-                            this.Close();
-                    }
-                }
-                else
-                {
-                    int dem = 0;
-                    var listWork = new List<WorkList>();
-                    foreach (var user in listUser)
-                    {
-                        var selectGroups = new SelectGroups(user);
-                        selectGroups.ShowDialog();
-                        var groups = selectGroups.ListGroupsIsSelected;
-                        listWork.Add(new WorkList(user, listPost, groups, dem));
-                    }
-                    //if (MessageBox.Show("Lưu danh quá trình làm việc cho lần sau", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    //{
-                    //    //new FileManagerWorkList(listWork);
-                    //}
-                    AlwayRunWorkList(listWork);
-                }
-            }
-        }
-
-        private void RunWorkList(List<WorkList> listWork)
-        {
+            Console.WriteLine("RunWorkList is start");
             foreach (var work in listWork)
             {
-                foreach (var post in work.ListPost)
+                Console.WriteLine("RunWorkList is " + work);
+                foreach (var post in work.ListPost.ListP)
                 {
                     var chrome = new GoogleChrome(false);
+                    Console.WriteLine("chorme is strat");
                     chrome.PostInGroups(work.User, post, work.Groups);
                     chrome.Driver.Close();
+                    Console.WriteLine("chrome is close");
+                    Thread.Sleep(500);
                 }
             }
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("stop click");
+            CloseAll();
+        }
+
+        private void CloseAll()
+        {
+            Console.WriteLine("CloseAll");
             this.Close();
             Environment.Exit(1);
         }
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("AddUser is running");
             new AddUser().ShowDialog();
         }
 
         private void checkUserToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("UserManager is running");
             try
             {
-                var ListUser = new FileManagerUser().GetListUser();
-                if (ListUser.Count != 0)
-                    new UserManager(ListUser).ShowDialog();
-                else
-                {
-                    if (MessageBox.Show("chưa có User nào được thêm vào.Bạn có muốn thêm ngay bây giờ không", "thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-                        new AddUser().Show();
-                }
+                new UserManager(new FileManagerUser().GetListUser()).ShowDialog();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("Error:close form UserManager " + ex);
             }
         }
 
         private void createPostToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("AddPost is running");
             new AddPost().ShowDialog();
         }
 
         private void checkPostToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("PostManager is running");
             var ListPost = new FileManagerPost().GetListPost();
-            if (ListPost.Count == 0)
+            if (ListPost.ListP.Count != 0)
+            {
+                try
+                {
+                    new PostManager().ShowDialog();
+
+                }
+                catch
+                {
+                    Console.WriteLine("Erro:PostManager ");
+                }
+            }
+            else
             {
                 if (MessageBox.Show("Chưa có bài viết nào được thêm vào.Bạn có muốn thêm ngay bây giờ không", "thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                     new AddPost().Show();
             }
-            else new PostManager().ShowDialog();
         }
 
         private void checkBoxStart2_Click(object sender, EventArgs e)
         {
-            if (checkBoxStart2.Checked)
-                checkboxStart1.Checked = false;
-            else checkboxStart1.Checked = true;
+            Console.WriteLine("start2 click");
+            checkboxStart1.Checked = !checkBoxStart2.Checked;
         }
-
-        private void checkboxStart1_Click(object sender, EventArgs e)
-        {
-            if (checkboxStart1.Checked) checkBoxStart2.Checked = false;
-            else checkBoxStart2.Checked = true;
-        }
-    }
-
-    public class WorkList
-    {
-        public WorkList(User user, List<Post> listPost, List<Groups> groups)
-        {
-            User = user;
-            ListPost = listPost;
-            Groups = groups;
-        }
-
-        public List<Groups> Groups { get; internal set; }
-        public List<Post> ListPost { get; internal set; }
-        public int Stt { get; internal set; }
-        public User User { get; internal set; }
     }
 }

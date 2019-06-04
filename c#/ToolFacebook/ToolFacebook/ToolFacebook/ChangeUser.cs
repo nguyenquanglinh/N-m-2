@@ -18,10 +18,10 @@ namespace ToolFacebook
             this.MaximizeBox = false;
         }
         public bool RemoveUser = false;
-        private User User { get; set; }
+        public User User { get; set; }
         public ChangeUser(User user) : this()
         {
-            userFormChangeUser.SetUser(user);
+            userFormChangeUser.PushUser(user);
             User = user;
             if (user.CheckUserIsTrue == "False")
             {
@@ -43,8 +43,6 @@ namespace ToolFacebook
         {
             this.Close();
         }
-
-        
 
         private void btnChangePass_Click_1(object sender, EventArgs e)
         {

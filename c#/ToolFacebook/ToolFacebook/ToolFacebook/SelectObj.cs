@@ -16,69 +16,81 @@ namespace ToolFacebook
         {
             InitializeComponent();
         }
-       
+
         public void GetName(string name)
         {
             txtName.Text = "Chọn danh sách";
             txtName.Text += name;
         }
-        internal void GetItemUser(List<User> listUser)
+
+        #region đặt giá trị 3 đối tượng user-post-group
+        internal void SetListUseInForm(ListUser listUser)
         {
-            foreach (var obj in listUser)
+            foreach (var obj in listUser.ListU)
             {
                 checkedListObj.Items.Add(obj);
             }
         }
-        internal void GetItemGroup(List<Groups> listGroups)
+
+        internal void SetListGroupInForm(List<Group> listGroups)
         {
             foreach (var obj in listGroups)
             {
                 checkedListObj.Items.Add(obj);
             }
         }
-        internal void GetItemPost(List<Post> listPost)
+
+        
+        internal void SetListPostInForm(ListPost listPost)
         {
-            foreach (var obj in listPost)
+            foreach (var obj in listPost.ListP)
             {
                 checkedListObj.Items.Add(obj);
             }
         }
-
+        #endregion
+        
+        /// <summary>
+        /// chọn tất cả các lựa chọn có thể
+        /// </summary>
+        /// <returns></returns>
         public bool CheckAll()
         {
             return checkAll.Checked;
         }
-        public List<User> SetItemCheckedUser()
+
+
+        #region lấy giá trị cho 3 đối tượng user-post-group
+        public ListUser SetListUserChecked()
         {
-            var listObj = new List<User>();
-            
-            foreach(User obj in checkedListObj.CheckedItems)
+            var listObj = new ListUser();
+
+            foreach (User obj in checkedListObj.CheckedItems)
             {
-                listObj.Add(obj);
+                listObj.ListU.Add(obj);
             }
             return listObj;
         }
 
-
-        public List<Post> SetItemCheckedPost()
+        public ListPost SetListPostChecked()
         {
-            var listObj = new List<Post>();
+            var listObj = new ListPost();
             foreach (Post obj in checkedListObj.CheckedItems)
             {
-                listObj.Add(obj);
+                listObj.ListP.Add(obj);
             }
             return listObj;
         }
 
-        public List<Groups> SetItemCheckedGroup()
+        public List<Group> SetListGroupChecked()
         {
-            var listObj = new List<Groups>();
-            foreach (Groups obj in checkedListObj.CheckedItems)
+            var listObj = new List<Group>();
+            foreach (Group obj in checkedListObj.CheckedItems)
             {
                 listObj.Add(obj);
             }
             return listObj;
         }
-
+        #endregion
     }
 }

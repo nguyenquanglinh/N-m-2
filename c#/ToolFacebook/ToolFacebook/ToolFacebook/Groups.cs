@@ -6,20 +6,24 @@ using System.Threading.Tasks;
 
 namespace ToolFacebook
 {
-   public class Groups
+   public class Group:Obj
     {
-        
-
-        public Groups(string name,string herf)
+        /// <summary>
+        /// chứa địa chỉ+tên của group
+        /// </summary>
+        /// <param name="name">tên </param>
+        /// <param name="herf">địa chỉ</param>
+        public Group(string name,string herf):this()
         {
             this.Name = name;
             this.Href = herf;
         }
+        //TODO: wpf
         public override string ToString()
         {
             return Name;
         }
-        public Groups()
+        public Group():base("group")
         {
  
         }

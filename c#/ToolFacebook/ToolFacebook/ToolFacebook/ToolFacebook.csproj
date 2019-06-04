@@ -92,6 +92,10 @@
     <Compile Include="FileManagerUser.cs" />
     <Compile Include="FileManagerWorkList.cs" />
     <Compile Include="Groups.cs" />
+    <Compile Include="ListPathImgPost.cs" />
+    <Compile Include="ListPost.cs" />
+    <Compile Include="ListUser.cs" />
+    <Compile Include="Obj.cs" />
     <Compile Include="Post.cs" />
     <Compile Include="PostForm.cs">
       <SubType>UserControl</SubType>
@@ -164,6 +168,7 @@
     <Compile Include="UserManager.Designer.cs">
       <DependentUpon>UserManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="WorkList.cs" />
     <Compile Include="WorkListForm.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenQA.Selenium;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace ToolFacebook
 {
@@ -29,9 +30,11 @@ namespace ToolFacebook
             driverService.HideCommandPromptWindow = true;
             var options = new ChromeOptions();
             options.AddArgument("--incognito");
+            options.AddArguments("--disable-extensions");
+            options.AddArguments("--disable-application-cache");
             options.AddArgument("notifications");
             options.AcceptInsecureCertificates = true;
-            if (isHeadless == true)
+            if (isHeadless)
                 options.AddArgument("headless");
             this.Driver = new ChromeDriver(driverService, options);
             Driver.Manage().Window.Maximize();
@@ -48,12 +51,12 @@ namespace ToolFacebook
         /// </summary>
         /// <param name="user">userName+password</param>
         /// <returns>đúng khi có thể đăng nhập</returns>
-        public bool CheckUser(User user)
+        public bool CheckUserIsTrue(User user)
         {
             SignInFacebook(user);
-            var CheckeUser = Driver.FindElementsByXPath("//a[text()='Khôi phục tài khoản của bạn']");
+            var trangChu = Driver.FindElementsByXPath("//a[@href='https://www.facebook.com/?ref=tn_tnmn']");
             Driver.Close();
-            if (CheckeUser.Count != 0)
+            if (trangChu.Count == 0)
             {
                 return false;
             }
@@ -63,6 +66,7 @@ namespace ToolFacebook
         public void SignInFacebook(User user)
         {
             CreateDriver(IsHeadLess);
+            Console.WriteLine("SignInFb with user " + user);
             Driver.Navigate().GoToUrl("https://www.facebook.com/");
             Driver.FindElementByXPath("//input[@id='email']").SendKeys(user.UserName);
             Driver.FindElementByXPath("//input[@id='pass']").SendKeys(user.PassWord);
@@ -70,34 +74,87 @@ namespace ToolFacebook
             Thread.Sleep(5000);
         }
 
+        #region kt thông báo
+        private void PopMessengerNotification()
+        {
+            if (checkNotificationIsTrue())
+            {
+                PopMessengerNotification();
+            }
+            var xxxx = Driver.FindElementsByXPath("//div[@aria-label='Đánh dấu là đã đọc']/../../..//span[contains(text(), 'đã bình luận về bài viết của bạn')]/../../../../../../../../..//span");
+            foreach (var item in xxxx)
+            {
+                var nn = item.GetAttribute("href");
+                if (nn != null)
+                    Console.WriteLine(nn);
+            }
+            xxxx[0].GetAttribute("href");
+            var xxx = this.Driver.FindElementsByXPath("//div[@aria-label='Đánh dấu là đã đọc']/../../..//span[contains(text(), 'đã bình luận về bài viết của bạn')]/../../../../../../../../..| //div[@aria-label='Đánh dấu là đã đọc']/../../..//span[contains(text(), 'đã bình luận về ảnh của bạn')]/../../../../../../../../..|//div[@aria-label='Mark as Read']/../../..//span[contains(text(), 'commented on your photo')]/../../../../../../../../..|//div[@aria-label='Đánh dấu là đã đọc']/../../..//span[contains(text(), 'thích bài viết của bạn')]/../../../../../../../../..|//div[@aria-label='Mark as Read']/../../..//span[contains(text(), 'commented on your post')]/../../../../../../../../..");
+            foreach (var yourCmt in xxx)
+            {
+                var xx = yourCmt.GetAttribute("href");
+                yourCmt.Click();
+            }
 
+            ////div[contains(text(), 'phản hồi')]
+            Thread.Sleep(3000);
+        }
 
-        public List<Groups> GetAllGroup(User user)
+        private bool checkNotificationIsTrue()
+        {
+            try
+            {
+                var notification = Driver.FindElementByXPath("//span[@id='notificationsCountValue']");
+                if (int.Parse(notification.Text) > 0)
+                {
+                    notification.Click();
+                    Thread.Sleep(300);
+                    return true;
+                }
+            }
+
+            catch
+            {
+                return false;
+            }
+            return false;
+        }
+
+        #endregion 
+
+        public List<Group> GetAllGroup(User user)
         {
             SignInFacebook(user);
             Driver.Navigate().GoToUrl("https://www.facebook.com/groups/");
             Thread.Sleep(3000);
             while (true)
             {
-                var xx = Driver.FindElementsByXPath("//span[text()='See more...']");
-                if (xx.Count == 0)
+                try
                 {
-                    xx = Driver.FindElementsByXPath("//span[text()='Xem thêm...']");
+                    var xx = Driver.FindElementsByXPath("//span[text()='See more...']");
                     if (xx.Count == 0)
                     {
-                        break;
-                    }
+                        xx = Driver.FindElementsByXPath("//span[text()='Xem thêm...']");
+                        if (xx.Count == 0)
+                        {
+                            break;
+                        }
 
+                    }
+                    xx[0].Click();
                 }
-                xx[0].Click();
+                catch
+                {
+                    Console.WriteLine("Error:get al group"); Thread.Sleep(200);
+                }
                 Thread.Sleep(2000);
             }
             var groups = Driver.FindElementsByXPath("//a[@aria-current='false']");
-            var listgroup = new List<Groups>();
+            var listgroup = new List<Group>();
             foreach (var item in groups)
             {
 
-                listgroup.Add(new Groups(item.Text, item.GetAttribute("href")));
+                listgroup.Add(new Group(item.Text, item.GetAttribute("href")));
             }
             return listgroup;
         }
@@ -107,30 +164,48 @@ namespace ToolFacebook
         /// </summary>
         /// <param name="user">tài khoản fb</param>
         /// <param name="post">bài viết </param>
-        public void PostInGroups(User user, Post post, List<Groups> groups)
+        public void PostInGroups(User user, Post post, List<Group> groups)
         {
             SignInFacebook(user);
+
             int dem = 0;
             foreach (var item in groups)
             {
                 if (dem == 4)
                 {
-                    checkNotification();
-                    Driver.Close();
-                    Thread.Sleep(15000);
-                    SignInFacebook(user);
+                    try
+                    {
 
-                    dem = 0;
+                        Driver.Close();
+                        var chromeInstances = Process.GetProcessesByName("chrome");
+                        try
+                        {
+                            foreach (Process p in chromeInstances)
+                            {
+                                p.Kill();
+                                Thread.Sleep(500);
+                            }
+
+                        }
+                        catch
+                        {
+                        }
+                        Console.WriteLine("driver close and sleep 3p");
+                        Thread.Sleep(180000);
+                        SignInFacebook(user);
+                        dem = 0;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Error: lỗi đóng chrome");
+                        break;
+                    }
+
                 }
+                Console.WriteLine("post in group+" + item.Name.ToString() + "+ at" + DateTime.Now.ToString("h:mm:ss tt"));
                 PostGroup(item.Href, post);
                 dem++;
-                Thread.Sleep(18000);
             }
-        }
-
-        private void checkNotification()
-        {
-            
         }
 
         public void PostInGroup(User user, Post post, string item)
@@ -144,36 +219,26 @@ namespace ToolFacebook
             try
             {
                 Driver.Navigate().GoToUrl(item);
-                var write = Driver.FindElementsByXPath("//textarea[@placeholder='Write something...']");
+                Thread.Sleep(500);
+                var write = Driver.FindElementsByXPath("//textarea[@placeholder='Write something...']|//textarea[@placeholder='Bạn viết gì đi...']");
                 if (write.Count == 0)
                 {
-                    write = Driver.FindElementsByXPath("//input[@placeholder='What are you selling?'] ");
+                    write = Driver.FindElementsByXPath("//input[@placeholder='What are you selling?']|//input[@placeholder='Bạn đang bán gì?'] ");
                     if (write.Count == 0)
                     {
-                        write = Driver.FindElementsByXPath("//textarea[@placeholder='Bạn viết gì đi...']");
-                        if (write.Count == 0)
-                        {
-                            write = Driver.FindElementsByXPath("//input[@placeholder='Bạn đang bán gì?'] ");
-                            if (write.Count == 0)
-                            {
-                                throw new Exception("phát sinh lỗi khi có thêm 1 group khác");
-                            }
-                            else Groups_2(write, post);
-                        }
-                        else Groups_1(write, post);
+                        throw new Exception("có nhóm mới");
                     }
-                    else
-                        Groups_2(write, post);
+                    //div[@aria-label="Mô tả mặt hàng của bạn (không bắt buộc)"]
+                    else Groups_2(write, post);
                 }
                 else
                     Groups_1(write, post);
             }
-            catch
+            catch (Exception ex)
             {
-
+                Console.WriteLine(ex);
             }
         }
-
 
         private void ClickNext()
         {
@@ -189,41 +254,36 @@ namespace ToolFacebook
             actions.Perform();
             Thread.Sleep(2000);
         }
+
         private void Groups_2(ReadOnlyCollection<IWebElement> write, Post post)
         {
-            MoveToElement(write[0]);
-            write[0].Click();
-            Thread.Sleep(1000);
-            SendImg(post.ImgPost);
-            Driver.FindElementByXPath("//input[@maxlength='20']").SendKeys("1");
+            if (post.TextPost.Count() < 100)
+            {
+                MoveToElement(write[0]);
+                write[0].Click();
+                Thread.Sleep(1000);
+                SendImg(post.ImgPost.PathImgPost);
+                Thread.Sleep(500);
+                Driver.FindElementByXPath("//input[@maxlength='20']").SendKeys("1");
 
-            if (Driver.FindElementsByXPath("//input[@placeholder='What are you selling?'] ").Count != 0)
-            {
-                Driver.FindElementByXPath("//input[@placeholder='What are you selling?'] ").SendKeys(post.TextPost);
+                ClickNext();
+                Thread.Sleep(500);
+                ClickNext();
+
+                Driver.FindElementByXPath("//input[@placeholder='What are you selling?']|//input[@placeholder='Bạn đang bán gì?'] ").SendKeys(post.TextPost);
+                Thread.Sleep(18000);
             }
-            else
-            {
-                if (Driver.FindElementsByXPath("//input[@placeholder='Bạn đang bán gì?'] ").Count != 0)
-                {
-                    Driver.FindElementByXPath("//input[@placeholder='Bạn đang bán gì?'] ").SendKeys(post.TextPost);
-                }
-                else
-                {
-                    throw new Exception("phát sinh lỗi ở group 2 trong quá trình tìm thanh text");
-                }
-            }
-            ClickNext();
-            ClickNext();
+
         }
 
         private void Groups_1(ReadOnlyCollection<IWebElement> write, Post post)
         {
-
             MoveToElement(write[0]);
             write[0].Click();
-            SendImg(post.ImgPost);
+            SendImg(post.ImgPost.PathImgPost);
             Driver.FindElementByXPath("//div[@aria-autocomplete='list']").SendKeys(post.TextPost);
             ClickNext();
+            Thread.Sleep(18000);
         }
 
         private void SendImg(List<string> imgPost)
@@ -264,7 +324,7 @@ namespace ToolFacebook
         {
             foreach (var user in listUser)
             {
-                user.CheckUserIsTrue = CheckUser(user).ToString();
+                user.CheckUserIsTrue = CheckUserIsTrue(user).ToString();
             }
         }
     }

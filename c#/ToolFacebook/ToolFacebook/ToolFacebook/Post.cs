@@ -6,30 +6,56 @@ using System.Threading.Tasks;
 
 namespace ToolFacebook
 {
-   public class Post
+    /// <summary>
+    /// có hàm so sánh gethasdcode
+    /// </summary>
+   public class Post:Obj
     {
-        public Post()
+
+        public int Stt { get; set; }
+
+        public string TextPost { get; set; }
+
+        public ListPathImgPost ImgPost { get; set; }
+
+        public Post():base("post")
         {
             TextPost = "";
-            ImgPost = new List<string>();
+            ImgPost = new ListPathImgPost();
         }
-        public Post(string text)
+
+        public Post(string text):this()
         {
             TextPost = text;
         }
-        public int Stt { get; set; }
-        public Post(string textPost, List<string> imgPost) : this()
+
+        public Post(string textPost, ListPathImgPost imgPost) : this()
         {
             this.TextPost = textPost;
             this.ImgPost = imgPost;
         }
-        public string TextPost { get; set; }
-        public List<string> ImgPost { get; set; }
-
 
         public override string ToString()
         {
             return TextPost;
         }
+
+        public override bool Equals(object obj)
+        {
+            return this.GetHashCode() == obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            int x = TextPost.GetHashCode();
+            foreach (var post in ImgPost.PathImgPost)
+            {
+                x = x ^ post.GetHashCode();
+            }
+            return x;
+        }
+
+
+
     }
 }

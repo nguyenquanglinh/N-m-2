@@ -18,8 +18,31 @@ namespace ToolFacebook
             InitializeComponent();
             Post = new Post();
         }
-        public Post Post { get; set; }
-        public bool Close { get; private set; }
+        private Post Post { get; set; }
+        public List<string> PathImg { get; private set; }
+
+        public void PushPostInForm(Post post)
+        {
+            //TODO: cần kiểm tra lại các đường dẫn ảnh xèm còn tồn tại trên máy nữa không
+            txtTextPost.Text = post.TextPost;
+            CreatePostImg(post);
+        }
+
+        public Post PopPostOutForm()
+        {
+
+            if (string.IsNullOrWhiteSpace(txtTextPost.Text) && PathImg.Count == 0)
+            {
+                MessageBox.Show("bài viết không được để trắng,thêm bài viết ngay", "Cảnh báo");
+                return null;
+            }
+            Post.TextPost = txtTextPost.Text;
+            Post.ImgPost.PathImgPost = PathImg;
+
+            return Post;
+        }
+
+
 
         private void btnOpenImg_Click(object sender, EventArgs e)
         {
@@ -37,20 +60,23 @@ namespace ToolFacebook
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         grbImg.Controls.Clear();
-                        Post.ImgPost = openFileDialog.FileNames.ToList();
-                        CreatePostImg(Post.ImgPost);
+                        PathImg = Post.ImgPost.PathImgPost = openFileDialog.FileNames.ToList();
+                        CreatePostImg(Post);
                     }
                 }
 
             }
         }
 
-        private bool PathImgIsError = false;
-        private void CreatePostImg(List<string> imgPost)
+        /// <summary>
+        /// dùng cho trường hợp path img sai
+        /// </summary>
+        private void CreatePostImg(Post post)
         {
             int ox = 0;
             int oy = 0;
-            foreach (var file in imgPost)
+            this.PathImg = new List<string>();
+            foreach (var file in post.ImgPost.PathImgPost)
             {
                 var btn = new Button()
                 {
@@ -59,18 +85,17 @@ namespace ToolFacebook
                     Location = new Point(ox, oy),
                     BackgroundImageLayout = ImageLayout.Stretch,
                 };
-                ///
-                if (File.Exists(file) == true)
+
+                try
                 {
                     btn.BackgroundImage = Image.FromFile(file);
-                    grbImg.Controls.Add(btn);
+                    PathImg.Add(file);
                 }
-                else
+                catch
                 {
-                    MessageBox.Show("ảnh không còn tồn tại trên máy nữa cần sửa lại ngay", "Cảnh báo");
-                    PathImgIsError = true;
+                    this.BackColor = Color.Red;
                 }
-
+                grbImg.Controls.Add(btn);
                 ox += 100;
                 if (ox > this.Width)
                 {
@@ -84,43 +109,31 @@ namespace ToolFacebook
             }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+
+
+        public bool CheckPostIsTrue(Post post)
         {
-            if (Post.ImgPost.Count != 0 || string.IsNullOrWhiteSpace(Post.TextPost)==false)
+            return CheckPathExistImgPostIsTrue(post.ImgPost.PathImgPost);
+        }
+
+
+        private bool CheckPathExistImgPostIsTrue(List<string> imgPost)
+        {
+            foreach (var path in imgPost)
             {
-
-                var postFile = new FileManagerPost();
-                if (postFile.CheckPostInList(Post))
-                {
-                    MessageBox.Show("Bài viết đã tồn tại trên máy không cần thêm nữa");
-                }
-                else
-                {
-                    postFile.SaveOncePost(Post);
-                    if (MessageBox.Show("Thêm bài viết thành công, bạn có muốn thêm tiếp không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
-                    {
-                        this.Close = true;
-                    }
-                }
-                this.txtTextPost.Text = "";
-                this.grbImg.Controls.Clear();
+                if (File.Exists(path) == false)
+                    return false;
             }
-            else if (MessageBox.Show("bài viết không được để trắng,thêm bài viết ngay", "Cảnh báo", MessageBoxButtons.YesNo) == DialogResult.No)
-            {
-                MessageBox.Show("không có gì để lưu :(");
-                this.Close = true;
-            }
+            return true;
         }
 
-        public void SetPost(Post post)
+
+
+        public void Clear()
         {
-            this.txtTextPost.Text = post.TextPost;
-            CreatePostImg(post.ImgPost);
+            this.txtTextPost.Text = "";
+            this.grbImg.Controls.Clear();
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            Close = true;
-        }
     }
 }

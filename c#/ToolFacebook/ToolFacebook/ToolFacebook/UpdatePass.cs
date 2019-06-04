@@ -23,7 +23,7 @@ namespace ToolFacebook
         public UpdatePass(User user):this()
         {
             this.User = user;
-            userForm1.SetUser(user);
+            userForm1.PushUser(user);
             this.NewPass = user.PassWord;
         }
 
@@ -34,7 +34,7 @@ namespace ToolFacebook
             this.Enabled = false;
             if (string.IsNullOrWhiteSpace(txtNewPass.Text) == false)
             {
-                if (new GoogleChrome(true).CheckUser(new User(User.UserName, txtNewPass.Text)) == true)
+                if (new GoogleChrome(true).CheckUserIsTrue(new User(User.UserName, txtNewPass.Text)) == true)
                     this.NewPass = txtNewPass.Text;
                 else
                 {
