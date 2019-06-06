@@ -92,6 +92,7 @@
     <Compile Include="FileManagerUser.cs" />
     <Compile Include="FileManagerWorkList.cs" />
     <Compile Include="Groups.cs" />
+    <Compile Include="ListGroup.cs" />
     <Compile Include="ListPathImgPost.cs" />
     <Compile Include="ListPost.cs" />
     <Compile Include="ListUser.cs" />

@@ -14,6 +14,8 @@ namespace ToolFacebook
 {
     public partial class ToolFb : Form
     {
+        private int tick;
+
         public ToolFb()
         {
             InitializeComponent();
@@ -75,14 +77,14 @@ namespace ToolFacebook
                     var listWork = new List<WorkList>();
                     foreach (var user in listUser.ListU)
                     {
-                        MessageBox.Show("b3: Chọn các nhóm sẽ sử dụng cho tài khoản " + user);
+                        MessageBox.Show("b3: Chọn các nhóm sẽ sử dụng cho tài khoản " + user, "hướng dẫn");
                         Console.WriteLine("b3: selectGroups cho " + user);
                         var selectGroups = new SelectGroups(user);
                         selectGroups.ShowDialog();
                         var groups = selectGroups.ListGroupsIsSelected;
                         if (groups.Count != 0)
                         {
-                            listWork.Add(new WorkList(user, listPost, groups));
+                            listWork.Add(new WorkList(user, listPost, new ListGroup(groups)));
                             Console.Write("groups.Count = " + groups.Count);
                         }
                         else CanhbaoTat(3);
@@ -90,8 +92,7 @@ namespace ToolFacebook
                     #endregion
 
                     #region b4 làm việc với danh sách đã tạo
-                    if (listWork.Count != 0)
-                        RunMode2(listWork);
+                    CheckRun(listWork);
                     #endregion
                 }
             }
@@ -145,11 +146,9 @@ namespace ToolFacebook
                             MessageBox.Show("kiểm tra nhóm");
                             var groups = SelectGroups(user);
                             if (groups.Count == 0)
-                            {
                                 CanhbaoTat(3);
-                            }
                             else
-                                listWork.Add(new WorkList(user, listPost, groups));
+                                listWork.Add(new WorkList(user, listPost, new ListGroup(groups)));
                         }
                     }
                 }
@@ -164,7 +163,7 @@ namespace ToolFacebook
         private void CheckRun(List<WorkList> listWork)
         {
             if (listWork.Count != 0)
-                if (checkRunAlway.Checked == true)
+                if (checkRunAlway.Checked)
                     RunMode2(listWork);
                 else RunMode1(listWork);
         }
@@ -188,13 +187,10 @@ namespace ToolFacebook
         /// <param name="managerWork"></param>
         private void RunMode2(List<WorkList> managerWork)
         {
-            while (true)
+            while (checkRunAlway.Checked)
             {
                 try
                 {
-                    var chromeInstances = Process.GetProcessesByName("chrome");
-                    foreach (Process p in chromeInstances)
-                    { p.Kill(); Thread.Sleep(500); }
                     RunMode1(managerWork);
                     Thread.Sleep(180000);
                 }
@@ -236,20 +232,51 @@ namespace ToolFacebook
         /// <param name="listWork"></param>
         private void RunMode1(List<WorkList> listWork)
         {
+            var workRemove = new List<WorkList>();
             Console.WriteLine("RunWorkList is start");
             foreach (var work in listWork)
             {
                 Console.WriteLine("RunWorkList is " + work);
                 foreach (var post in work.ListPost.ListP)
                 {
+                    if (work.TimeWaiting > 0)
+                        break;
                     var chrome = new GoogleChrome(false);
                     Console.WriteLine("chorme is strat");
-                    chrome.PostInGroups(work.User, post, work.Groups);
+                    chrome.PostInGroups(work.User, post, work.Groups.ListG);
                     chrome.Driver.Close();
+                    if (chrome.CloseWordList)
+                    {
+                        MessageBox.Show(work.User + " đã đăng quá số lần quy định của fb cần phải dừng lại.Bạn có thể đăng bài tiếp theo cho user " + work.User + " sau  " + chrome.timeWaiting + " tính từ thời điểm hiện tại.", "Thông báo");
+                        Thread.Sleep(500);
+                        if (MessageBox.Show("Bạn có muốn xóa " + work.User + " ra khỏi quá trình làm việc không.Ứng dụng sẽ tiếp tục làm việc với " + work.User + " khi hết thời gian chờ nếu bạn ấn No", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            workRemove.Add(work);
+                        else
+                            work.TimeWaiting = CreatTimeWaiting(chrome.timeWaiting);
+                        break;
+                    }
                     Console.WriteLine("chrome is close");
-                    Thread.Sleep(500);
+                    Thread.Sleep(5000);
                 }
+                Thread.Sleep(500);
             }
+            foreach (var post in workRemove)
+            {
+                listWork.Remove(post);
+            }
+            listWork = listWork.Except(workRemove).ToList();
+
+        }
+
+        private int CreatTimeWaiting(string time)
+        {
+            MessageBox.Show("timeNumber= " + time.Substring(0, time.Length - 1 - 5) + "\t" + "timeWaiting= " + time);
+            if (time.IndexOf("hours") > 0)
+                return int.Parse(time.Substring(0, time.Length - 1 - 5)) * 3600;
+            else if (time.IndexOf("minute") > 0)
+                return int.Parse(time.Substring(0, time.Length - 1 - 6)) * 60;
+            else
+                return int.Parse(time.Substring(0, time.Length - 1 - 7));
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -317,6 +344,15 @@ namespace ToolFacebook
         {
             Console.WriteLine("start2 click");
             checkboxStart1.Checked = !checkBoxStart2.Checked;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            this.tick++;
+            if (tick > 30)
+            {
+
+            }
         }
     }
 }

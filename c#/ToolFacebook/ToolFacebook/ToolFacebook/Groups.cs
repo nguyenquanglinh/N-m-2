@@ -19,9 +19,20 @@ namespace ToolFacebook
             this.Href = herf;
         }
         //TODO: wpf
+
+
+        public override bool Equals(object obj)
+        {
+            return this.GetHashCode() == obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode() ^ Href.GetHashCode();
+        }
         public override string ToString()
         {
-            return Name;
+            return "Name group= "+Name;
         }
         public Group():base("group")
         {

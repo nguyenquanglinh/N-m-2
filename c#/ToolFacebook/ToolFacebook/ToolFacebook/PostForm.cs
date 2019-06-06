@@ -37,8 +37,6 @@ namespace ToolFacebook
                 return null;
             }
             Post.TextPost = txtTextPost.Text;
-            Post.ImgPost.PathImgPost = PathImg;
-
             return Post;
         }
 
@@ -49,7 +47,6 @@ namespace ToolFacebook
             if (string.IsNullOrWhiteSpace(txtTextPost.Text) == false)
             {
                 Post.TextPost = txtTextPost.Text;
-
                 using (OpenFileDialog openFileDialog = new OpenFileDialog())
                 {
                     openFileDialog.InitialDirectory = "c:\\";
@@ -60,7 +57,7 @@ namespace ToolFacebook
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         grbImg.Controls.Clear();
-                        PathImg = Post.ImgPost.PathImgPost = openFileDialog.FileNames.ToList();
+                        Post.ImgPost.PathImgPost = openFileDialog.FileNames.ToList();
                         CreatePostImg(Post);
                     }
                 }
@@ -75,7 +72,7 @@ namespace ToolFacebook
         {
             int ox = 0;
             int oy = 0;
-            this.PathImg = new List<string>();
+            this.Post.ImgPost = post.ImgPost;
             foreach (var file in post.ImgPost.PathImgPost)
             {
                 var btn = new Button()
@@ -93,6 +90,7 @@ namespace ToolFacebook
                 }
                 catch
                 {
+                    MessageBox.Show("ảnh trong bài viết đã không còn tồn tại trên máy");
                     this.BackColor = Color.Red;
                 }
                 grbImg.Controls.Add(btn);

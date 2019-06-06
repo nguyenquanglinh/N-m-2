@@ -33,7 +33,7 @@ namespace ToolFacebook
         /// <returns>username</returns>
         public override string ToString()
         {
-            return UserName;
+            return "user : "+ UserName;
         }
 
         public override bool Equals(object obj)
@@ -60,12 +60,6 @@ namespace ToolFacebook
 
             this.CheckUserIsTrue = v;
         }
-
-        /// <summary>
-        /// khởi tạo user sử dụng user đã có
-        /// </summary>
-        /// <param name="user"></param>
-        
 
      
        

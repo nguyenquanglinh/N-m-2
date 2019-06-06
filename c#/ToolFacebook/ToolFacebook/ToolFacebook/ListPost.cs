@@ -27,7 +27,7 @@ namespace ToolFacebook
 
         public override string ToString()
         {
-            return "số lượng bài viết là "+ListP.Count().ToString();
+            return "ListPost.Count= "+ListP.Count();
         }
     }
 }

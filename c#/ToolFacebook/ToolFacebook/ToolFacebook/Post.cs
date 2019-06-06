@@ -11,7 +11,6 @@ namespace ToolFacebook
     /// </summary>
    public class Post:Obj
     {
-
         public int Stt { get; set; }
 
         public string TextPost { get; set; }
@@ -37,7 +36,7 @@ namespace ToolFacebook
 
         public override string ToString()
         {
-            return TextPost;
+            return "post ="+ TextPost;
         }
 
         public override bool Equals(object obj)
