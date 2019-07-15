@@ -1,0 +1,5 @@
+id,outlook,temperature,humidity,wind,play
+1,overcast,hot,normal,weak,yes
+2,rainy,mild,high,strong,no
+3,overcast,hot,normal,strong,yes
+4,rainy,mild,normal,strong,no
