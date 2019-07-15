@@ -8,7 +8,11 @@ namespace ToolFacebook
 {
     public class ListGroup
     {
-        public ListGroup(List<Group> groups)
+        public ListGroup()
+        {
+            ListG = new List<Group>();
+        }
+        public ListGroup(List<Group> groups):this()
         {
             this.ListG = groups;
         }

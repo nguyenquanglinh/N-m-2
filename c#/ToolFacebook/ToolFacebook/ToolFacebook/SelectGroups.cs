@@ -24,7 +24,7 @@ namespace ToolFacebook
         public SelectGroups(User user) : this()
         {
             var chrome = new GoogleChrome(false);
-            this.listGroupsIsSelected = chrome.GetAllGroup(user);
+            this.listGroupsIsSelected = chrome.GetAllGroup(user).ListG;
             selectObjGroups.SetListGroupInForm(listGroupsIsSelected);
             chrome.Driver.Close();
             selectObjGroups.GetName(" nhóm đăng cho tài khoản " + user.UserName);

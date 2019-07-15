@@ -75,13 +75,20 @@ namespace ToolFacebook
 
         public void SignInFacebook(User user)
         {
-            CreateDriver(IsHeadLess);
-            Console.WriteLine("SignInFb with user " + user);
-            Driver.Navigate().GoToUrl("https://www.facebook.com/");
-            Driver.FindElementByXPath("//input[@id='email']").SendKeys(user.UserName);
-            Driver.FindElementByXPath("//input[@id='pass']").SendKeys(user.PassWord);
-            Driver.FindElementByXPath("//input[@data-testid='royal_login_button']").Click();
-            Thread.Sleep(5000);
+            try
+            {
+                CreateDriver(IsHeadLess);
+                Console.WriteLine("SignInFb with user " + user);
+                Driver.Navigate().GoToUrl("https://www.facebook.com/");
+                Driver.FindElementByXPath("//input[@id='email']").SendKeys(user.UserName);
+                Driver.FindElementByXPath("//input[@id='pass']").SendKeys(user.PassWord);
+                Driver.FindElementByXPath("//input[@data-testid='royal_login_button']").Click();
+                Thread.Sleep(5000);
+            }
+            catch
+            {
+                Console.WriteLine("Error can not go to url facbook.com");
+            }
         }
 
         #region kt thông báo
@@ -131,7 +138,27 @@ namespace ToolFacebook
         }
         #endregion 
 
-        public List<Group> GetAllGroup(User user)
+
+
+        public void CloseAllDriver()
+        {
+           
+            try
+            {
+                Driver.Close();
+                Console.WriteLine("driver close ");
+                foreach (Process p in Process.GetProcessesByName("chrome"))
+                {
+                    p.Kill();
+                    Thread.Sleep(500);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("can not close chrome");
+            }
+        }
+        public ListGroup GetAllGroup(User user)
         {
             SignInFacebook(user);
             Driver.Navigate().GoToUrl("https://www.facebook.com/groups/");
@@ -159,11 +186,10 @@ namespace ToolFacebook
                 Thread.Sleep(2000);
             }
             var groups = Driver.FindElementsByXPath("//a[@aria-current='false']");
-            var listgroup = new List<Group>();
+            var listgroup = new ListGroup();
             foreach (var item in groups)
             {
-
-                listgroup.Add(new Group(item.Text, item.GetAttribute("href")));
+                listgroup.ListG.Add(new Group(item.Text, item.GetAttribute("href")));
             }
             return listgroup;
         }
@@ -180,33 +206,19 @@ namespace ToolFacebook
             int dem = 0;
             foreach (var item in groups)
             {
-
-                if (dem == 4)
+                if (dem == 5)
                 {
-                    try
-                    {
-                        Driver.Close();
-                        Thread.Sleep(180000);
-                        dem = 0;
-                        var chromeInstances = Process.GetProcessesByName("chrome");
-                        foreach (Process p in chromeInstances)
-                        {
-                            p.Kill();
-                            Thread.Sleep(500);
-                        }
-                        Console.WriteLine("driver close and sleep 3p");
-
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Error: lỗi đóng chrome");
-                    }
+                    CloseAllDriver();
+                    Thread.Sleep(180000);
+                    dem = 0;
                     SignInFacebook(user);
                 }
+                Console.WriteLine("strat post post in " + item.Name);
                 PostGroup(item.Href, post);
                 if (CloseWordList)
                     return;
                 dem++;
+                Thread.Sleep(30000);
             }
         }
         public void PostInGroup(User user, Post post, string item)
@@ -244,10 +256,11 @@ namespace ToolFacebook
         private void ClickNext()
         {
             MoveToElement(Driver.FindElementByXPath("//button[@data-testid='react-composer-post-button']"));
-            Thread.Sleep(5000);
             Driver.FindElementByXPath("//button[@data-testid='react-composer-post-button']").Click();
-        }
+            Thread.Sleep(3000);
 
+        }
+        int dem = 0;
         private void MoveToElement(IWebElement webElement)
         {
             Thread.Sleep(500);
@@ -276,20 +289,45 @@ namespace ToolFacebook
                 ClickNext();
                 Thread.Sleep(500);
                 checkedDiv();
+                if (CloseWordList == true) return;
                 Thread.Sleep(500);
                 ClickNext();
-                Console.WriteLine("post complete with Groups_2 " + "+ at" + DateTime.Now.ToString("h:mm:ss tt"));
+                Console.WriteLine("post complete with Groups_2 " + "+ at" + DateTime.Now.ToString("h:mm:ss tt") + " bài viết đã đăng là " + dem);
                 Thread.Sleep(10000);
             }
         }
 
+        private bool CheckRobot()
+        {
+            if (Driver.FindElementsByXPath("//div[text()='Security Check']").Count != 0)
+            {
+                try
+                {
+                    Driver.FindElementByXPath("//a[text()='Cancel']").Click();
+                    CloseWordList = true;
+                    return true;
+                }
+                catch
+                {
+                    Console.WriteLine("Error can not close check robot ");
+                    return true;
+                }
+            }
+            else return false;
+        }
+
         private void checkedDiv()
         {
+            dem++;
             var divs = Driver.FindElementsByXPath("//div[@height='300']//div[@aria-checked='false']");
             foreach (var item in divs)
             {
                 MoveToElement(item);
                 item.Click();
+                if (CheckRobot() == true)
+                    return;
+                dem++;
+
             }
         }
 
@@ -304,21 +342,25 @@ namespace ToolFacebook
                 SendImg(post.ImgPost.PathImgPost);
                 Thread.Sleep(500);
                 Driver.FindElementByXPath("//div[@aria-autocomplete='list']").SendKeys(post.TextPost);
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
                 ClickNext();
                 Thread.Sleep(10000);
-                Console.WriteLine("post complete with Groups_1 " + "+ at" + DateTime.Now.ToString("h:mm:ss tt"));
+                dem++;
+                Console.WriteLine("post complete with Groups_1 " + "+ at" + DateTime.Now.ToString("h:mm:ss tt") + " số bài đã đăng là " + dem);
             }
 
         }
 
         private void SendImg(List<string> imgPost)
         {
+            Thread.Sleep(1000);
             foreach (var item in imgPost)
             {
+                Thread.Sleep(500);
                 var img = Driver.FindElementsByXPath("//a[@class='__9u _47kt']");
                 if (img.Count == 0)
                 {
+                    Thread.Sleep(500);
                     img = Driver.FindElementsByXPath("//div[@class='_3jk']");
                     if (img.Count == 0)
                     {
@@ -328,12 +370,13 @@ namespace ToolFacebook
                 try
                 {
                     MoveToElement(img[0]);
+                    Thread.Sleep(3000);
                     img[0].Click();
-                    Thread.Sleep(500);
+                    Thread.Sleep(1000);
                     SendKeys.SendWait(item);
-                    Thread.Sleep(2000);
+                    Thread.Sleep(1000);
                     SendKeys.SendWait(@"{Enter}");
-                    Thread.Sleep(2000);
+                    Thread.Sleep(4000);
                 }
                 catch
                 {
@@ -348,6 +391,7 @@ namespace ToolFacebook
             Thread.Sleep(1000);
             var numberpost = Driver.FindElementsByXPath("//h3");
             if (numberpost.Count == 8)
+            {
                 if (numberpost[7].Text == "You can't post right now")
                 {
                     Console.WriteLine("Error: can not post post in group because number post is limited");
@@ -361,6 +405,7 @@ namespace ToolFacebook
                     CloseWordList = true;
                     return true;
                 }
+            }
             CloseWordList = false;
             return false;
         }

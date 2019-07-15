@@ -244,7 +244,7 @@ namespace ToolFacebook
                     var chrome = new GoogleChrome(false);
                     Console.WriteLine("chorme is strat");
                     chrome.PostInGroups(work.User, post, work.Groups.ListG);
-                    chrome.Driver.Close();
+                    chrome.CloseAllDriver();
                     if (chrome.CloseWordList)
                     {
                         MessageBox.Show(work.User + " đã đăng quá số lần quy định của fb cần phải dừng lại.Bạn có thể đăng bài tiếp theo cho user " + work.User + " sau  " + chrome.timeWaiting + " tính từ thời điểm hiện tại.", "Thông báo");
@@ -265,7 +265,7 @@ namespace ToolFacebook
                 listWork.Remove(post);
             }
             listWork = listWork.Except(workRemove).ToList();
-
+            MessageBox.Show("Hoàn thành quá trình đăng bài", "Hướng dẫn");
         }
 
         private int CreatTimeWaiting(string time)

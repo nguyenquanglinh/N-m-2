@@ -1,0 +1,3 @@
+url_polynomial="https://towardsdatascience.com/machine-learning-polynomial-regression-with-python-5328e4e8a386"
+url_linear_regression="https://towardsdatascience.com/machine-learning-simple-linear-regression-with-python-f04ecfdadc13"
+url_linear_regression_="https://machinelearningcoban.com/2016/12/28/linearregression/"

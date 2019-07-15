@@ -86,7 +86,6 @@ namespace ToolFacebook
                 try
                 {
                     btn.BackgroundImage = Image.FromFile(file);
-                    PathImg.Add(file);
                 }
                 catch
                 {

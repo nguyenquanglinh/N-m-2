@@ -46,8 +46,7 @@ namespace ToolFacebook
             SaveAppendLine(post.TextPost, pathPost);
             foreach (var item in post.ImgPost.PathImgPost)
             {
-                if (string.IsNullOrWhiteSpace(item) == false)
-                    SaveAppendLine(item, pathPost);
+                SaveAppendLine(item, pathPost);
             }
             SaveAppendLine("@postClose", pathPost);
         }
@@ -66,7 +65,6 @@ namespace ToolFacebook
             var lines = File.ReadAllLines(pathPost);
             for (int i = 0; i < lines.Count(); i++)
             {
-
                 if (lines[i] == "@postStart")
                 {
                     var post = new Post();
@@ -78,9 +76,9 @@ namespace ToolFacebook
                             i = j;
                             break;
                         }
-                        if (string.IsNullOrWhiteSpace(lines[j]) == false)
-                            //post.ImgPost.PathImgPost.Add(@lines[j]);
-                            checkTextOrPathImg(post, lines[j]);
+
+                        //post.ImgPost.PathImgPost.Add(@lines[j]);
+                        checkTextOrPathImg(post, lines[j]);
                     }
                     listPost.ListP.Add(post);
                 }
@@ -92,17 +90,18 @@ namespace ToolFacebook
         void checkTextOrPathImg(Post post, string line)
         {
             int dem = 0;
-            var listStringCheck = new List<string>() { ".jpg", ".jpeg", ".jpe", ".jfif", " .png" };
+            var listStringCheck = new List<string>() { ".jpg", ".jpeg", ".jpe", ".jfif", " .png", ".mp4", ".3gp" };
             foreach (var item in listStringCheck)
             {
                 if (line.Contains(item))
                 {
                     post.ImgPost.PathImgPost.Add(@line);
+                    return;
                 }
                 else dem++;
             }
-            if (dem == 5)
-                post.TextPost += " " + line;
+            if (dem == listStringCheck.Count)
+                post.TextPost += line.Replace("  ", String.Empty) + " ";
         }
         /// <summary>
         /// kiểm tra xem post đã tồn tại trong list post chưa
