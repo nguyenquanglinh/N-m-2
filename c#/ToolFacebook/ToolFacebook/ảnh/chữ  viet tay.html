@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+<meta charset="utf-8" />
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+<title>Machine Learning cơ bản</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
+
+<!-- Include CSS SCSS -->
+
+   <link rel="stylesheet" type="text/css" href="/style/post.css" />
+   <link rel="stylesheet" type="text/css" href="/css/monokai.css" />
+   <link rel="stylesheet" type="text/css" href="/css/mystyle.css" />
+   <!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> -->
+
+
+<title>Bài 5: K-means Clustering: Simple Applications</title>
+<!-- <script>
+var pageProperties = {
+    
+    category: "Clustering",
+    
+    url: "/2017/01/04/kmeans2/",
+    title: "Bài 5: K-means Clustering: Simple Applications",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ -->
+
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/tiepvupsu/tiepvupsu.github.io/master/assets/latex/new_logo9.png" sizes="32x32">
+<link rel="canonical" href="https://machinelearningcoban.com/2017/01/04/kmeans2/"/>
+<meta name="author" content="Tiep Vu " />
+
+
+   <meta property="og:title" content="Bài 5: K-means Clustering: Simple Applications" />
+   <meta property="og:site_name" content="Tiep Vu's blog" />
+   <meta property="og:url" content="https://machinelearningcoban.com/2017/01/04/kmeans2/" />
+   <meta property="og:description" content="" />
+   
+   <meta property="og:type" content="article" />
+   <meta property="article:published_time" content="2017-01-04" />
+   
+
+   <meta property="article:author" content="Tiep Vu" />
+   <meta property="article:section" content="Clustering" />
+   
+      <meta property="article:tag" content="Clustering" />
+   
+      <meta property="article:tag" content="Kmeans" />
+   
+      <meta property="article:tag" content="Unsupervised-learning" />
+   
+      <meta property="article:tag" content="MNIST" />
+   
+
+
+<link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml" />
+
+
+
+<!-- Google Analytics -->
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2017/01/04/kmeans2/',
+'title': 'Bài 5: K-means Clustering: Simple Applications'
+});
+</script>
+
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script>
+<!-- End Google Tag Manager -->
+</head>
+
+<body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+    <br>
+    <div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a   href="/">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo92.png" /> </a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br>
+            <a href = "/buymeacoffee">
+            <img width="100%" style="padding-bottom: 3mm;" src="/images/Buymeacoffee_blue.png" />
+
+            <br>
+            <a href = "/ebook">
+            <img width="100%" style="padding-bottom: 3mm;" src="/images/ebook_logo.png" />
+
+
+            <!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> -->
+
+            <!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  -->
+
+          </a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="/2017/01/04/kmeans2/">5. K-means Clustering - Applications</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="/2017/01/01/kmeans/">4. K-means Clustering</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/lifesofar2/">Con đường học PhD của tôi</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2018/10/03/conv2d">37. Tích chập hai chiều</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2018/09/11/forum/">Diễn đàn</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2018/07/06/deeplearning/">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2018/06/22/deeplearning/">35. Lược sử Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2018/03/22/phuonghoagiang/">Con đường học Khoa học dữ liệu của một sinh viên Kinh tế</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2018/03/09/book/">Sách ML cơ bản</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2018/01/14/id3/">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/08/31/evaluation/">33. Đánh giá hệ thống phân lớp</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/10/20/fundaml_vectors/">FundaML 3: Các mảng ngẫu nhiên</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/10/20/fundaml_matrices/">FundaML 2: Ma trận</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/10/12/fundaml_vectors/">FundaML 1: Mảng một chiều</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/09/24/fundaml/">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/08/08/nbc/">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/08/05/phdlife/">Viết và nhận xét các bài báo khoa học</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/07/17/mlemap/">31. Maximum Likelihood và Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/lifesofar/">Con đường học Toán của tôi</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/07/09/prob/">30. Ôn tập Xác Suất</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/07/02/tl/">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/06/30/lda/">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/06/22/qns1/">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/06/21/pca2/">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/06/15/pca/">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/06/07/svd/">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/05/31/matrixfactorization/">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/05/24/collaborativefiltering/">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/05/17/contentbasedrecommendersys/">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/04/28/multiclasssmv/">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/04/22/kernelsmv/">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/04/13/softmarginsmv/">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/04/09/smv/">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/04/02/duality/">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/03/19/convexopt/">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/03/12/convexity/">16. Convex sets và convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/03/04/overfitting/">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/02/24/mlp/">14. Multi-layer Perceptron và Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/02/17/softmax/">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/02/11/binaryclassifiers/">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/general/2017/02/06/featureengineering/">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/02/02/howdoIcreatethisblog/"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/01/27/logisticregression/">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/01/21/perceptron/">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/01/16/gradientdescent2/">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/01/12/gradientdescent/">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/01/08/knn/">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/01/04/kmeans2/">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2017/01/01/kmeans/">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2016/12/28/linearregression/">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2016/12/27/categories/">2. Phân nhóm các thuật toán Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80"  href="/2016/12/26/introduce/">1. Giới thiệu về Machine Learning</a></li>
+              
+            </ul>
+          </nav>
+
+          
+          
+          <!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> -->
+         
+         <!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/01/01/kmeans/">Bài 4: K-means Clustering</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/01/08/knn/">Bài 6: K-nearest neighbors</a></li>
+              </ul>
+            </nav>
+            -->
+		       
+	        </div>
+	        <div class="col-md-8 col-xs-12" style = "z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="/"><span style = "color: #fff">Machine Learning cơ bản</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="/about/" ><span style = "color: #fff"> About</span></a></li>
+        <li><a href="/index/"><span style = "color: #fff">Index</span></a></li>
+        <li><a href="/tags/"><span style = "color: #fff">Tags</span></a></li>
+        <li><a href="/categories/"><span style = "color: #fff">Categories</span></a></li>
+        <li><a href="/archive/"><span style = "color: #fff">Archive</span></a></li>
+        <li><a href="/math/"><span style = "color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="/copyrights/"><span style = "color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="/ebook/"><span style = "color: #fff">ebook</span></a></li>
+        <li><a href="/search/"><span style = "color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </ul>
+    </div>
+  </div>
+</nav>
+
+	            <!-- <div class = "row"> -->
+   <!-- <div class = "col-xs-12 hidden-md hidden-lg"> -->
+      <!-- previous and next posts -->
+      <div class="PageNavigation">
+         
+            <a class="prev" style = "color: #074B80;" href="/2017/01/01/kmeans/">&laquo; Bài 4: K-means Clustering</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style = "float: right; color: #074B80;" href="/2017/01/08/knn/">Bài 6: K-nearest neighbors &raquo;</a>
+         <hr>
+         
+      </div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">Bài 5: K-means Clustering: Simple Applications</h1>
+
+
+<ul class = "tags">
+   
+      <a href="/tags#Clustering" class="tag">Clustering</a>
+   
+      <a href="/tags#Kmeans" class="tag">Kmeans</a>
+   
+      <a href="/tags#Unsupervised-learning" class="tag">Unsupervised-learning</a>
+   
+      <a href="/tags#MNIST" class="tag">MNIST</a>
+   
+</ul>
+
+
+
+<span class = "post-date" style="color: gray; font-style: italic;">Jan 4, 2017
+            </span>
+<!-- Main content -->
+<br>
+<br>
+
+
+
+<div itemprop="articleBody">
+   <!-- <div class="imgcap">
+<div >
+<a href = "/2017/01/04/kmeans2/">
+    <img src ="/assets/kmeans/girl_all.png"  width = "800"></a>
+</div>
+<div class="thecap"> Nén ảnh đơn giản với K-means clustering<br></div>
+</div> -->
+
+<p>Trong bài này, tôi sẽ áp dụng thuật toán <a href="/2017/01/01/kmeans/">K-means clustering</a> vào ba bài toán xử lý ảnh thực tế hơn: i) Phân nhóm các chữ số viết tay, ii) Tách vật thể (image segmentation) và iii) Nén ảnh/dữ liệu (image compression). Qua đây, tôi cũng muốn độc giả  làm quen với một số kỹ thuật đơn giản trong xử lý hình ảnh - một mảng quan trọng trong Machine Learning. Souce code cho các ví dụ trong trang này có thể được tìm thấy <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/kmeans/Kmeans2.ipynb">tại đây</a>.</p>
+
+<p><strong>Cảnh báo:</strong> <em>bài này không có nhiều toán.</em></p>
+
+<p><strong>Trong trang này:</strong>
+<!-- MarkdownTOC --></p>
+
+<ul>
+  <li><a href="#1-phan-nhom-ch-s-vit-tay">1. Phân nhóm chữ số viết tay</a>
+    <ul>
+      <li><a href="#b-c-s-d-liu-mnist">Bộ cơ sở dữ liệu MNIST</a></li>
+      <li><a href="#bai-toan-phan-nhom-gi-nh">Bài toán phân nhóm giả định</a></li>
+      <li><a href="#lam-vic-tren-python">Làm việc trên Python</a></li>
+    </ul>
+  </li>
+  <li><a href="#2-object-segmentation-tach-vt-th-trong-nh">2. Object Segmentation (tách vật thể trong ảnh)</a>
+    <ul>
+      <li><a href="#t-vn">Đặt vấn đề</a></li>
+      <li><a href="#len--tng">Lên ý tưởng</a></li>
+      <li><a href="#lam-vic-tren-python">Làm việc trên Python</a></li>
+    </ul>
+  </li>
+  <li><a href="#3-image-compression-nen-nh-va-nen-d-liu-noi-chung">3. Image Compression (nén ảnh và nén dữ liệu nói chung)</a></li>
+  <li><a href="#4-tho-lun">4. Thảo luận</a></li>
+  <li><a href="#5-souce-code">5. Souce code</a></li>
+  <li><a href="#6-tai-liu-tham-kho">6. Tài liệu tham khảo</a></li>
+</ul>
+
+<!-- /MarkdownTOC -->
+
+<!-- ========================== New Heading ==================== -->
+<p><a name="-phan-nhom-chu-so-viet-tay"></a></p>
+
+<h2 id="1-phân-nhóm-chữ-số-viết-tay">1. Phân nhóm chữ số viết tay</h2>
+<!-- ========================== New Heading ==================== -->
+<p><a name="bo-co-so-du-lieu-mnist"></a></p>
+
+<h3 id="bộ-cơ-sở-dữ-liệu-mnist">Bộ cơ sở dữ liệu MNIST</h3>
+<p><a href="http://yann.lecun.com/exdb/mnist/">Bộ cơ sở dữ liệu MNIST</a> là bộ cơ sở dữ liệu lớn nhất về chữ số viết tay và được sử dụng trong hầu hết các thuật toán nhận dạng hình ảnh (Image Classification).</p>
+
+<p>MNIST bao gồm hai tập con: tập dữ liệu huấn luyện (training set) có tổng cộng 60k ví dụ khác nhau về chữ số viết tay từ 0 đên 9, tập dữ liệu kiểm tra (test set) có 10k ví dụ khác nhau. Tất cả đều đã được gán nhãn. Hình dưới đây là ví dụ về một số hình ảnh được trích ra từ MNIST.</p>
+
+<div class="imgcap">
+<!-- <a href = "http://www.rubylab.io/img/mnist.png"> -->
+    <img src="http://www.rubylab.io/img/mnist.png" width="800" />
+    <!-- <img src="/assets/rl/mdp.png" height="206"> -->
+<!-- </div> -->
+<div class="thecap"><a href="http://yann.lecun.com/exdb/mnist/">MNIST</a>: bộ cơ sở dữ liệu của chữ số viết tay. <br /> (Nguồn: <a href="http://www.rubylab.io/2015/03/18/simple-neural-network-implenentation-in-ruby/">Simple Neural Network implementation in Ruby)</a></div>
+</div>
+
+<p>Mỗi bức ảnh là một ảnh đen trắng (có 1 channel), có kích thước 28x28 pixel (tổng cộng 784 pixels). Mỗi pixel mang một giá trị là một số tự nhiên từ 0 đến 255. Các pixel màu đen có giá trị bằng 0, các pixel càng trắng thì có giá trị càng cao (nhưng không quá 255). Dưới đây là một ví dụ về chữ số 7 và giá trị các pixel của nó. (<em>Vì mục đích hiển thị ma trận pixel ở bên phải, tôi đã resize bức ảnh về 14x14</em>)</p>
+
+<div class="imgcap">
+<img src="/assets/kmeans/digit_7.png" align="center" />
+</div>
+
+<!-- ========================== New Heading ==================== -->
+<p><a name="bai-toan-phan-nhom-gia-dinh"></a></p>
+
+<h3 id="bài-toán-phân-nhóm-giả-định">Bài toán phân nhóm giả định</h3>
+<p><strong>Bài toán: Giả sử rằng chúng ta không biết nhãn của các chữ số này, chúng ta muốn phân nhóm các bức ảnh gần giống nhau về một nhóm.</strong></p>
+
+<p>Lại thêm một giả sử nữa là chúng ta mới chỉ biết tới thuật toán phân nhóm <a href="/2017/01/01/kmeans/">K-means clustering</a> gần đây từ blog <a href="https://tiepvupsu.github.io/">Machine Learning cơ bản</a> (<em>xin lỗi độc giả vì để các bài học có ý nghĩa hơn, chúng ta đôi khi cần những giả định không được thực tế cho lắm</em>), chúng ta sẽ giải quyết bài toán này thế nào?</p>
+
+<p>Trước khi áp dụng thuật toán <a href="/2017/01/01/kmeans/">K-means clustering</a>, chúng ta cần coi mỗi bức ảnh là một điểm dữ liệu. Và vì mỗi điểm dữ liệu là 1 vector (hàng hoặc cột) chứ không phải ma trận như số 7 ở trên, chúng ta phải làm thêm một bước đơn giản trung gian gọi là <em>vectorization</em> (vector hóa). Nghĩa là, để có được 1 vector, ta có thể tách các hàng của ma trận pixel ra, sau đó đặt chúng cạnh nhau, và chúng ta được một vector hàng rất dài biểu diễn 1 bức ảnh chữ số.</p>
+
+<p><strong>Chú ý</strong>: <em>Cách làm này chỉ là cách đơn giản nhất để mô tả dữ liệu ảnh bằng 1 vector. Trên thực tế, người ta áp dụng rất nhiều kỹ thuật khác nhau để có thể tạo ra các vector đặc trưng (feature vector) giúp các thuật toán có được kết quả tốt hơn.</em></p>
+
+<!-- ========================== New Heading ==================== -->
+<p><a name="lam-viec-tren-python"></a></p>
+
+<h3 id="làm-việc-trên-python">Làm việc trên Python</h3>
+<p>Trước tiên các bạn vào trang chủ của MNIST để <a href="http://yann.lecun.com/exdb/mnist/">download</a> bộ cơ sở dữ liệu này. Mặc dù trong bài này chúng ta chỉ dùng bộ dữ liệu test với 10k ảnh và không cần label, các bạn vẫn cần download cả hai file <code class="highlighter-rouge">t10k-images-idx3-ubyte.gz</code> và <code class="highlighter-rouge">t10k-labels-idx1-ubyte.gz</code> vì thư viện <code class="highlighter-rouge">python-mnist</code> cần cả hai file này để load dữ liệu từ tập test.</p>
+
+<p><strong>Trước tiên chúng ta cần khai báo một số thư viện:</strong></p>
+
+<p><code class="highlighter-rouge">numpy</code> cho các phép toán liên quan đến ma trận. <a href="https://pypi.python.org/pypi/python-mnist/"><code class="highlighter-rouge">mnist</code></a> để đọc dữ liệu từ MNIST. <code class="highlighter-rouge">matplotlib</code> để hiển thị hình vẽ. <code class="highlighter-rouge">sklearn</code> chính là <code class="highlighter-rouge">scikit-learn</code> mà chúng ta đã làm quen trong các bài trước. (<em>Về việc cài đặt các thư viện này, tôi hy vọng bạn đọc có thể Google thêm đôi chút. Nếu có khó khăn trong việc cài đặt, hãy để lại comment ở dưới bài. Lưu ý, làm việc trên Windows sẽ khó khăn hơn một chút so với Linux</em>)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># %reset</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="kn">from</span> <span class="nn">mnist</span> <span class="kn">import</span> <span class="n">MNIST</span> <span class="c"># require `pip install python-mnist`</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+</code></pre></div></div>
+
+<p><strong>Để hiện thị nhiều bức ảnh các chữ số cùng một lúc, tôi có dùng thêm hàm số <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/kmeans/display_network.py"><code class="highlighter-rouge">display_network.py</code></a></strong>.</p>
+
+<p><strong>Thực hiện thuật toán K-means clustering trên toàn bộ 10k chữ số.</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">display_network</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">mndata</span> <span class="o">=</span> <span class="n">MNIST</span><span class="p">(</span><span class="s">'../MNIST/'</span><span class="p">)</span> <span class="c"># path to your MNIST folder </span>
+<span class="n">mndata</span><span class="o">.</span><span class="n">load_testing</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">mndata</span><span class="o">.</span><span class="n">test_images</span>
+
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">K</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">pred_label</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>(<em>Phần còn lại của source code có thể được tìm thấy <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/kmeans/Kmeans2.ipynb">tại đây</a></em>)</p>
+
+<p>Đến đây, sau khi đã tìm được các center và phân nhóm dữ liệu vào từng cluster, tôi muốn hiển thị xem center trông như thế nào và các bức ảnh được phân vào mỗi cluster có giống nhau hay không. Dưới đây là kết quả khi tôi chọn ngẫu nhiên 20 bức ảnh từ mỗi cluster.</p>
+
+<!-- ![png](output_7_0.png) -->
+<div class="imgcap">
+<img src="/assets/kmeans/kmeans_random.png" align="center" />
+<div class="thecap">Áp dụng K-means clustering vào tập test set của bộ cơ sở dữ liệu MNIST với K = 10 cluster. Cột 1: centers của các cluster. Các cột còn lại: Mỗi hàng là 20 điểm dữ liệu ngẫu nhiên được chọn ra từ mỗi cluster.
+</div>
+</div>
+<p>Mỗi hàng tương ứng với một cluster, cột đầu tiên có nền xanh bên trái là centers tìm được của các clusters (màu đỏ hơn là các pixel có giá trị cao hơn). Chúng ta thấy rằng các center đều hoặc là giống với một chữ số nào đó, hoặc là kết hợp của hai/ba chữ số nào đó. Ví dụ: center của nhóm thứ 4 là sự kết hợp của các số 4, 7, 9; của hàng thứ 7 là kết hợp của chữ số 7, 8 và 9.</p>
+
+<p>Tuy nhiên, các bức ảnh lấy ra ngẫu nhiên từ mỗi nhóm trông không thực sự giống nhau. Lý do có thể là những bức ảnh này ở xa các center của mỗi nhóm (mặc dù center đó đã là gần nhất). Như vậy thuật toán K-means clustering làm việc không thực sự tốt trong trường hợp này. (<em>Thật may là vì thế nên chúng ta vẫn còn nhiều thứ để học nữa</em>).</p>
+
+<p>Chúng ta vẫn có thể khai thác một số thông tin hữu ích sau khi thực hiện thuật toán này. Bây giờ, thay vì chọn ngẫu nhiên các bức ảnh trong mỗi cluster, tôi chọn 20 bức ảnh gần center của mỗi cluster nhất, vì càng gần center thì độ tin cậy càng cao. Hãy xem hình dưới đây:</p>
+
+<div class="imgcap">
+<img src="/assets/kmeans/kmeans_knn.png" align="center" />
+<div class="thecap">Áp dụng K-means clustering vào tập test set của bộ cơ sở dữ liệu MNIST với K = 10 cluster. Cột 1: centers của các cluster. Các cột còn lại: Mỗi hàng là 20 điểm dữ liệu gần center nhất của mỗi cluster.
+</div>
+</div>
+
+<p>Bạn đọc có thể thấy dữ liệu trong mỗi hàng khá giống nhau và giống với center ở cột đầu tiên bên trái. Có một vài quan sát thú vị có thể rút ra từ đây:</p>
+
+<ol>
+  <li>
+    <p>Có hai kiểu viết chữ số 1, một thẳng, một chéo. Và K-means clustering nghĩ rằng đó là hai chữ số khác nhau. Điều này là dễ hiểu vì K-means clustering là thuật toán <a href="/2016/12/27/categories/#unsupervised-learning-hoc-khong-giam-sat">Unsupervised learning</a>. Nếu có sự can thiệp của con người, chúng ta có thể nhóm hai clusters này vào làm một.</p>
+  </li>
+  <li>
+    <p>Hàng số 9, chữ số 4 và 9 được phân vào cùng 1 cluster. Sự thật là hai chữ số này cũng khá giống nhau. Điều tương tự xảy ra đối với hàng số 7 với các chữ số 7, 8, 9 được xếp vào 1 cluster. Với các cluster này, chúng ta có thể tiếp tục áp dụng K-means clustering để phân nhỏ cluster đó ra.</p>
+  </li>
+  <li>
+    <p>Trong clustering có một kỹ thuật thường được sử dụng là <a href="https://en.wikipedia.org/wiki/Hierarchical_clustering">Hierarchical clustering (clustering phân tầng )</a>. Có hai loại Hierachical clustering:</p>
+
+    <ul>
+      <li>
+        <p><strong>Agglomerative</strong> tức “đi từ dưới lên”. Ban đầu coi mỗi điểm dữ liệu thuộc 1 cluster khác nhau, sau đó các cặp cluster gần giống nhau được gộp lại làm một cluster lớn hơn. Lặp lại quá trình này đến khi nhận được kết quả chấp nhận được.</p>
+      </li>
+      <li>
+        <p><strong>Divisive</strong> tức “đi từ trên xuống”. Ban đầu coi tất cả các điểm dữ liệu thuộc cùng một cluster, sau đó chia nhỏ mỗi cluster bằng một thuật toán clustering nào đó.</p>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<!-- ========================== New Heading ==================== -->
+<p><a name="-object-segmentation-tach-vat-the-trong-anh"></a></p>
+
+<h2 id="2-object-segmentation-tách-vật-thể-trong-ảnh">2. Object Segmentation (tách vật thể trong ảnh)</h2>
+<!-- ========================== New Heading ==================== -->
+<p><a name="dat-van-de"></a></p>
+
+<h3 id="đặt-vấn-đề">Đặt vấn đề</h3>
+<p>Chúng ta cùng thử áp dụng thuật toán K-means clustering vào một bài toán xử lý ảnh khác: tách vật thể.</p>
+
+<p>Giả sử chúng ta có bức ảnh dưới đây và muốn một thuật toán tự động nhận ra vùng khuôn mặt và tách nó ra.</p>
+
+<div class="imgcap">
+<img src="/assets/kmeans/girl3.jpg" align="center" />
+<div class="thecap">Credit ảnh: <a href="https://www.facebook.com/photo.php?fbid=1219980151402370&amp;set=a.113129725420757.13101.100001711890571&amp;type=3&amp;theater"> Trọng Vũ</a>
+</div>
+</div>
+
+<!-- ========================== New Heading ==================== -->
+<p><a name="len-y-tuong"></a></p>
+
+<h3 id="lên-ý-tưởng">Lên ý tưởng</h3>
+<p>(<em>Lại giả sử rằng chúng ta chưa biết gì khác ngoài K-means clustering, các bạn hãy dừng vài giây để nghĩ xem chúng ta có thể xử lý thế nào. Gợi ý: Có ba màu chủ đạo trong bức ảnh.</em>)</p>
+
+<p>Ok, có ba màu, ba clusters!</p>
+
+<p>Bức ảnh có ba màu chủ đạo: hồng ở khăn và môi; đen ở mắt, tóc, và hậu cảnh; màu da ở vùng còn lại của khuôn mặt. Vậy chúng ta có thể áp dụng thuật toán K-means clustering để phân các pixel ảnh thành 3 clusters, sau đó chọn cluster chứa phần khuôn mặt (phần này do con người làm).</p>
+
+<p>Đây là một bức ảnh màu, mỗi điểm ảnh sẽ được biểu diễn bới 3 giá trị tương ứng với màu Red, Green, và Blue (mỗi giá trị này cũng là một số tự nhiên không vượt quá 255). Nếu ta coi mỗi điểm dữ liệu là một vector 3 chiều chứa các giá trị này, sau đó áp dụng thuật toán K-means clustering, chúng ta có thể có kết quả mong muốn. Hãy thử xem</p>
+
+<!-- ========================== New Heading ==================== -->
+<p><a name="lam-viec-tren-python-1"></a></p>
+
+<h3 id="làm-việc-trên-python-1">Làm việc trên Python</h3>
+
+<p><strong>Khai báo thư viện và load bức ảnh:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="n">mpimg</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s">'girl3.jpg'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">imgplot</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
+</code></pre></div></div>
+
+<p><strong>Biến đổi bức ảnh thành 1 ma trận mà mỗi hàng là 1 pixel với 3 giá trị màu</strong></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+</code></pre></div></div>
+
+<p>(<em>Phần còn lại của source code có thể xem <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/kmeans/Kmeans2.ipynb">tại đây</a></em>).</p>
+
+<p>Sau khi tìm được các cluster, tôi thay giá trị của mỗi pixel bằng center của cluster chứa nó, và được kết quả như sau:</p>
+<div class="imgcap">
+<img src="/assets/kmeans/girl_seg.png" align="center" />
+</div>
+
+<p>Ba màu: Hồng, đen, và màu da đã được phân nhóm. Và khuôn mặt có thể được tách ra từ phần có màu da (và vùng bên trong nó). Vậy là K-means clustering tạo ra một kết quả chấp nhận được.</p>
+
+<!-- ========================== New Heading ==================== -->
+<p><a name="-image-compression-nen-anh-va-nen-du-lieu-noi-chung"></a></p>
+
+<h2 id="3-image-compression-nén-ảnh-và-nén-dữ-liệu-nói-chung">3. Image Compression (nén ảnh và nén dữ liệu nói chung)</h2>
+
+<p>Để ý thấy rằng mỗi một pixel có thể nhận một trong số \(256^3 = 16,777,216\) (16 triệu màu mà chúng ta vẫn nghe khi quảng cáo màn hình). Đây là một số rất lớn (tương đương với 24 bit cho một điểm ảnh). Nếu ta muốn lưu mỗi điểm ảnh với một số bit nhỏ hơn và chấp nhận mất dữ liệu ở một mức nào đó, có cách nào không nếu ta chỉ biết K-means clustering?</p>
+
+<p>Câu trả lời là có. Trong bài toán Segmentation phía trên, chúng ta có 3 clusters, và mỗi một điểm ảnh sau khi xử lý sẽ được biểu diễn bởi 1 số tương ứng với 1 cluster. Tuy nhiên, chất lượng bức ảnh rõ ràng đã giảm đi nhiều. Tôi làm một thí nghiệm nhỏ với số lượng clusters được tăng lên là 5, 10, 15, 20. Sau khi tìm được centers cho mỗi cluster, tôi thay giá trị của một điểm ảnh bằng giá trị của center tương ứng:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">K</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">]:</span>
+    <span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">K</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="n">img4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="c"># replace each pixel by its center</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="n">img4</span><span class="p">[</span><span class="n">label</span> <span class="o">==</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="c"># reshape and display output image</span>
+    <span class="n">img5</span> <span class="o">=</span> <span class="n">img4</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img5</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">'nearest'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Kết quả:</p>
+
+<div class="imgcap">
+<img src="/assets/kmeans/girl_all.png" align="center" />
+</div>
+
+<p>Bạn đọc có thể quan sát là khi số lượng clusters tăng lên, chất lượng bức ảnh đã được cải thiện. Đồng thời, chúng ta chỉ cần lưu các centers và label của mỗi điểm ảnh là đã có được một bức ảnh nén (có mất dữ liệu).</p>
+
+<!-- ========================== New Heading ==================== -->
+<p><a name="-thao-luan"></a></p>
+
+<h2 id="4-thảo-luận">4. Thảo luận</h2>
+<ol>
+  <li>
+    <p>Với một thuật toán K-means clustering đơn giản, chúng ta đã có thể áp dụng nó vào các bài toán thực tế. Mặc dù kết quả chưa thực sự như ý, chúng ta vẫn thấy được tiềm năng của thuật toán đơn giản này.</p>
+  </li>
+  <li>
+    <p>Cách thay một điểm dữ liệu bằng center tương ứng là một trong số các kỹ thuật có tên chung là <a href="https://en.wikipedia.org/wiki/Vector_quantization">Vector Quantization (VQ)</a>. Không chỉ trong nén dữ liệu, VQ còn được áp dụng rộng rãi trong các thuật toán tạo Feature Vector cho các bài toán Phân loại (classification).</p>
+  </li>
+  <li>
+    <p>Các thuật toán trong bài toán này được áp dụng cho xử lý ảnh vì việc này giúp tôi dễ dàng minh họa kết quả hơn. Các kỹ thuật này hoàn toàn có thể áp dụng cho các loại cơ sở dữ liệu khác.</p>
+  </li>
+</ol>
+
+<!-- ========================== New Heading ==================== -->
+<p><a name="-souce-code"></a></p>
+
+<h2 id="5-souce-code">5. Souce code</h2>
+<p>Các bạn có thể <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/kmeans/Kmeans2.ipynb">download source code ở đây</a>.</p>
+
+<!-- ========================== New Heading ==================== -->
+<p><a name="-tai-lieu-tham-khao"></a></p>
+
+<h2 id="6-tài-liệu-tham-khảo">6. Tài liệu tham khảo</h2>
+
+<p><a href="http://users.isr.ist.utl.pt/~wurmd/Livros/school/Bishop%20-%20Pattern%20Recognition%20And%20Machine%20Learning%20-%20Springer%20%202006.pdf">Pattern Recognition and Machine Learning - Christopher Bishop</a></p>
+
+</div>
+
+<hr> 
+<em>Nếu có câu hỏi, Bạn có thể để lại comment bên dưới hoặc trên <a href = "https://www.facebook.com/groups/257768141347267/">Forum</a> để nhận được câu trả lời sớm hơn.</em>
+<br>
+<em>Bạn đọc có thể ủng hộ blog qua <a href = "/buymeacoffee/">'Buy me a cofee'</a> ở góc trên bên trái của blog.
+</em>
+
+<br>
+<em>Tôi vừa hoàn thành cuốn ebook 'Machine Learning cơ bản', bạn có thể đặt sách <a href = "/ebook/">tại đây</a>.
+
+Cảm ơn bạn.</em>
+
+<hr>
+
+<!-- previous and next posts -->
+<div class="PageNavigation">
+   
+      <a class="prev" style = "color: #204081;" href="/2017/01/01/kmeans/">&laquo; Bài 4: K-means Clustering</a>
+   
+   
+      <a class="next" style = "float: right; color: #204081;" href="/2017/01/08/knn/">Bài 6: K-nearest neighbors &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr>
+   
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2017/01/04/kmeans2/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="//tiepvu.disqus.com/count.js" async></script>
+
+
+
+
+
+   <!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+var sc_project=11213320; 
+var sc_invisible=0; 
+var sc_security="cfec1432"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script>
+<noscript><div class="statcounter"><a title="web analytics"
+href="http://statcounter.com/" target="_blank"><img
+class="statcounter"
+src="//c.statcounter.com/11213320/0/cfec1432/0/" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> -->
+	        </div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/01/04/kmeans2/">Bài 5: K-means Clustering: Simple Applications</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/01/01/kmeans/">Bài 4: K-means Clustering</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con đường học PhD của tôi</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">Bài 37: Tích chập hai chiều</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Giới thiệu Diễn đàn Machine Learning cơ bản</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">Bài 36. Giới thiệu về Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">Bài 35: Lược sử Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">Bạn đọc viết: Con đường học Khoa học dữ liệu của một sinh viên Kinh tế</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/09/book/">Sách Machine Learning cơ bản</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">Bài 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">Bài 33: Các phương pháp đánh giá một hệ thống phân lớp</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: Làm việc với các mảng ngẫu nhiên</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: Làm việc với ma trận</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: Làm việc với mảng một chiều</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Giới thiệu trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">Bài 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Quá trình viết và nhận xét các bài báo khoa học</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">Bài 31: Maximum Likelihood và Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con đường học Toán của tôi</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">Bài 30: Ôn tập Xác Suất cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho bài toán phân loại ảnh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">Bài 29: Linear Discriminant Analysis</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class = "social">
+          <div class = "header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/01/04/kmeans2/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2017/01/04/kmeans2/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/01/04/kmeans2/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=Bài 5: K-means Clustering: Simple Applications&url=https://machinelearningcoban.com/2017/01/04/kmeans2/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2017/01/04/kmeans2/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2017/01/04/kmeans2/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#9ca3cfe9fef6f9ffe8a1cff5f1ecf0f9bccff4fdeef9bcdee9e8e8f3f2efbafdf1eca7def3f8e5a1d5b9aeaceffdebb9aeace8f4f5efb9aeacfdf2f8b9aeace8f4f3e9fbf4e8b9aeacf3fab9aeace5f3e9bdb9aeacbcf4e8e8ecefa6b3b3f1fdfff4f5f2f9f0f9fdeef2f5f2fbfff3fefdf2b2fff3f1b3aeacadabb3acadb3aca8b3f7f1f9fdf2efaeb3">
+        <img src="/assets/images/email.png" alt="Email" width="25"/>
+    </a>
+    <!-- Print -->
+    <a href="javascript:;" onclick="window.print()">
+        <img src="/assets/images/print.png" alt="Print" width="25"/>
+    </a>
+   </div>
+          </aside>
+          
+           <nav>
+            <div class="header">Diễn đàn</div>
+            <a   href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="/assets/latex/new_logo9-2.png"/>  </a>
+          </nav>
+          
+          <nav>
+            <div class="header">Interactive Learning</div>
+            <a   href="https://fundaml.com">
+            <img width="100%" src="/images/fundaml_web.png"/>  </a>
+          </nav>
+
+          <nav>
+          <div class = "header" with = "100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore" ><a style = "color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning cơ bản</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav>
+          <nav>
+            <div class="header">Facebook group</div>
+            <a   href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="/assets/14_mlp/multi_layers.png"/>  </a>
+          </nav>
+          
+
+
+          <nav>
+
+          <div class="header">Recommended books</div>
+            <ul>
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul>
+          </nav>
+
+          <nav>
+          <div class="header">Recommended courses</div>
+
+          <ul>
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&utm_medium=sem&campaignid=693373197&adgroupid=36745103515&device=c&keyword=machine%20learning%20andrew%20ng&matchtype=e&network=g&devicemodel=&adpostion=1t1&creativeid=156061453588&hide_mobile_promo&gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul>
+          </nav>
+
+          <nav>
+          <div class="header">Others</div>
+          <ul>
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="/2017/02/02/howdoIcreatethisblog/">Blog này được tạo như thế nào?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Chúng tôi đã apply và học tiến sỹ như thế nào? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Chúng tôi đã apply và học tiến sỹ như thế nào? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul>
+          </nav>
+          <!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> -->
+         
+         <!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/01/01/kmeans/">Bài 4: K-means Clustering</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2017/01/08/knn/">Bài 6: K-nearest neighbors</a></li>
+              </ul>
+            </nav>
+            -->
+	        <!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> -->
+	        <!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> -->
+	        </div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+
+</html>

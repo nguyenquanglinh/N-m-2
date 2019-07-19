@@ -1,0 +1,1 @@
+url="https://towardsdatascience.com/implementation-linear-regression-in-python-in-5-minutes-from-scratch-f111c8cc5c99"
