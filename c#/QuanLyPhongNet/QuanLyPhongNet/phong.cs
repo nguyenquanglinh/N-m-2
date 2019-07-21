@@ -2,6 +2,7 @@
 
 namespace QuanLyPhongNet
 {
+   
     public class Phong
     {
         public Phong(int Int,List<Computer>computerNumber)
