@@ -46,6 +46,28 @@ namespace QuanLyPhongNet
             return ThuongHieu +", "+ Name;
         }
     }
+    public class Nguon : LinhKien
+    {
+        public Nguon() { }
+
+        public Nguon(string thuongHieu, string name,string congSuat,string soChan,string hieuSuat,string quat) : base(thuongHieu, name)
+        {
+            this.CongSuat = congSuat;
+            this.SoChan = soChan;
+            this.HieuSuat = hieuSuat;
+            this.Quat = quat;
+        }
+
+        public string CongSuat { get; private set; }
+        public string HieuSuat { get; private set; }
+        public string Quat { get; private set; }
+        public string SoChan { get; private set; }
+
+        public override string ToString()
+        {
+            return "Thông tin Nguồn:\n" + "Thương hiệu: " + ThuongHieu + ",  tên: " + Name + ", Công suất tối đa: " + CongSuat + ", hiệu suất: " + HieuSuat + ", Số chân cắm " + SoChan+".\n";
+        }
+    }
 
     public class Ram:LinhKien
     {
@@ -53,7 +75,6 @@ namespace QuanLyPhongNet
         {
 
         }
-
        
         /// <summary>
         /// Ram
@@ -73,8 +94,6 @@ namespace QuanLyPhongNet
         public string DungLuong { get; private set; }
       
         public string Using { get; private set; }
-
-
 
         public override string ToString()
         {
