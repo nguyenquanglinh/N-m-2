@@ -1,6 +1,6 @@
 ﻿namespace QuanLyPhongNet
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         /// Required designer variable.
@@ -72,7 +72,7 @@
             this.userCtl1.Size = new System.Drawing.Size(249, 114);
             this.userCtl1.TabIndex = 2;
             // 
-            // Form1
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -81,8 +81,8 @@
             this.Controls.Add(this.userCtl1);
             this.Controls.Add(this.btnOther);
             this.Controls.Add(this.btnAdmin);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Main";
+            this.Text = "Quản lý phòng nét";
             this.ResumeLayout(false);
 
         }

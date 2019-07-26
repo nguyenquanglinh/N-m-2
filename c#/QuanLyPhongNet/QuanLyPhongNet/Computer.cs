@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,28 +30,28 @@ namespace QuanLyPhongNet
         }
     }
 
-    public  class LinhKien
+    public class LinhKien
     {
         public LinhKien() { }
-        public LinhKien(string thuongHieu,string name) : this()
+        public LinhKien(string thuongHieu, string name) : this()
         {
             this.ThuongHieu = thuongHieu;
             this.Name = name;
         }
 
-        public string Name { get; private set; }
-        public string ThuongHieu { get; private set; }
+        public string Name { get; set; }
+        public string ThuongHieu { get; set; }
 
         public override string ToString()
         {
-            return ThuongHieu +", "+ Name;
+            return ThuongHieu + ", " + Name;
         }
     }
     public class Nguon : LinhKien
     {
         public Nguon() { }
 
-        public Nguon(string thuongHieu, string name,string congSuat,string soChan,string hieuSuat,string quat) : base(thuongHieu, name)
+        public Nguon(string thuongHieu, string name, string congSuat, string soChan, string hieuSuat, string quat) : base(thuongHieu, name)
         {
             this.CongSuat = congSuat;
             this.SoChan = soChan;
@@ -65,17 +66,43 @@ namespace QuanLyPhongNet
 
         public override string ToString()
         {
-            return "Thông tin Nguồn:\n" + "Thương hiệu: " + ThuongHieu + ",  tên: " + Name + ", Công suất tối đa: " + CongSuat + ", hiệu suất: " + HieuSuat + ", Số chân cắm " + SoChan+".\n";
+            return "Thông tin Nguồn:\n" + "Thương hiệu: " + ThuongHieu + ",  tên: " + Name + ", Công suất tối đa: " + CongSuat + ", hiệu suất: " + HieuSuat + ", Số chân cắm " + SoChan + ".\n";
         }
     }
 
-    public class Ram:LinhKien
+    public class Ram : LinhKien
     {
+
         public Ram()
         {
 
         }
-       
+
+        private void LayThuocTinh(KeyValuePair<string, string> keyValue)
+        {
+            string va = keyValue.Key.ToString() + " : " + keyValue.Value.ToString();
+            if (va.Contains("Thương hiệu"))
+                ThuongHieu = keyValue.Value;
+            else if (va.Contains("DDR"))
+                Name = keyValue.Value;
+            else if (va.Contains("Bus"))
+                Bus = keyValue.Value;
+            else if (va.Contains("Dung lượng"))
+                DungLuong = keyValue.Value;
+            else if (va.Contains("laptop") || va.Contains("desktop"))
+                Using = keyValue.Value;
+            else
+                OTher +=", "+ va;
+        }
+
+        public Ram(Dictionary<string, string> dic) : this()
+        {
+            foreach (var item in dic)
+            {
+                LayThuocTinh(item);
+            }
+        }
+
         /// <summary>
         /// Ram
         /// </summary>
@@ -92,16 +119,17 @@ namespace QuanLyPhongNet
 
         public string Bus { get; private set; }
         public string DungLuong { get; private set; }
-      
+
         public string Using { get; private set; }
+        public string OTher { get; private set; }
 
         public override string ToString()
         {
-            return "Thông tin Ram: \n" + "Thương hiệu: " + ThuongHieu + ", khe ram: " + Name + ", dung luong: " + DungLuong.ToString() + " , " + "Bus: " + Bus.ToString() + ".\n";
+            return "Thông tin Ram: \n" + "Thương hiệu: " + ThuongHieu + ", khe ram: " + Name + ", dung luong: " + DungLuong.ToString() + " , " + "Bus: " + Bus.ToString() + " ,1 số thông tin khác: " + OTher + ".\n";
         }
     }
 
-    public class CPU:LinhKien
+    public class CPU : LinhKien
     {
         public CPU()
         {
@@ -134,7 +162,7 @@ namespace QuanLyPhongNet
         }
     }
 
-    public class MainBoard:LinhKien
+    public class MainBoard : LinhKien
     {
         public MainBoard() { }
 
@@ -174,7 +202,7 @@ namespace QuanLyPhongNet
     }
 
 
-    public class CardManhinh:LinhKien
+    public class CardManhinh : LinhKien
     {
         public CardManhinh() { }
         /// <summary>
@@ -189,7 +217,7 @@ namespace QuanLyPhongNet
         /// <param name="congKetNoi"></param>
         /// <param name="tanNhiet"></param>
         /// <param name="nguonMin"></param>
-        public CardManhinh(string thuongHieu, string name,string gpu,string tanSo,string boNho,string giaoTiep,string congKetNoi,string tanNhiet,string nguonMin) : base(thuongHieu, name)
+        public CardManhinh(string thuongHieu, string name, string gpu, string tanSo, string boNho, string giaoTiep, string congKetNoi, string tanNhiet, string nguonMin) : base(thuongHieu, name)
         {
             this.GPU = gpu;
             this.TanSo = tanSo;
@@ -202,7 +230,7 @@ namespace QuanLyPhongNet
 
         public override string ToString()
         {
-            return "Thông tin Card Màn hình: \n" + "Thương hiệu: " + ThuongHieu + ", Dòng: " + Name + ", GPU: " + GPU + " , " + "tần số: " + TanSo + ", Bộ nhớ: " + BoNho + ", Cổng hỗ trợ: "+CongketNoi+", PP giao tiếp: "+GiaoTiep+ ", tản nhiêt: "+TanNhiet+", Nguồn đề xuất: "+Nguon+".\n";
+            return "Thông tin Card Màn hình: \n" + "Thương hiệu: " + ThuongHieu + ", Dòng: " + Name + ", GPU: " + GPU + " , " + "tần số: " + TanSo + ", Bộ nhớ: " + BoNho + ", Cổng hỗ trợ: " + CongketNoi + ", PP giao tiếp: " + GiaoTiep + ", tản nhiêt: " + TanNhiet + ", Nguồn đề xuất: " + Nguon + ".\n";
 
         }
 
@@ -215,12 +243,12 @@ namespace QuanLyPhongNet
         public string TanSo { get; private set; }
     }
 
-    public class OCung:LinhKien
+    public class OCung : LinhKien
     {
         public OCung() { }
 
 
-        public OCung(string thuongHieu,string name,string dungLuong,string kichThuoc,string ketNoi,string tocDoDoc,string tocDoGhi) : base(thuongHieu, name)
+        public OCung(string thuongHieu, string name, string dungLuong, string kichThuoc, string ketNoi, string tocDoDoc, string tocDoGhi) : base(thuongHieu, name)
         {
             this.DungLuong = dungLuong;
             this.KichThuoc = kichThuoc;
@@ -241,7 +269,7 @@ namespace QuanLyPhongNet
         }
     }
 
-    public class ManHinh:LinhKien
+    public class ManHinh : LinhKien
     {
         public ManHinh() { }
 
@@ -253,7 +281,7 @@ namespace QuanLyPhongNet
         /// <param name="kichThuocMan"></param>
         /// <param name="doPhanGiai"></param>
         /// <param name="kieuMan"></param>
-        public ManHinh(string thuongHieu,string name,string kichThuocMan,string doPhanGiai,string kieuMan) : base(thuongHieu, name)
+        public ManHinh(string thuongHieu, string name, string kichThuocMan, string doPhanGiai, string kieuMan) : base(thuongHieu, name)
         {
             this.KichThuoc = kichThuocMan;
             this.DoPhanGiai = doPhanGiai;
@@ -265,7 +293,7 @@ namespace QuanLyPhongNet
         public string KieuManHinh { get; private set; }
         public override string ToString()
         {
-            return "Thông tin màn hình:\n" + "Thương hiệu: " + ThuongHieu +", tên: "+Name+ ", kích thước: " + KichThuoc + ", Kiểu màn: " + KieuManHinh + ", Độ phân giải: " + DoPhanGiai + ".\n";
+            return "Thông tin màn hình:\n" + "Thương hiệu: " + ThuongHieu + ", tên: " + Name + ", kích thước: " + KichThuoc + ", Kiểu màn: " + KieuManHinh + ", Độ phân giải: " + DoPhanGiai + ".\n";
         }
     }
 
@@ -295,7 +323,7 @@ namespace QuanLyPhongNet
         public Computer(Ram ram, CPU cpu, CardManhinh cardManHinh, OCung oCung, ManHinh manHinh) : base(ram, cpu, cardManHinh, oCung, manHinh)
         {
         }
-        public Computer():base()
+        public Computer() : base()
         {
         }
         public Computer(int so) : this() { }

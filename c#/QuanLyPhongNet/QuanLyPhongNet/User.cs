@@ -45,5 +45,9 @@
                 return true;
             return false;
         }
+        public Admin(User user):base(user.Name,user.Pass)
+        {
+
+        }
     }
 }

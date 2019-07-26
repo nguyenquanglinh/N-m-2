@@ -6,13 +6,14 @@ using System;
 
 namespace QuanLyPhongNet
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        public Form1()
+        public Main()
         {
 
             InitializeComponent();
             DangNhapOTher();
+            new GoogleChrome().GetAllRam();
         }
 
         private void DangNhapOTher()
@@ -36,8 +37,8 @@ namespace QuanLyPhongNet
 
         private void btnDangNhap_Click(object sender, EventArgs e)
         {
-            var user = userCtl1.GetUser() as Admin;
-            if (user.CheckUser())
+            var admin = new Admin(userCtl1.GetUser());
+            if (admin.CheckUser())
                 MessageBox.Show("Đăng nhập user thành công");
             else
             {
