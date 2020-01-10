@@ -17,19 +17,18 @@ namespace QuanLyPhongNet
         /// <returns>false khi chưa có</returns>
         public bool CheckFileDB()
         {
-            if (File.Exists(@"G:\Code\c#\QuanLyPhongNet\Data\Computer.sqlite"))
+            if (File.Exists(@"G:\Code\c#\QuanLyPhongNet\Data\Computer.sql"))
                 return true;
             else return false;
         }
 
         public void CreateFileDB()
         {
-            SQLiteConnection.CreateFile(@"G:\Code\c#\QuanLyPhongNet\Data\Computer.sqlite");
+            SQLiteConnection.CreateFile(@"H:\Code\c#\QuanLyPhongNet\Data\data.sql");
             //Password = 1234;
-            SQLiteConnection m_dbConnection = new SQLiteConnection(@"Data Source=G:\Code\c#\QuanLyPhongNet\Data\Computer.sqlite;Version=3;");
+            SQLiteConnection m_dbConnection = new SQLiteConnection(@"Data Source=H:\Code\c#\QuanLyPhongNet\Data\data.sql;Version=3;");
             m_dbConnection.Open();
             var ls = new List<string>();
-
             string ram = "create table Ram (ThuongHieu varchar(20), DungLuong varchar(20),NameRam varchar(20),Bus varchar(20),DungCho varchar(20))";
             ls.Add(ram);
             string cpu = "create table CPU (ThuongHieu varchar(20), Name varchar(20),Socket varchar(20),TocDo varchar(20),Nhan varchar(20))";

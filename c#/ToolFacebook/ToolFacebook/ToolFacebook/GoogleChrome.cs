@@ -1,15 +1,12 @@
-﻿using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Interactions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using OpenQA.Selenium;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace ToolFacebook
 {
@@ -27,25 +24,19 @@ namespace ToolFacebook
         }
         public void CreateDriver(bool isHeadless)
         {
-            try
-            {
-                var driverService = ChromeDriverService.CreateDefaultService();
-                driverService.HideCommandPromptWindow = true;
-                var options = new ChromeOptions();
-                options.AddArgument("--incognito");
-                options.AddArguments("--disable-extensions");
-                options.AddArguments("--disable-application-cache");
-                options.AddArgument("notifications");
-                options.AcceptInsecureCertificates = true;
-                if (isHeadless)
-                    options.AddArgument("headless");
-                this.Driver = new ChromeDriver(driverService, options);
-                Driver.Manage().Window.Maximize();
-            }
-            catch
-            {
-                Console.WriteLine("Error: can not create chrome");
-            }
+
+            var driverService = ChromeDriverService.CreateDefaultService();
+            driverService.HideCommandPromptWindow = true;
+            var options = new ChromeOptions();
+            options.AddArgument("--incognito");
+            options.AddArguments("--disable-extensions");
+            options.AddArguments("--disable-application-cache");
+            options.AddArgument("notifications");
+            options.AcceptInsecureCertificates = true;
+            this.Driver = new ChromeDriver(driverService, options);
+            Driver.Manage().Window.Maximize();
+
+
 
         }
         /// <summary>
@@ -63,32 +54,38 @@ namespace ToolFacebook
         /// <returns>đúng khi có thể đăng nhập</returns>
         public bool CheckUserIsTrue(User user)
         {
-            SignInFacebook(user);
-            var trangChu = Driver.FindElementsByXPath("//a[@href='https://www.facebook.com/?ref=tn_tnmn']");
-            Driver.Close();
-            if (trangChu.Count == 0)
+            try
             {
-                return false;
+                SignInFacebook(user);
+                var trangChu = Driver.FindElementsByXPath("//a[@href='https://www.facebook.com/?ref=tn_tnmn']");
+                Driver.Close();
+                if (trangChu.Count == 0)
+                {
+                    return false;
+                }
+
+            }
+            catch
+            {
+                Console.WriteLine("Loi kt tk");
             }
             return true;
         }
 
         public void SignInFacebook(User user)
         {
-            try
-            {
-                CreateDriver(IsHeadLess);
-                Console.WriteLine("SignInFb with user " + user);
-                Driver.Navigate().GoToUrl("https://www.facebook.com/");
-                Driver.FindElementByXPath("//input[@id='email']").SendKeys(user.UserName);
-                Driver.FindElementByXPath("//input[@id='pass']").SendKeys(user.PassWord);
-                Driver.FindElementByXPath("//input[@data-testid='royal_login_button']").Click();
-                Thread.Sleep(5000);
-            }
-            catch
-            {
-                Console.WriteLine("Error can not go to url facbook.com");
-            }
+
+            CreateDriver(IsHeadLess);
+            Console.WriteLine("SignInFb with user " + user);
+            Driver.Navigate().GoToUrl("https://www.facebook.com/");
+            Driver.FindElementByXPath("//input[@id='email']").SendKeys(user.UserName);
+            Thread.Sleep(2000);
+            Driver.FindElementByXPath("//input[@id='pass']").SendKeys(user.PassWord);
+            Thread.Sleep(2000);
+            Driver.FindElementByXPath("//input[@data-testid='royal_login_button']").Click();
+            Thread.Sleep(1000);
+
+
         }
 
         #region kt thông báo
@@ -138,11 +135,9 @@ namespace ToolFacebook
         }
         #endregion 
 
-
-
         public void CloseAllDriver()
         {
-           
+
             try
             {
                 Driver.Close();
@@ -233,6 +228,7 @@ namespace ToolFacebook
             try
             {
                 Driver.Navigate().GoToUrl(item);
+                Thread.Sleep(2000);
                 var write = Driver.FindElementsByXPath("//textarea[@placeholder='Write something...']|//textarea[@placeholder='Bạn viết gì đi...']");
                 if (write.Count == 0)
                 {
@@ -274,18 +270,18 @@ namespace ToolFacebook
         private void Groups_2(ReadOnlyCollection<IWebElement> write, Post post)
         {
             MoveToElement(write[0]);
-            Thread.Sleep(3000);
+            Thread.Sleep(2000);
             write[0].Click();
             if (CheckPostNumberLimited() == false)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
                 Driver.FindElementByXPath("//input[@placeholder='What are you selling?']|//input[@placeholder='Bạn đang bán gì?'] ").SendKeys("miễn phí");
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
                 SendImg(post.ImgPost.PathImgPost);
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
                 Driver.FindElementByXPath("//input[@maxlength='20']").SendKeys("1");
-                Thread.Sleep(500);
-                Driver.FindElementByXPath("//div[@aria-autocomplete='list']").SendKeys(post.TextPost);
+                Thread.Sleep(1000);
+                Driver.FindElementByXPath("//div[@aria-autocomplete='list']").SendKeys(post.TextPost.ToString());
                 ClickNext();
                 Thread.Sleep(500);
                 checkedDiv();

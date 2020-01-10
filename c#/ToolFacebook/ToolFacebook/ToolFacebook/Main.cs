@@ -354,5 +354,10 @@ namespace ToolFacebook
 
             }
         }
+
+        private void checkRunAlway_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

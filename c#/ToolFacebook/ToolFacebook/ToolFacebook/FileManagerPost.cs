@@ -44,6 +44,10 @@ namespace ToolFacebook
         {
             SaveAppendLine("@postStart", pathPost);
             SaveAppendLine(post.TextPost, pathPost);
+            //foreach (var item in post.TextPost.Split('\n'))
+            //{
+            //    SaveAppendLine(item, pathPost);
+            //}
             foreach (var item in post.ImgPost.PathImgPost)
             {
                 SaveAppendLine(item, pathPost);
@@ -90,10 +94,10 @@ namespace ToolFacebook
         void checkTextOrPathImg(Post post, string line)
         {
             int dem = 0;
-            var listStringCheck = new List<string>() { ".jpg", ".jpeg", ".jpe", ".jfif", " .png", ".mp4", ".3gp" };
+            var listStringCheck = new List<string>() { ".jpg", ".jpeg", ".jpe", ".jfif", ".png" };
             foreach (var item in listStringCheck)
             {
-                if (line.Contains(item))
+                if (line.Contains(item)||line.Contains(item.ToUpper()))
                 {
                     post.ImgPost.PathImgPost.Add(@line);
                     return;
@@ -101,7 +105,7 @@ namespace ToolFacebook
                 else dem++;
             }
             if (dem == listStringCheck.Count)
-                post.TextPost += line.Replace("  ", String.Empty) + " ";
+                post.TextPost =post.TextPost.Replace("\r\n\r\n", "\r\n")+ line.Replace("  ", string.Empty) + " \r\n";
         }
         /// <summary>
         /// kiểm tra xem post đã tồn tại trong list post chưa

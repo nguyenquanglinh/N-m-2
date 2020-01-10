@@ -38,11 +38,11 @@
     {
         public Admin(string username, string pass) : base(username, pass)
         {
+           
         }
         public bool CheckUser()
         {
-            if (this.Name == "admin" && this.Pass == "1234")
-                return true;
+            //kiểm tra tên đăng nhập addmin có đúng không
             return false;
         }
         public Admin(User user):base(user.Name,user.Pass)

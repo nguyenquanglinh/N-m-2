@@ -1,12 +1,4 @@
-﻿using OpenQA.Selenium.Chrome;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
 
 namespace ToolFacebook
@@ -26,8 +18,7 @@ namespace ToolFacebook
             {
                 if (new FileManagerUser().CheckUserInList(user) == false)
                 {
-                    MessageBox.Show("Sẽ mất 15s để kiểm tra thông tin tài khoản vui lòng chờ");
-                  
+                    MessageBox.Show("Sẽ mất 1 chút thời gian để kiểm tra thông tin tài khoản vui lòng chờ");
                     if (new GoogleChrome(true).CheckUserIsTrue(user) == true)
                     {
                         new FileManagerUser().SaveOnceUser(user);
@@ -36,7 +27,7 @@ namespace ToolFacebook
                     }
                     else
                     {
-                        if (MessageBox.Show("Thông tin tài khoản hoặc mật khẩu không chính xác.Bạn có muốn thử lại không.", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+                        if (MessageBox.Show("Đã có lỗi xảy ra trong quá trình đăng nhập vui lòng kiểm tra lại thông tin tài khoản b.", "Thông báo", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
                         {
                             this.AdduserForm.Clear();
                         }
@@ -59,7 +50,14 @@ namespace ToolFacebook
 
         private void AddUser_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.Close();
+            try
+            {
+                this.Close();
+            }
+            catch
+            {
+
+            }
         }
     }
 }

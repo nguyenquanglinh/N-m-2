@@ -168,6 +168,7 @@
             this.checkRunAlway.TabIndex = 5;
             this.checkRunAlway.Text = "Chạy liên tục";
             this.checkRunAlway.UseVisualStyleBackColor = true;
+            this.checkRunAlway.CheckedChanged += new System.EventHandler(this.checkRunAlway_CheckedChanged);
             // 
             // ToolFb
             // 

@@ -10,22 +10,20 @@ namespace QuanLyPhongNet
     {
         public Main()
         {
-
             InitializeComponent();
-            DangNhapOTher();
-            new GoogleChrome().GetAllRam();
+            //new FileDB().CreateFileDB();
         }
 
         private void DangNhapOTher()
         {
-            userCtl1.Enabled = false;
-            btnDangNhap.Enabled = false;
+            //userCtl1.Enabled = false;
+            //btnDangNhap.Enabled = false;
         }
 
         void DangNhapAdmin()
         {
-            userCtl1.Enabled = true;
-            btnDangNhap.Enabled = true;
+            //userCtl1.Enabled = true;
+            //btnDangNhap.Enabled = true;
         }
         private void btnAdmin_Click(object sender, System.EventArgs e)
         {
@@ -37,14 +35,14 @@ namespace QuanLyPhongNet
 
         private void btnDangNhap_Click(object sender, EventArgs e)
         {
-            var admin = new Admin(userCtl1.GetUser());
-            if (admin.CheckUser())
-                MessageBox.Show("Đăng nhập user thành công");
-            else
-            {
-                MessageBox.Show("đăng nhập admin không thành công");
-                DangNhapOTher();
-            }
+            //var admin = new Admin(userCtl1.GetUser());
+            //if (admin.CheckUser())
+            //    MessageBox.Show("Đăng nhập user thành công");
+            //else
+            //{
+            //    MessageBox.Show("đăng nhập admin không thành công");
+            //    DangNhapOTher();
+            //}
 
         }
     }
